@@ -33,6 +33,6 @@ sysinfo.txt
 *.stackdump
 
 ################################
-pupProto/**
-!pupProto/Assets/**
-!pupProto/ProjectSettings/**
+pupProto/*
+!pupProto/Assets/
+!pupProto/ProjectSettings/
