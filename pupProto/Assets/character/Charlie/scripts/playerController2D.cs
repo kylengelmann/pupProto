@@ -457,9 +457,6 @@ public class playerController2D : MonoBehaviour {
 	
 	public void Kick() {
 		if(currentAction == action.free) {
-			hitter.enabled = true;
-			hitter.force = kickForce;
-			hitter.force.x *= Mathf.Sign(transform.localScale.x);
 			if(controller.grounded) {
 				if(jumped > 0) {
 					anim.SetBool("jumpin", true);
@@ -481,9 +478,15 @@ public class playerController2D : MonoBehaviour {
 
 	
 	
-	public void startAttack() {}
+	public void startAttack() {
+		hitter.enabled = true;
+		hitter.force = kickForce;
+		hitter.force.x *= Mathf.Sign(transform.localScale.x);
+	}
 
-	public void endAttack() {}
+	public void endAttack() {
+		hitter.enabled = false;
+	}
 
 	
 	

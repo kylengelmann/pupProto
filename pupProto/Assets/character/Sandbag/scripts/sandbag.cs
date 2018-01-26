@@ -21,17 +21,19 @@ public class sandbag : MonoBehaviour {
 
 	void FixedUpdate () {
 		vel.y -= Global.player.movement.fallAcc*Time.fixedDeltaTime;
-		if(Mathf.Abs(vel.x) > Mathf.Epsilon*1000f) {
-			float dV = Mathf.Sign(vel.x)*friction*Time.fixedDeltaTime;
-			if(Mathf.Abs(vel.x) < Mathf.Abs(dV)) {
-				vel.x = 0f;
+		if(controller.grounded) {
+			if(Mathf.Abs(vel.x) > Mathf.Epsilon*1000f) {
+				float dV = Mathf.Sign(vel.x)*friction*Time.fixedDeltaTime;
+				if(Mathf.Abs(vel.x) < Mathf.Abs(dV)) {
+					vel.x = 0f;
+				}
+				else {
+					vel.x -= dV;
+				}
 			}
 			else {
-				vel.x -=dV;
+				vel.x = 0f;
 			}
-		}
-		else {
-			vel.x = 0f;
 		}
 		controller.moveVelocity(ref vel, Time.fixedDeltaTime);
 
@@ -47,7 +49,7 @@ public class sandbag : MonoBehaviour {
 	}
 
 	private IEnumerator resetInvincible() {
-		yield return new WaitForSeconds(.5f);
+		yield return new WaitForSeconds(.1f);
 		anim.ResetTrigger("gotHit");
 		invincible = false;
 	}
