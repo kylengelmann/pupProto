@@ -1004,12 +1004,12 @@ Prefab:
     - target: {fileID: 114986435210841474, guid: b5b5c60b080353d4c93fddd363b28aab,
         type: 2}
       propertyPath: kickForce.x
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114986435210841474, guid: b5b5c60b080353d4c93fddd363b28aab,
         type: 2}
       propertyPath: kickForce.y
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 50866066807838044, guid: b5b5c60b080353d4c93fddd363b28aab, type: 2}
@@ -4122,12 +4122,12 @@ Prefab:
     - target: {fileID: 224772704338799278, guid: 6826cee72a5c4470c947caefe7e5956a,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 10875.743
+      value: 10985.743
       objectReference: {fileID: 0}
     - target: {fileID: 224772704338799278, guid: 6826cee72a5c4470c947caefe7e5956a,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 10875.743
+      value: 10985.743
       objectReference: {fileID: 0}
     - target: {fileID: 224512593713201348, guid: 6826cee72a5c4470c947caefe7e5956a,
         type: 2}

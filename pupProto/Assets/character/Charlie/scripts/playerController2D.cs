@@ -96,6 +96,7 @@ public class playerController2D : MonoBehaviour {
 
 		hitter = gameObject.GetComponentInChildren<Hitter>();
 		hitter.enabled = false;
+		hitter.hitSomething = hitSomething;
 	}
 	
 	
@@ -466,7 +467,7 @@ public class playerController2D : MonoBehaviour {
 				}
 			}
 			anim.SetBool("kickin", true);
-			currentAction = action.kickin;	
+			currentAction = action.kickin;
 		}
 	}
 
@@ -476,7 +477,11 @@ public class playerController2D : MonoBehaviour {
 		currentAction = action.free;
 	}
 
-	
+	public void hitSomething(Hittable gotHit) {
+		if(!controller.grounded) {
+			vel.y = 10f;
+		}
+	}
 	
 	public void startAttack() {
 		hitter.enabled = true;
@@ -493,7 +498,7 @@ public class playerController2D : MonoBehaviour {
 	bool firstGrounded;
 	public void backDash() {
 		if(currentAction == action.free && (controller.grounded && (jumped == 0))) {
-			if(transform.localScale.x < 0f /*sRend.flipX*/) {
+			if(transform.localScale.x < 0f) {
 				dashRight = true;
 			}
 			else {

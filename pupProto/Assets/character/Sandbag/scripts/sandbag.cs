@@ -52,15 +52,17 @@ public class sandbag : MonoBehaviour {
 		yield return new WaitForSeconds(.1f);
 		anim.ResetTrigger("gotHit");
 		invincible = false;
+		hittable.enabled = true;
 	}
 
 	public void onHit(Hitter hitter) {
-		if(!invincible) {
-			invincible = true;
-			anim.SetTrigger("gotHit");
-			StartCoroutine("resetInvincible");
-			vel = hitter.force;
-		}
+//		if(!invincible) {
+		invincible = true;
+		hittable.enabled = false;
+		anim.SetTrigger("gotHit");
+		StartCoroutine("resetInvincible");
+		vel = hitter.force;
+//		}
 	}
 
 }

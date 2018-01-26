@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
+//using UnityEngine.EventSystems;
+//using UnityEngine.Events;
 
 
 public class Hittable: MonoBehaviour{
@@ -12,6 +12,8 @@ public class Hittable: MonoBehaviour{
 	public hitAction onHit;
 
 	public void _onHit(Hitter hitter) {
-		onHit(hitter);
+		if(onHit != null) {
+			onHit(hitter);
+		}
 	}
 }

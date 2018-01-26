@@ -5,6 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Hitter : MonoBehaviour {
 
+	public delegate void hitAction(Hittable gotHit);
+
+	public hitAction hitSomething;
+
 	public ContactFilter2D filter;
 	[HideInInspector]public BoxCollider2D box;
 	public Vector2 force;
@@ -22,6 +26,9 @@ public class Hitter : MonoBehaviour {
 			Hittable h = results[i].gameObject.GetComponent<Hittable>();
 			if(h != null) {
 				h._onHit(this);
+				if(hitSomething != null) {
+					hitSomething(h);
+				}
 			}
 		}
 	}
