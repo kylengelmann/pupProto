@@ -305,8 +305,8 @@ public class playerController2D : MonoBehaviour {
 			case action.kickin:
 				if(!controller.grounded || jumped > 0) {
 					if(!controller.grounded) {
-//						setAirVel();	
-						vel.y = 0f;
+						setAirVel();	
+//						vel.y = 0f;
 					}
 
 					controller.moveVelocity(ref vel, Time.fixedDeltaTime);
@@ -466,6 +466,9 @@ public class playerController2D : MonoBehaviour {
 				else {
 					vel = Vector2.zero;
 				}
+			}
+			else {
+				vel.y = 7f;
 			}
 			anim.SetBool("kickin", true);
 			currentAction = action.kickin;
