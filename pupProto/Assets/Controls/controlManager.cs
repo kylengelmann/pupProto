@@ -38,6 +38,11 @@ public class controlManager : MonoBehaviour {
 	string bdExp;
 	string bdCool;
 
+	bool combatSettings = false;
+	string aky;
+	string akx;
+	string akg;
+
 
 	void Awake() {
 		if(!saveNLoad.loadControls()) {
@@ -78,6 +83,10 @@ public class controlManager : MonoBehaviour {
 		bdVel = Global.player.movement.backDashVelocity.ToString();
 		bdExp = Global.player.movement.backDashExp.ToString();
 		bdCool = Global.player.movement.backDashCooldown.ToString();
+
+		aky = Global.player.movement.airKickYVel.ToString();
+		akx = Global.player.movement.airKickXVel.ToString();
+		akg = Global.player.movement.airKickGrav.ToString();
 		
 	}
 
@@ -216,6 +225,24 @@ public class controlManager : MonoBehaviour {
 			makeBox("Back Dash Cooldown", ref bdCool, ref Global.player.movement.backDashCooldown, 3f);
 		}
 		GUILayout.EndVertical();
+
+
+
+		GUILayout.BeginVertical("box");
+
+		GUILayout.BeginVertical("box", GUILayout.Width(200));
+		combatSettings = GUILayout.Toggle(combatSettings, "Show Combat Settings");
+		GUILayout.EndVertical();
+
+		if (combatSettings)
+		{
+			makeBox("Air Kick Y Vel (+)", ref aky, ref Global.player.movement.airKickYVel, 20f);
+			makeBox("Air Kick X Vel (*)", ref akx, ref Global.player.movement.airKickXVel, 1f);
+			makeBox("Air Kick Gravity", ref akg, ref Global.player.movement.airKickGrav, 100f);
+		}
+		GUILayout.EndVertical();
+
+
 			
 		GUILayout.BeginVertical("box", GUILayout.Width(100));
 		if(GUILayout.Button("Save")) {

@@ -40,6 +40,10 @@ public class moveSettings {
 	public float backDashVelocity = 1f;
 	public float backDashCooldown = .1f;
 	public float backDashExp = .18f;
+
+	public float airKickYVel = 7f;
+	public float airKickXVel = .5f;
+	public float airKickGrav = 30f;
 }
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -305,8 +309,9 @@ public class playerController2D : MonoBehaviour {
 			case action.kickin:
 				if(!controller.grounded || jumped > 0) {
 					if(!controller.grounded) {
-						setAirVel();	
+//						setAirVel();	
 //						vel.y = 0f;
+						vel.y -= movement.airKickGrav * Time.fixedDeltaTime;
 					}
 
 					controller.moveVelocity(ref vel, Time.fixedDeltaTime);
@@ -468,8 +473,8 @@ public class playerController2D : MonoBehaviour {
 				}
 			}
 			else {
-				vel.y = 7f;
-				vel.x /= 2f;
+				vel.y = movement.airKickYVel;
+				vel.x *= movement.airKickXVel;
 			}
 			anim.SetBool("kickin", true);
 			currentAction = action.kickin;
