@@ -96,7 +96,7 @@ public class playerController2D : MonoBehaviour {
 
 		hitter = gameObject.GetComponentInChildren<Hitter>();
 		hitter.enabled = false;
-		hitter.hitSomething = hitSomething;
+//		hitter.hitSomething = hitSomething;
 	}
 	
 	
@@ -305,7 +305,8 @@ public class playerController2D : MonoBehaviour {
 			case action.kickin:
 				if(!controller.grounded || jumped > 0) {
 					if(!controller.grounded) {
-						setAirVel();	
+//						setAirVel();	
+						vel.y = 0f;
 					}
 
 					controller.moveVelocity(ref vel, Time.fixedDeltaTime);
@@ -477,11 +478,11 @@ public class playerController2D : MonoBehaviour {
 		currentAction = action.free;
 	}
 
-	public void hitSomething(Hittable gotHit) {
-		if(!controller.grounded) {
-			vel.y = 10f;
-		}
-	}
+//	public void hitSomething(Hittable gotHit) {
+//		if(!controller.grounded) {
+//			vel.y = 10f;
+//		}
+//	}
 	
 	public void startAttack() {
 		hitter.enabled = true;
