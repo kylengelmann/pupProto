@@ -469,6 +469,7 @@ public class playerController2D : MonoBehaviour {
 			}
 			else {
 				vel.y = 7f;
+				vel.x /= 2f;
 			}
 			anim.SetBool("kickin", true);
 			currentAction = action.kickin;
