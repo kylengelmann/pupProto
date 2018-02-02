@@ -44,7 +44,7 @@ public class moveSettings {
 	public float airKickYVel = 7f;
 	public float airKickXVel = .5f;
 	public float airKickGrav = 30f;
-	public float kickCooldown = .1f;
+	public float kickCooldown = .0f;
 	public float comboCooldown = .5f;
 }
 
@@ -465,8 +465,12 @@ public class playerController2D : MonoBehaviour {
 	
 	bool canKick = true;
 	int numKicks = 0;
+	private Coroutine ccool;
 	public void Kick() {
-		if(currentAction == action.free && canKick) {
+		if(numKicks == 2) {
+			print("hi");
+		}
+		if((currentAction == action.free || currentAction == action.kickin) && canKick) {
 			numKicks ++;
 			if(controller.grounded) {
 				if(jumped > 0) {
@@ -480,27 +484,24 @@ public class playerController2D : MonoBehaviour {
 				vel.y = movement.airKickYVel;
 				vel.x *= movement.airKickXVel;
 			}
-			anim.SetBool("kickin", true);
+//			anim.SetBool("kickin", true);
 			currentAction = action.kickin;
 
-			IEnumerator coolDown = kickCooldown(numKicks >= 3 ? movement.kickCooldown : movement.comboCooldown);
-			StartCoroutine(coolDown);
+			anim.SetTrigger("kickinTrig");
+			if(numKicks < 3) {
+				StartCoroutine(kickCooldown(movement.kickCooldown));
+			}
+			if(numKicks > 1) {
+				StopCoroutine(ccool);
+			}
+			ccool = StartCoroutine(comboCooldown(movement.comboCooldown));
 		}
 	}
 
 	public void endKick() {
-		hitter.enabled = false;
-		anim.SetBool("kickin", false);
-		numKicks = 0;
 		currentAction = action.free;
 	}
 
-//	public void hitSomething(Hittable gotHit) {
-//		if(!controller.grounded) {
-//			vel.y = 10f;
-//		}
-//	}
-	
 	public void startAttack() {
 		hitter.enabled = true;
 		hitter.force = kickForce;
@@ -514,6 +515,14 @@ public class playerController2D : MonoBehaviour {
 	private IEnumerator kickCooldown(float time) {
 		canKick = false;
 		yield return new WaitForSeconds(time);
+		anim.ResetTrigger("kickinTrig");
+		canKick = true;
+	}
+
+	private IEnumerator comboCooldown(float time) {
+		canKick = false;
+		yield return new WaitForSeconds(time);
+ 		numKicks = 0;
 		canKick = true;
 	}
 

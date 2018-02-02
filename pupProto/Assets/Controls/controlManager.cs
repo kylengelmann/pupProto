@@ -42,6 +42,8 @@ public class controlManager : MonoBehaviour {
 	string aky;
 	string akx;
 	string akg;
+	string kcool;
+	string ccool;
 
 
 	void Awake() {
@@ -87,6 +89,8 @@ public class controlManager : MonoBehaviour {
 		aky = Global.player.movement.airKickYVel.ToString();
 		akx = Global.player.movement.airKickXVel.ToString();
 		akg = Global.player.movement.airKickGrav.ToString();
+		kcool = Global.player.movement.kickCooldown.ToString();
+		ccool = Global.player.movement.comboCooldown.ToString();
 		
 	}
 
@@ -239,6 +243,8 @@ public class controlManager : MonoBehaviour {
 			makeBox("Air Kick Y Vel (+)", ref aky, ref Global.player.movement.airKickYVel, 20f);
 			makeBox("Air Kick X Vel (*)", ref akx, ref Global.player.movement.airKickXVel, 1f);
 			makeBox("Air Kick Gravity", ref akg, ref Global.player.movement.airKickGrav, 100f);
+			makeBox("Kick Cooldown", ref kcool, ref Global.player.movement.kickCooldown, 1f);
+			makeBox("Combo Cooldown", ref ccool, ref Global.player.movement.comboCooldown, 2f);
 		}
 		GUILayout.EndVertical();
 
