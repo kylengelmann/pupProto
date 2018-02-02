@@ -1,5 +1,5 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -44,6 +44,8 @@ public class moveSettings {
 	public float airKickYVel = 7f;
 	public float airKickXVel = .5f;
 	public float airKickGrav = 30f;
+	public float kickCooldown = .1f;
+	public float comboCooldown = .5f;
 }
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -461,9 +463,11 @@ public class playerController2D : MonoBehaviour {
 	}
 
 	
-	
+	bool canKick = true;
+	int numKicks = 0;
 	public void Kick() {
-		if(currentAction == action.free) {
+		if(currentAction == action.free && canKick) {
+			numKicks ++;
 			if(controller.grounded) {
 				if(jumped > 0) {
 					anim.SetBool("jumpin", true);
@@ -478,12 +482,16 @@ public class playerController2D : MonoBehaviour {
 			}
 			anim.SetBool("kickin", true);
 			currentAction = action.kickin;
+
+			IEnumerator coolDown = kickCooldown(numKicks >= 3 ? movement.kickCooldown : movement.comboCooldown);
+			StartCoroutine(coolDown);
 		}
 	}
 
 	public void endKick() {
 		hitter.enabled = false;
 		anim.SetBool("kickin", false);
+		numKicks = 0;
 		currentAction = action.free;
 	}
 
@@ -501,6 +509,12 @@ public class playerController2D : MonoBehaviour {
 
 	public void endAttack() {
 		hitter.enabled = false;
+	}
+
+	private IEnumerator kickCooldown(float time) {
+		canKick = false;
+		yield return new WaitForSeconds(time);
+		canKick = true;
 	}
 
 	

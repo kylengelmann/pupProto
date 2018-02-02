@@ -8,6 +8,7 @@ public class sandbag : MonoBehaviour {
 	[HideInInspector] public Vector2 vel;
 	public float velocityTransfer = .1f;
 	public float friction = 50f;
+	public float timeInvincible = .2f;
 	public Animator anim;
 	[HideInInspector] public bool invincible = false;
 	[HideInInspector] public Hittable hittable;
@@ -49,16 +50,16 @@ public class sandbag : MonoBehaviour {
 	}
 
 	private IEnumerator resetInvincible() {
-		yield return new WaitForSeconds(.1f);
+		yield return new WaitForSeconds(timeInvincible);
 		anim.ResetTrigger("gotHit");
 		invincible = false;
-		hittable.enabled = true;
+		hittable.gameObject.SetActive(true);
 	}
 
 	public void onHit(Hitter hitter) {
 //		if(!invincible) {
 		invincible = true;
-		hittable.enabled = false;
+		hittable.gameObject.SetActive(false);
 		anim.SetTrigger("gotHit");
 		StartCoroutine("resetInvincible");
 		vel = hitter.force;
