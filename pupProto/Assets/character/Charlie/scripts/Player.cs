@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
     [HideInInspector]public Animator anim;
     [HideInInspector]public physicsController2D controller;
     [HideInInspector]public Vector2 velocity;
+    [HideInInspector]public playerSettings settings;
     public Vector2 groundBoxOffset;
     public Vector2 groundBoxSize;
     public Vector2 airBoxOffset;
@@ -62,4 +63,9 @@ public class Player : MonoBehaviour {
         anim.SetFloat("fallin", velocity.y);
     }
 
+}
+
+[System.Serializable]
+public struct playerSettings {
+    public float gravity;
 }

@@ -954,6 +954,7 @@ GameObject:
   - component: {fileID: 956181803}
   - component: {fileID: 956181802}
   - component: {fileID: 956181801}
+  - component: {fileID: 956181804}
   m_Layer: 8
   m_Name: charlie
   m_TagString: Untagged
@@ -1157,6 +1158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e5733395078940aba4d57e2e70b5398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
 --- !u!114 &956181803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1171,12 +1173,33 @@ MonoBehaviour:
   anim: {fileID: 0}
   controller: {fileID: 0}
   velocity: {x: 0, y: 0}
+  settings:
+    gravity: 0
   groundBoxOffset: {x: 0, y: 0}
   groundBoxSize: {x: 0, y: 0}
   airBoxOffset: {x: 0, y: 0}
   airBoxSize: {x: 0, y: 0}
   wasGrounded: 0
   airTime: 0
+--- !u!114 &956181804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 956181794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 564e5a585aeb54ace994d4afad582773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+    dashVelocity: 5
+    dashDistance: 1
+    dashCooldown: 0.5
+    dashFreeze: 0.1
+    dashExp: 2.5
+  player: {fileID: 0}
+  stateMachine: {fileID: 0}
 --- !u!1 &1050440960
 GameObject:
   m_ObjectHideFlags: 0

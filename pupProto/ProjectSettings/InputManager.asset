@@ -102,7 +102,7 @@ InputManager:
     axis: 1
     joyNum: 0
   - serializedVersion: 3
-    m_Name: dashHorizontal_Key
+    m_Name: dashHorizontal_key
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: left
