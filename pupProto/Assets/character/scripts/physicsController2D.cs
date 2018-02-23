@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class characterController2D : MonoBehaviour
+public class physicsController2D : MonoBehaviour
 {
 	public float minSinSlope = 0.766f;
 	public float skinWidth = 0.02f;
@@ -15,7 +14,6 @@ public class characterController2D : MonoBehaviour
 	public LayerMask oneWayPlatform;
 	[HideInInspector] public bool dropThroughOneWay = false;
 	[HideInInspector] public bool grounded = false;
-	//[HideInInspector] public Rigidbody2D rigidBody;
 	[HideInInspector] public BoxCollider2D box;
 	[HideInInspector] public RaycastHit2D[] hits;
 	[HideInInspector] public Vector2 hitNormal;
@@ -30,7 +28,6 @@ public class characterController2D : MonoBehaviour
 	
 	void Awake()
 	{
-		//rigidBody = gameObject.GetComponent<Rigidbody2D>();
 		box = gameObject.GetComponent<BoxCollider2D>();
 		hits = new RaycastHit2D[10];
 	}

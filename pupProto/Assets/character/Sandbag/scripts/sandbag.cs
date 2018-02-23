@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(characterController2D))]
+[RequireComponent(typeof(physicsController2D))]
 public class sandbag : MonoBehaviour {
-	[HideInInspector] public characterController2D controller;
+	[HideInInspector] public physicsController2D controller;
 	[HideInInspector] public Vector2 vel;
 	public float velocityTransfer = .1f;
 	public float friction = 50f;
@@ -14,14 +14,14 @@ public class sandbag : MonoBehaviour {
 	[HideInInspector] public Hittable hittable;
 
 	void Start () {
-		controller = gameObject.GetComponent<characterController2D>();
+		controller = gameObject.GetComponent<physicsController2D>();
 		vel = Vector2.zero;
 		hittable = gameObject.GetComponentInChildren<Hittable>();
 		hittable.onHit = onHit;
 	}
 
 	void FixedUpdate () {
-		vel.y -= Global.player.movement.fallAcc*Time.fixedDeltaTime;
+		vel.y -= 30f*Time.fixedDeltaTime;
 		if(controller.grounded) {
 			if(Mathf.Abs(vel.x) > Mathf.Epsilon*1000f) {
 				float dV = Mathf.Sign(vel.x)*friction*Time.fixedDeltaTime;
@@ -45,7 +45,7 @@ public class sandbag : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D other) {
 		if(!invincible && other.gameObject.layer == LayerMask.NameToLayer("Player")) {
-			vel.x += velocityTransfer*(other.gameObject.GetComponent<playerController2D>().vel.x - vel.x);
+			vel.x += velocityTransfer*(other.gameObject.GetComponent<Player>().velocity.x - vel.x);
 		}
 	}
 
