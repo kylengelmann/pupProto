@@ -35,14 +35,14 @@ public class GameManager : MonoBehaviour {
         else {
             platform = "";
         }
-
-        gameButtons.xMove = "Horizontal" + platform + controllerType;
-        gameButtons.yMove = "Vertical" + platform + controllerType;
-        gameButtons.xDash = "dashHorizontal" + platform + controllerType;
-        gameButtons.yDash = "dashVertical" + platform + controllerType;
-        gameButtons.jump = "jump" + platform + controllerType;
-        gameButtons.attack = "attack" + platform + controllerType;
-        gameButtons.pause = "pause" + platform + controllerType;
+        controllerType += platform;
+        gameButtons.xMove = "Horizontal" + controllerType;
+        gameButtons.yMove = "Vertical" + controllerType;
+        gameButtons.xDash = "dashHorizontal" + controllerType;
+        gameButtons.yDash = "dashVertical" + controllerType;
+        gameButtons.jump = "jump" + controllerType;
+        gameButtons.attack = "attack" + controllerType;
+        gameButtons.pause = "pause" + controllerType;
     }
 
 }

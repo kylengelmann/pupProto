@@ -1193,11 +1193,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    dashVelocity: 5
-    dashDistance: 1
+    dashVelocity: 20
+    dashDistance: 3
     dashCooldown: 0.5
     dashFreeze: 0.1
-    dashExp: 2.5
+    dashExp: -2.5
   player: {fileID: 0}
   stateMachine: {fileID: 0}
 --- !u!1 &1050440960
