@@ -12,16 +12,17 @@ public class playerStateMachine : MonoBehaviour {
         dashing
     }
 
-    public playerState currentState = playerState.free;
+    [HideInInspector]public playerState currentState = playerState.free;
 
     void Start() {
         mover = gameObject.GetComponent<Move>();
         dasher = gameObject.GetComponent<Dash>();
+        dasher.onFinish = endDash;
         camPos = Camera.main.transform.position;
     }
 
     Vector3 camPos;
-    Vector2 dashDir;
+    bool wasDashPressed;
     void Update()
     {
         camPos.x = transform.position.x;
@@ -29,14 +30,26 @@ public class playerStateMachine : MonoBehaviour {
         Camera.main.transform.position = camPos;
         switch(currentState) {
             case playerState.free:
-                dashDir.x = Input.GetAxisRaw(GameManager.gameButtons.xDash);
-                dashDir.y = Input.GetAxisRaw(GameManager.gameButtons.yDash);
-                if(dashDir.sqrMagnitude > 0.25f) {
-                    dasher.doDash(dashDir.normalized);
+                float dashX = Input.GetAxisRaw(GameManager.gameButtons.xDash);
+                float dashY = Input.GetAxisRaw(GameManager.gameButtons.yDash);
+                bool isDashPressed = dashX*dashX + dashY*dashY > 0.25f;
+                if(!wasDashPressed && isDashPressed) {
+                    wasDashPressed = true;
+                    if(dasher.doDash(dashX, dashY)) {
+                        currentState = playerState.dashing;
+                    }
                 }
+                wasDashPressed = isDashPressed;
                 mover.setMoveVal(Input.GetAxisRaw(GameManager.gameButtons.xMove));
                 mover.jump(Input.GetButton(GameManager.gameButtons.jump), 
                            Input.GetAxisRaw(GameManager.gameButtons.yMove) < -0.5f);
+                break;
+            case playerState.dashing:
+                dashX = Input.GetAxisRaw(GameManager.gameButtons.xDash);
+                dashY = Input.GetAxisRaw(GameManager.gameButtons.yDash);
+                if(dashX*dashX + dashY*dashY > 0.25f) {
+                    dasher.setDir(dashX, dashY);
+                }
                 break;
         }
     }
@@ -52,4 +65,9 @@ public class playerStateMachine : MonoBehaviour {
                 break;
         }
     }
+
+    void endDash() {
+        currentState = playerState.free;
+    }
+
 }

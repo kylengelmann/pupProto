@@ -7,6 +7,8 @@ public class Dash : MonoBehaviour {
     public dashSettings settings;
     [HideInInspector]public Player player;
     [HideInInspector]public playerStateMachine stateMachine;
+    public delegate void OnFinish();
+    public OnFinish onFinish;
 	// Use this for initialization
 	void Start () {
         player = gameObject.GetComponent<Player>();
@@ -28,37 +30,47 @@ public class Dash : MonoBehaviour {
         isDoneFreeze = true;
         player.velocity.x = 0f;
         player.velocity.y = -player.settings.gravity*Time.fixedDeltaTime;
-        stateMachine.currentState = playerStateMachine.playerState.free;
+        if(onFinish != null) {
+            onFinish();
+        }
         StartCoroutine("cooldownTimer");
     }
 
     Vector2 startPos;
     Vector2 dashDir;
-    public void doDash(Vector2 direction){
+    public bool doDash(float x, float y){
         if(isCooledDown){
-            stateMachine.currentState = playerStateMachine.playerState.dashing;
             startPos = transform.position;
             player.velocity = Vector2.zero;
             dashTime = 0f;
-            dS = 0f;
-            dashDir = direction;
+            totalDist = 0f;
+            dashDir.x = x;
+            dashDir.y = y;
+            dashDir.Normalize();
         }
+        return isCooledDown;
+
+    }
+
+    public void setDir(float x, float y) {
+        dashDir.x = x;
+        dashDir.y = y;
+        dashDir.Normalize();
     }
 
 
     float dashTime;
-    float dS;
+    float totalDist;
     public void doUpdate() {
         if(!isDoneFreeze) return;
-        if(dS > settings.dashDistance) {
+        if(totalDist > settings.dashDistance) {
             StartCoroutine("freezeTimer");
         }
         else {
-            //player.velocity = dashDir*(settings.dashVelocity*Mathf.Exp(settings.dashExp*dashTime));
-            //float dashT = anim.GetCurrentAnimatorStateInfo(animLayer).normalizedTime;
-            dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime));
-            //dS = settings.dashVelocity*dashTime;
-            player.controller.movePosition(dashDir*dS + startPos - (Vector2)transform.position);
+            float dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime));
+            Vector2 prevPos = transform.position;
+            player.controller.movePosition(dashDir*dS);
+            totalDist += dS;
             dashTime += Time.fixedDeltaTime;
         }
     }
