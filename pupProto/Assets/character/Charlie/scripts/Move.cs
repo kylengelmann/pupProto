@@ -2,18 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This component handles basic movements like walking and jumping. It only
+/// performs physics updates while isActive is set to true.
+/// </summary>
 public class Move : MonoBehaviour {
 
-	// Use this for initialization
     Player player;
-    public MoveSettings moveSettings;
+    public moveSettings settings;
+
+    /// <summary>
+    /// Is this component performing physics updates?
+    /// </summary>
+    [HideInInspector]public bool isActive = false;
+
 
 	void Start () {
         player = gameObject.GetComponent<Player>();
 	}
+
+
 	
     #region Input
+
+    /// <summary>
+    /// which controls how fast and in which direction the player moves 
+    /// and accelerates.
+    /// </summary>
     float moveVal;
+
+    /// <summary>
+    /// Sets the player's move value, which controls how fast and in which
+    /// direction the player moves and accelerates.
+    /// </summary>
+    /// <param name="val">What to set the move value to</param>
     public void setMoveVal(float val) 
     {
         if(val > 0f) {
@@ -32,16 +54,32 @@ public class Move : MonoBehaviour {
         moveVal = val;
     }
 
+    /// <summary>
+    /// The number of consecutive jumps the player has made in the air.
+    /// </summary>
     byte doneJumps;
+
+    /// <summary>
+    /// Is the jump button being held?
+    /// </summary>
     bool isJumping;
+
+    /// <summary>
+    /// Causes the player to jump and drop through one way platforms. Also
+    /// records information needed to make the jump height responsive.
+    /// </summary>
+    /// <returns>The jump.</returns>
+    /// <param name="isPressed">Whether or not the jump button is pressed.</param>
+    /// <param name="drop">If set to <c>true</c>, the player will drop through
+    /// one way platforms.</param>
     public void jump(bool isPressed, bool drop) {
         if(isPressed && !isJumping) {
-            if ((player.controller.grounded || player.airTime < moveSettings.coyoteTime) && (doneJumps == 0))
+            if ((player.controller.grounded || player.airTime < settings.coyoteTime) && (doneJumps == 0))
             {
                 if (!drop)
                 {
                     doneJumps = 1;
-                    player.velocity.y = moveSettings.jumpVelocity;
+                    player.velocity.y = settings.jumpVelocity;
                 }
                 else
                 {
@@ -51,7 +89,7 @@ public class Move : MonoBehaviour {
             else if (doneJumps < 2)
             {
                 ++doneJumps;
-                player.velocity.y = moveSettings.doubleJumpVelocity;
+                player.velocity.y = settings.doubleJumpVelocity;
             }
         }
         isJumping = isPressed;
@@ -61,52 +99,79 @@ public class Move : MonoBehaviour {
 
 
     #region Physics
+    /// <summary>
+    /// Sets the vertical velocity of the player while the player is in the
+    /// air. Changes strength of gravity based off of the state of the jump
+    /// button and whether or not the player is rising or falling.
+    /// </summary>
     public void setAirVel() {
         if (player.velocity.y > 0f)
         {
             if (!isJumping)
             {
-                player.velocity.y -= moveSettings.endJumpAcc * Time.fixedDeltaTime;
+                player.velocity.y -= settings.endJumpAcc * Time.fixedDeltaTime;
             }
             else
             {
-                player.velocity.y -= moveSettings.jumpAcc * Time.fixedDeltaTime;
+                player.velocity.y -= settings.jumpAcc * Time.fixedDeltaTime;
+                player.velocity.y = Mathf.Max(player.velocity.y, -settings.terminalVel);
             }
         }
         else {
-            player.velocity.y -= moveSettings.fallAcc * Time.fixedDeltaTime;
+            player.velocity.y -= settings.fallAcc * Time.fixedDeltaTime;
         }
     }
 
-
+    /// <summary>
+    /// Is the player changing directions?
+    /// </summary>
     bool isChangingDir;
-    public void doUpdate()
+
+
+    public void FixedUpdate()
     {
+        // If the component is not active, do not perform updates
+        if(!isActive) return;
+
+        // If the player has just hit the ground, reset doneJumps
         if(player.controller.grounded && !player.wasGrounded) {
             doneJumps = 0;
         }
+
+        // moveMod affects the acceleration of the player
+        // Set move mod depending on whether or not the player is grounded
         float moveMod = 1f;
         if(!player.controller.grounded) {
-            moveMod *= moveSettings.airControl;
+            moveMod *= settings.airControl;
         }
-        if(player.velocity.x*moveVal < 0f || isChangingDir){ //Switching direction
-            float dV = Mathf.Sign(moveVal)*moveSettings.directionSwitchAcceleration*moveMod*Time.fixedDeltaTime;
-            if(Mathf.Abs(player.velocity.x + dV) > Mathf.Abs(moveSettings.speed*moveVal)) {
-                player.velocity.x = moveSettings.speed*moveVal;
+
+        if(player.velocity.x*moveVal < 0f || isChangingDir){ //Switching directions
+            float dV = Mathf.Sign(moveVal)*settings.directionSwitchAcceleration*moveMod*Time.fixedDeltaTime;
+
+            // Check whether or not the player his reached their desired speed.
+            // If so, they are no longer switching directions, and we might as
+            // well prevent overcorrection while we're at it.
+            if(Mathf.Abs(player.velocity.x + dV) > Mathf.Abs(settings.speed*moveVal)) {
+                player.velocity.x = settings.speed*moveVal;
                 isChangingDir = false;
             }
             else {
                 player.velocity.x += dV;
             }
         }
-        else if(Mathf.Abs(player.velocity.x) < Mathf.Abs(moveSettings.speed*moveVal)) { //Speeding up
-            player.velocity.x += Mathf.Sign(moveVal)*moveSettings.groundAcceleration*moveMod*Time.fixedDeltaTime;
-            if(Mathf.Abs(player.velocity.x) > Mathf.Abs(moveSettings.speed*moveVal)){
-                player.velocity.x = moveSettings.speed*moveVal;
+        else if(Mathf.Abs(player.velocity.x) <= Mathf.Abs(settings.speed*moveVal)) { //Speeding up
+            
+            player.velocity.x += Mathf.Sign(moveVal)*settings.groundAcceleration*moveMod*Time.fixedDeltaTime;
+
+            // Cap the speed of the player
+            if(Mathf.Abs(player.velocity.x) > Mathf.Abs(settings.speed*moveVal)){
+                player.velocity.x = settings.speed*moveVal;
             }
         }
         else { //Slowing down
-            float dV = Mathf.Sign(player.velocity.x)*moveSettings.groundFriction*moveMod*Time.fixedDeltaTime;
+            float dV = Mathf.Sign(player.velocity.x)*settings.groundFriction*moveMod*Time.fixedDeltaTime;
+
+            // Prevent overcorrection
             if(Mathf.Abs(dV)>Mathf.Abs(player.velocity.x)){
                 player.velocity.x = 0f;
             }
@@ -123,7 +188,7 @@ public class Move : MonoBehaviour {
 
 
 [System.Serializable]
-public struct MoveSettings {
+public struct moveSettings {
     public float speed;
     public float groundAcceleration;
     public float directionSwitchAcceleration;

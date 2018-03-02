@@ -6,24 +6,43 @@ public class Dash : MonoBehaviour {
 
     public dashSettings settings;
     [HideInInspector]public Player player;
-    [HideInInspector]public playerStateMachine stateMachine;
+
+    /// <summary>
+    /// Is this component performing physics updates?
+    /// </summary>
+    [HideInInspector]public bool isActive = false;
+
+
     public delegate void OnFinish();
+
+    /// <summary>
+    /// What to do after the dash is complete.
+    /// </summary>
     public OnFinish onFinish;
-	// Use this for initialization
+
+
 	void Start () {
         player = gameObject.GetComponent<Player>();
-        stateMachine = gameObject.GetComponent<playerStateMachine>();
 	}
 	
-
+    /// <summary>
+    /// Has the cooldown period ended?
+    /// </summary>
     bool isCooledDown = true;
+
+    /// Resets isCooledDown
     IEnumerator cooldownTimer() {
         isCooledDown = false;
         yield return new WaitForSeconds(settings.dashCooldown);
         isCooledDown = true;
     }
 
+    /// <summary>
+    /// Has the freeze period ended?
+    /// </summary>
     bool isDoneFreeze = true;
+
+    /// Resets isDoneFreeze
     IEnumerator freezeTimer() {
         isDoneFreeze = false;
         yield return new WaitForSeconds(settings.dashFreeze);
@@ -36,11 +55,20 @@ public class Dash : MonoBehaviour {
         StartCoroutine("cooldownTimer");
     }
 
-    Vector2 startPos;
+    /// <summary>
+    /// The direction in which the player is dashing.
+    /// </summary>
     Vector2 dashDir;
+
+    /// <summary>
+    /// Causes the player to start dashing, and sets the initial direction to
+    /// dash in. Only available outside of the cooldown period
+    /// </summary>
+    /// <returns><c>true</c> if dash was done, <c>false</c> otherwise.</returns>
+    /// <param name="x">The x value for the dash direction.</param>
+    /// <param name="y">The y value for the dash direction.</param>
     public bool doDash(float x, float y){
         if(isCooledDown){
-            startPos = transform.position;
             player.velocity = Vector2.zero;
             dashTime = 0f;
             totalDist = 0f;
@@ -52,23 +80,31 @@ public class Dash : MonoBehaviour {
 
     }
 
+
+    /// <summary>
+    /// Sets the direction to dash in.
+    /// </summary>
+    /// <param name="x">The x value for the dash direction.</param>
+    /// <param name="y">The y value for the dash direction.</param>
     public void setDir(float x, float y) {
-        dashDir.x = x;
-        dashDir.y = y;
+        dashDir = Vector2.Lerp(dashDir, new Vector2(x, y), settings.dashDirChange);
         dashDir.Normalize();
+
+
     }
 
 
     float dashTime;
     float totalDist;
-    public void doUpdate() {
-        if(!isDoneFreeze) return;
+    public void FixedUpdate() {
+        if(!isActive || !isDoneFreeze) return;
         if(totalDist > settings.dashDistance) {
             StartCoroutine("freezeTimer");
         }
         else {
-            float dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime));
-            Vector2 prevPos = transform.position;
+            // Integrate over the dashing period to find displacement
+            float dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime)) - totalDist;
+            //Vector2 prevPos = transform.position;
             player.controller.movePosition(dashDir*dS);
             totalDist += dS;
             dashTime += Time.fixedDeltaTime;
@@ -83,4 +119,5 @@ public struct dashSettings {
     public float dashCooldown;
     public float dashFreeze;
     public float dashExp;
+    public float dashDirChange;
 }

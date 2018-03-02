@@ -1134,7 +1134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c35bd36b06a14c248c7bf816e3a4607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSettings:
+  settings:
     speed: 5.5
     groundAcceleration: 35
     directionSwitchAcceleration: 70
@@ -1147,6 +1147,7 @@ MonoBehaviour:
     terminalVel: 30
     airControl: 1
     coyoteTime: 0.05
+  isActive: 0
 --- !u!114 &956181802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1198,8 +1199,9 @@ MonoBehaviour:
     dashCooldown: 0.5
     dashFreeze: 0.1
     dashExp: -2.5
+    dashDirChange: 0.4
   player: {fileID: 0}
-  stateMachine: {fileID: 0}
+  isActive: 0
 --- !u!1 &1050440960
 GameObject:
   m_ObjectHideFlags: 0
