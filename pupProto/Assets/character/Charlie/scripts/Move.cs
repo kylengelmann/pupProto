@@ -78,7 +78,6 @@ public class Move : MonoBehaviour {
             {
                 if (!drop)
                 {
-                    doneJumps = 1;
                     player.velocity.y = settings.jumpVelocity;
                 }
                 else
@@ -86,7 +85,7 @@ public class Move : MonoBehaviour {
                     player.controller.dropThroughOneWay = true;
                 }
             }
-            else if (doneJumps < 2)
+            else if (doneJumps < 1)
             {
                 ++doneJumps;
                 player.velocity.y = settings.doubleJumpVelocity;
