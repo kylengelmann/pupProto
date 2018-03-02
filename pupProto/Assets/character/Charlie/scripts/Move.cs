@@ -134,7 +134,7 @@ public class Move : MonoBehaviour {
         if(!isActive) return;
 
         // If the player has just hit the ground, reset doneJumps
-        if(player.controller.grounded && !player.wasGrounded) {
+        if(player.controller.grounded) {
             doneJumps = 0;
         }
 
