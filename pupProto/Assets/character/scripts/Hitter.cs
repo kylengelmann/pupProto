@@ -25,7 +25,7 @@ public class Hitter : MonoBehaviour {
 		for(int i = 0; i < numHits; i++) {
 			Hittable h = results[i].gameObject.GetComponent<Hittable>();
 			if(h != null) {
-				h._onHit(this);
+                h.hitMe(force);
 				if(hitSomething != null) {
 					hitSomething(h);
 				}

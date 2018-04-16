@@ -44,7 +44,7 @@ public class Move : MonoBehaviour {
         }
         else if(val < 0f) {
             transform.localScale = new Vector3(-1f, 1f);
-            if(player.controller.grounded) {
+            if(player.isGrounded) {
                 player.anim.SetBool("walkin", true);
             }
         }
@@ -74,7 +74,7 @@ public class Move : MonoBehaviour {
     /// one way platforms.</param>
     public void jump(bool isPressed, bool drop) {
         if(isPressed && !isJumping) {
-            if ((player.controller.grounded || player.airTime < settings.coyoteTime) && (doneJumps == 0))
+            if ((player.isGrounded || player.airTime < settings.coyoteTime) && (doneJumps == 0))
             {
                 if (!drop)
                 {
@@ -134,14 +134,14 @@ public class Move : MonoBehaviour {
         if(!isActive) return;
 
         // If the player has just hit the ground, reset doneJumps
-        if(player.controller.grounded && !player.wasGrounded) {
+        if(player.isGrounded && !player.wasGrounded) {
             doneJumps = 0;
         }
 
         // moveMod affects the acceleration of the player
         // Set move mod depending on whether or not the player is grounded
         float moveMod = 1f;
-        if(!player.controller.grounded) {
+        if(!player.isGrounded) {
             moveMod *= settings.airControl;
         }
 
