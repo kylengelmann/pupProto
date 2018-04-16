@@ -6,6 +6,7 @@ public class playerStateMachine : MonoBehaviour {
 
     Move mover;
     Dash dasher;
+    Combo combo;
 
     public enum playerState {
         free,
@@ -19,6 +20,7 @@ public class playerStateMachine : MonoBehaviour {
         mover.isActive = true;
         dasher = gameObject.GetComponent<Dash>();
         dasher.onFinish = endDash;
+        combo = GetComponent<Combo>();
         camPos = Camera.main.transform.position;
     }
 
@@ -26,6 +28,9 @@ public class playerStateMachine : MonoBehaviour {
     bool wasDashPressed;
     void Update()
     {
+        if(Input.GetButtonDown(GameManager.gameButtons.attack)) {
+            combo.setAttack(Combo.AttackDir.none);
+        }
         camPos.x = transform.position.x;
         camPos.y = transform.position.y;
         Camera.main.transform.position = camPos;
