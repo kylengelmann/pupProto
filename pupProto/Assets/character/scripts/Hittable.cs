@@ -7,13 +7,13 @@ using UnityEngine;
 
 public class Hittable: MonoBehaviour{
 
-	public delegate void hitAction(Hitter hitter);
+	public delegate void hitAction(Vector2 force);
 
 	public hitAction onHit;
 
-	public void _onHit(Hitter hitter) {
-		if(onHit != null) {
-			onHit(hitter);
-		}
-	}
+    public void hitMe(Vector2 force){
+        if(onHit != null) {
+            onHit(force);
+        }
+    }
 }

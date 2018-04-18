@@ -15,15 +15,18 @@ public class Player : MonoBehaviour {
     public Vector2 airBoxOffset;
     public Vector2 airBoxSize;
 
+    physicsController2D.controllerHit hit;
+
 	void Start () {
         anim = gameObject.GetComponent<Animator>();
         controller = gameObject.GetComponent<physicsController2D>();
 	}
 
     [HideInInspector]public bool wasGrounded;
+    [HideInInspector]public bool isGrounded;
     [HideInInspector]public float airTime;
     void checkGrounded() {
-        if (controller.grounded) {
+        if (isGrounded) {
             anim.SetBool("jumpin", false);
             airTime = 0f;
             wasGrounded = true;
@@ -44,22 +47,22 @@ public class Player : MonoBehaviour {
     void FixedUpdate()
     {
         checkGrounded();
-        movingPlatform moving;
-        try
-        {
-            moving = controller.hit.y.transform.gameObject.GetComponent<movingPlatform>();
-        }
-        catch
-        {
-            moving = null;
-        }
-        if (moving != null)
-        {
-            Vector2 baseVel = moving.velocity;
-            controller.moveVelocity(ref baseVel, Time.fixedDeltaTime);
-        }
+        //movingPlatform moving;
+        //try
+        //{
+        //    moving = controller.hit.y.transform.gameObject.GetComponent<movingPlatform>();
+        //}
+        //catch
+        //{
+        //    moving = null;
+        //}
+        //if (moving != null)
+        //{
+        //    Vector2 baseVel = moving.velocity;
+        //    controller.moveVelocity(ref baseVel, Time.fixedDeltaTime);
+        //}
         controller.moveVelocity(ref velocity, Time.fixedDeltaTime);
-
+        isGrounded = controller.grounded;
         anim.SetFloat("fallin", velocity.y);
     }
 

@@ -56,13 +56,13 @@ public class sandbag : MonoBehaviour {
 		hittable.gameObject.SetActive(true);
 	}
 
-	public void onHit(Hitter hitter) {
+	public void onHit(Vector2 force) {
 //		if(!invincible) {
 		invincible = true;
 		hittable.gameObject.SetActive(false);
 		anim.SetTrigger("gotHit");
 		StartCoroutine("resetInvincible");
-		vel = hitter.force;
+		vel = force;
 //		}
 	}
 
