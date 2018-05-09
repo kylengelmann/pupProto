@@ -13,7 +13,6 @@ public class Kick : Attack {
 	}
 
     protected override void onStartAttack() {
-		Debug.Log("kick");
         anim.ResetTrigger("kickinTrig");
         anim.SetTrigger("kickinTrig");
     }

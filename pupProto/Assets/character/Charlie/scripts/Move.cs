@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class Move : MonoBehaviour {
 
-    Player player;
+    Character _character;
     public moveSettings settings;
 
     /// <summary>
@@ -18,7 +18,7 @@ public class Move : MonoBehaviour {
 
 
 	void Start () {
-        player = gameObject.GetComponent<Player>();
+        _character = gameObject.GetComponent<Character>();
 	}
 
 
@@ -40,16 +40,16 @@ public class Move : MonoBehaviour {
     {
         if(val > 0f) {
             transform.localScale = new Vector3(1f, 1f);
-            player.anim.SetBool("walkin", true);
+            _character.anim.SetBool("walkin", true);
         }
         else if(val < 0f) {
             transform.localScale = new Vector3(-1f, 1f);
-            if(player.isGrounded) {
-                player.anim.SetBool("walkin", true);
+            if(_character.isGrounded) {
+                _character.anim.SetBool("walkin", true);
             }
         }
         else {
-            player.anim.SetBool("walkin", false);
+            _character.anim.SetBool("walkin", false);
         }
         moveVal = val;
     }
@@ -74,22 +74,22 @@ public class Move : MonoBehaviour {
     /// one way platforms.</param>
     public void jump(bool isPressed, bool drop) {
         if(isPressed && !isJumping) {
-            if ((player.isGrounded || player.airTime < settings.coyoteTime) && (doneJumps == 0))
+            if ((_character.isGrounded || _character.airTime < settings.coyoteTime) && (doneJumps == 0))
             {
                 if (!drop)
                 {
                     doneJumps = 1;
-                    player.velocity.y = settings.jumpVelocity;
+                    _character.velocity.y = settings.jumpVelocity;
                 }
                 else
                 {
-                    player.controller.dropThroughOneWay = true;
+                    _character.controller.dropThroughOneWay = true;
                 }
             }
             else if (doneJumps < 2)
             {
                 ++doneJumps;
-                player.velocity.y = settings.doubleJumpVelocity;
+                _character.velocity.y = settings.doubleJumpVelocity;
             }
         }
         isJumping = isPressed;
@@ -105,20 +105,20 @@ public class Move : MonoBehaviour {
     /// button and whether or not the player is rising or falling.
     /// </summary>
     public void setAirVel() {
-        if (player.velocity.y > 0f)
+        if (_character.velocity.y > 0f)
         {
             if (!isJumping)
             {
-                player.velocity.y -= settings.endJumpAcc * Time.fixedDeltaTime;
+                _character.velocity.y -= settings.endJumpAcc * Time.fixedDeltaTime;
             }
             else
             {
-                player.velocity.y -= settings.jumpAcc * Time.fixedDeltaTime;
-                player.velocity.y = Mathf.Max(player.velocity.y, -settings.terminalVel);
+                _character.velocity.y -= settings.jumpAcc * Time.fixedDeltaTime;
+                _character.velocity.y = Mathf.Max(_character.velocity.y, -settings.terminalVel);
             }
         }
         else {
-            player.velocity.y -= settings.fallAcc * Time.fixedDeltaTime;
+            _character.velocity.y -= settings.fallAcc * Time.fixedDeltaTime;
         }
     }
 
@@ -134,53 +134,53 @@ public class Move : MonoBehaviour {
         if(!isActive) return;
 
         // If the player has just hit the ground, reset doneJumps
-        if(player.isGrounded && !player.wasGrounded) {
+        if(_character.isGrounded && !_character.wasGrounded) {
             doneJumps = 0;
         }
 
         // moveMod affects the acceleration of the player
         // Set move mod depending on whether or not the player is grounded
         float moveMod = 1f;
-        if(!player.isGrounded) {
+        if(!_character.isGrounded) {
             moveMod *= settings.airControl;
         }
 
-        if(player.velocity.x*moveVal < 0f || isChangingDir){ //Switching directions
+        if(_character.velocity.x*moveVal < 0f || isChangingDir){ //Switching directions
             float dV = Mathf.Sign(moveVal)*settings.directionSwitchAcceleration*moveMod*Time.fixedDeltaTime;
 
             // Check whether or not the player his reached their desired speed.
             // If so, they are no longer switching directions, and we might as
             // well prevent overcorrection while we're at it.
-            if(Mathf.Abs(player.velocity.x + dV) > Mathf.Abs(settings.speed*moveVal)) {
-                player.velocity.x = settings.speed*moveVal;
+            if(Mathf.Abs(_character.velocity.x + dV) > Mathf.Abs(settings.speed*moveVal)) {
+                _character.velocity.x = settings.speed*moveVal;
                 isChangingDir = false;
             }
             else {
-                player.velocity.x += dV;
+                _character.velocity.x += dV;
             }
         }
-        else if(Mathf.Abs(player.velocity.x) <= Mathf.Abs(settings.speed*moveVal)) { //Speeding up
+        else if(Mathf.Abs(_character.velocity.x) <= Mathf.Abs(settings.speed*moveVal)) { //Speeding up
             
-            player.velocity.x += Mathf.Sign(moveVal)*settings.groundAcceleration*moveMod*Time.fixedDeltaTime;
+            _character.velocity.x += Mathf.Sign(moveVal)*settings.groundAcceleration*moveMod*Time.fixedDeltaTime;
 
             // Cap the speed of the player
-            if(Mathf.Abs(player.velocity.x) > Mathf.Abs(settings.speed*moveVal)){
-                player.velocity.x = settings.speed*moveVal;
+            if(Mathf.Abs(_character.velocity.x) > Mathf.Abs(settings.speed*moveVal)){
+                _character.velocity.x = settings.speed*moveVal;
             }
         }
         else { //Slowing down
-            float dV = Mathf.Sign(player.velocity.x)*settings.groundFriction*moveMod*Time.fixedDeltaTime;
+            float dV = Mathf.Sign(_character.velocity.x)*settings.groundFriction*moveMod*Time.fixedDeltaTime;
 
             // Prevent overcorrection
-            if(Mathf.Abs(dV)>Mathf.Abs(player.velocity.x)){
-                player.velocity.x = 0f;
+            if(Mathf.Abs(dV)>Mathf.Abs(_character.velocity.x)){
+                _character.velocity.x = 0f;
             }
             else {
-                player.velocity.x -= dV;
+                _character.velocity.x -= dV;
             }
         }
 
-        player.anim.SetFloat("walkSpeed", Mathf.Abs(moveVal));
+        _character.anim.SetFloat("walkSpeed", Mathf.Abs(moveVal));
         setAirVel();
     }
     #endregion

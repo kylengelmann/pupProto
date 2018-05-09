@@ -45,7 +45,7 @@ public class sandbag : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D other) {
 		if(!invincible && other.gameObject.layer == LayerMask.NameToLayer("Player")) {
-			vel.x += velocityTransfer*(other.gameObject.GetComponent<Player>().velocity.x - vel.x);
+			vel.x += velocityTransfer*(other.gameObject.GetComponent<Character>().velocity.x - vel.x);
 		}
 	}
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(physicsController2D))]
-public class Player : MonoBehaviour {
+public class Character : MonoBehaviour {
 
     [HideInInspector]public Animator anim;
     [HideInInspector]public physicsController2D controller;

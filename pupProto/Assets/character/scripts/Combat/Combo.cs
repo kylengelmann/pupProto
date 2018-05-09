@@ -2,91 +2,62 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Combo : MonoBehaviour {
-
-	public StateMachine stateMachine;
-
-	public enum AttackDir {
-		empty,
-		none,
-		up,
-		down,
-		left,
-		right
+public class Combo : MonoBehaviour {
+	
+	public Dictionary<AttackType, Attack> attacks = new Dictionary<AttackType, Attack>();
+	
+	public enum AttackType {
+		empty = 0,
+		normal = 1,
+		up = 2,
+		down = 3,
+		left = 4,
+		right = 5
 	}
 
-
-	AttackDir queuedAttack;
+	AttackType queuedAttack;
     Attack currentAttack;
+	int attacksDone;
 
-
-
-	protected virtual void Start ()
+	private void Start()
 	{
-		stateMachine = new StateMachine();
-		stateMachine.setValue("queued", queuedAttack);
+		attacks.Add(AttackType.normal, GetComponent<Kick>());
 	}
 
 	void Update () {
-        if(queuedAttack != AttackDir.empty) {
+        if(queuedAttack != AttackType.empty) {
             if(currentAttack == null || currentAttack.state >= Attack.attackState.canStartNext) {
 				if(currentAttack != null) {
 					if(currentAttack.state != Attack.attackState.done) {
 						currentAttack.endAttack();
 					}
-					stateMachine.setValue("queued", queuedAttack);
-					stateMachine.Tick();
 				}
-				currentAttack = ((AttackNode)stateMachine.currentNode).attack;
-                queuedAttack = AttackDir.empty;
+				currentAttack = attacks[queuedAttack];
+                queuedAttack = AttackType.empty;
                 currentAttack.startAttack();
+	            attacksDone ++;
             }
         }
 		else if(currentAttack != null) {
 			if(currentAttack.state == Attack.attackState.done) {
-				stateMachine.setValue("queued", AttackDir.empty);
-				stateMachine.setValue("reset", true);
-				stateMachine.Tick();
-				stateMachine.setValue("reset", false);
+				attacksDone = 0;
 				currentAttack = null;
 			}
 		}
 	}
 
-    public void setAttack(AttackDir attackDir) {
+    public void setAttack(AttackType attackType) {
+	    Debug.Log(attacksDone);
+	    if(attacksDone == 3) return;
 		if(currentAttack == null) {
-			if(queuedAttack == AttackDir.empty) {
-				queuedAttack = attackDir;
-				return;
+			if(queuedAttack == AttackType.empty) {
+				queuedAttack = attackType;
 			}
 		}
 		else {
-			if(currentAttack.state >= Attack.attackState.canRecordNext && queuedAttack == AttackDir.empty) {
-				queuedAttack = attackDir;
+			if(currentAttack.state >= Attack.attackState.canRecordNext && queuedAttack == AttackType.empty) {
+				queuedAttack = attackType;
 			}
 		}
     }
-}
-
-
-public class AttackNode : StateNode {
-	static int num = 0;
-	int myNum;
-	public Attack attack;
-
-	public AttackNode(Attack attack) {
-		myNum = num;
-		++num;
-		this.attack = attack;
-	}
-
-	//public override void onEnter ()
-	//{
-	//	Debug.Log("Hello from " + myNum.ToString());
-	//}
-
-	//public override void onExit ()
-	//{
-	//	Debug.Log("Goodbye from " + myNum.ToString());
-	//}
 }

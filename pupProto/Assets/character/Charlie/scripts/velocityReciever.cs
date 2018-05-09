@@ -4,16 +4,16 @@ using UnityEngine;
 
 [RequireComponent(typeof(physicsController2D))]
 public class velocityReciever : MonoBehaviour {
-    Vector2 __vel;
-    bool wasSet;
+    Vector2 _vel;
+//    bool wasSet;
     public Vector2 velocity {
         get {
-            return __vel;
+            return _vel;
         }
         set {
-            wasSet = true;
-            __vel = value;
-            pCtrl.moveVelocity(ref __vel, Time.fixedDeltaTime);
+//            wasSet = true;
+            _vel = value;
+            pCtrl.moveVelocity(ref _vel, Time.fixedDeltaTime);
         }
     }
     physicsController2D pCtrl;
@@ -22,13 +22,13 @@ public class velocityReciever : MonoBehaviour {
         pCtrl = gameObject.GetComponent<physicsController2D>();
 	}
 
-	void FixedUpdate()
-	{
-        //Debug.Log(wasSet);
-        //if(wasSet) {
-        //    pCtrl.moveVelocity(ref __vel, Time.fixedDeltaTime);
-        //}
-        //__vel = Vector2.zero;
-        wasSet = false;
-	}
+//	void FixedUpdate()
+//	{
+//        //Debug.Log(wasSet);
+//        //if(wasSet) {
+//        //    pCtrl.moveVelocity(ref __vel, Time.fixedDeltaTime);
+//        //}
+//        //__vel = Vector2.zero;
+//        wasSet = false;
+//	}
 }

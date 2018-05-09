@@ -29,11 +29,8 @@ public class playerStateMachine : MonoBehaviour {
     void Update()
     {
         if(Input.GetButtonDown(GameManager.gameButtons.attack)) {
-            combo.setAttack(Combo.AttackDir.none);
+            combo.setAttack(Combo.AttackType.normal);
         }
-        camPos.x = transform.position.x;
-        camPos.y = transform.position.y;
-        Camera.main.transform.position = camPos;
         switch(currentState) {
             case playerState.free:
                 float dashX = Input.GetAxisRaw(GameManager.gameButtons.xDash);

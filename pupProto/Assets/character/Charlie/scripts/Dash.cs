@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dash : MonoBehaviour {
 
     public dashSettings settings;
-    [HideInInspector]public Player player;
+    [HideInInspector]public Character Character;
 
     /// <summary>
     /// Is this component performing physics updates?
@@ -22,7 +22,7 @@ public class Dash : MonoBehaviour {
 
 
 	void Start () {
-        player = gameObject.GetComponent<Player>();
+        Character = gameObject.GetComponent<Character>();
 	}
 	
     /// <summary>
@@ -47,8 +47,8 @@ public class Dash : MonoBehaviour {
         isDoneFreeze = false;
         yield return new WaitForSeconds(settings.dashFreeze);
         isDoneFreeze = true;
-        player.velocity.x = 0f;
-        player.velocity.y = -player.settings.gravity*Time.fixedDeltaTime;
+        Character.velocity.x = 0f;
+        Character.velocity.y = -Character.settings.gravity*Time.fixedDeltaTime;
         if(onFinish != null) {
             onFinish();
         }
@@ -69,7 +69,7 @@ public class Dash : MonoBehaviour {
     /// <param name="y">The y value for the dash direction.</param>
     public bool doDash(float x, float y){
         if(isCooledDown){
-            player.velocity = Vector2.zero;
+            Character.velocity = Vector2.zero;
             dashTime = 0f;
             totalDist = 0f;
             dashDir.x = x;
@@ -105,7 +105,7 @@ public class Dash : MonoBehaviour {
             // Integrate over the dashing period to find displacement
             float dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime)) - totalDist;
             //Vector2 prevPos = transform.position;
-            player.controller.movePosition(dashDir*dS);
+            Character.controller.movePosition(dashDir*dS);
             totalDist += dS;
             dashTime += Time.fixedDeltaTime;
         }

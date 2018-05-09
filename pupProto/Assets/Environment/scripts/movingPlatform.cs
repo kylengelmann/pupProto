@@ -31,17 +31,10 @@ public class movingPlatform : MonoBehaviour
 
 	float timeWaited = 0f;
 	void FixedUpdate () {
-        Vector2 center = box.offset;
-        center.y += (box.size.y * transform.lossyScale.y + moveHeight)/2f + transform.position.y;
-        center.x += transform.position.x;
-
-        int numOn = Physics2D.OverlapBoxNonAlloc(center, box.size, 0f, colliders);
-        for(int i = 0; i < numOn; ++i) {
-            velocityReciever velRec;
-            if(velRec = colliders[i].gameObject.GetComponent<velocityReciever>()) {
-                velRec.velocity = __vel;
-            }
-        }
+		
+		Vector2 center = box.offset;
+		center.y += (box.size.y * transform.lossyScale.y + moveHeight)/2f + transform.position.y;
+		center.x += transform.position.x;
 
 		if (timeWaited < waitTime)
 		{
@@ -65,6 +58,15 @@ public class movingPlatform : MonoBehaviour
 			}
 			if (progress <= 0f || progress >= 1f) timeWaited = 0f;
 			transform.position = Vector3.Lerp(startPoint.position, endPoint.position, progress);
+		}
+		
+
+		int numOn = Physics2D.OverlapBoxNonAlloc(center, box.size, 0f, colliders);
+		for(int i = 0; i < numOn; ++i) {
+			velocityReciever velRec;
+			if(velRec = colliders[i].gameObject.GetComponent<velocityReciever>()) {
+				velRec.velocity = __vel;
+			}
 		}
 	}
 }
