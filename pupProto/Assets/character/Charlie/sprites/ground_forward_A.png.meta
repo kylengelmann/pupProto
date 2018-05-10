@@ -1,14 +1,15 @@
 fileFormatVersion: 2
-guid: bba56438460eb41eda9e67f7354c1750
-timeCreated: 1501629337
+guid: ae2aadc839e03cf4a94fb0d585fac772
+timeCreated: 1520983729
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: dash_0
-    21300002: dash_1
-    21300004: dash_2
-    21300006: dash_3
-    21300008: dash_4
+    21300000: ground_forward_A_0
+    21300002: ground_forward_A_1
+    21300004: ground_forward_A_2
+    21300006: ground_forward_A_3
+    21300008: ground_forward_A_4
+    21300010: ground_forward_A_5
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -85,13 +86,27 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dash_0
+      name: ground_forward_A_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 17
+        y: 8
+        width: 65
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ground_forward_A_1
+      rect:
+        serializedVersion: 2
+        x: 114
         y: 8
         width: 57
-        height: 49
+        height: 60
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -99,13 +114,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_1
+      name: ground_forward_A_2
       rect:
         serializedVersion: 2
-        x: 100
+        x: 212
         y: 8
-        width: 51
-        height: 50
+        width: 52
+        height: 61
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -113,13 +128,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_2
+      name: ground_forward_A_3
       rect:
         serializedVersion: 2
-        x: 209
+        x: 313
         y: 8
-        width: 37
-        height: 46
+        width: 39
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,13 +142,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_3
+      name: ground_forward_A_4
       rect:
         serializedVersion: 2
-        x: 306
+        x: 410
         y: 8
-        width: 36
-        height: 46
+        width: 28
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,13 +156,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_4
+      name: ground_forward_A_5
       rect:
         serializedVersion: 2
-        x: 401
+        x: 509
         y: 8
-        width: 37
-        height: 46
+        width: 20
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -1,14 +1,15 @@
 fileFormatVersion: 2
-guid: bba56438460eb41eda9e67f7354c1750
-timeCreated: 1501629337
+guid: 4197bacbe5335c349b74beb9f9bee050
+timeCreated: 1520983728
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: dash_0
-    21300002: dash_1
-    21300004: dash_2
-    21300006: dash_3
-    21300008: dash_4
+    21300000: air_upward_A_0
+    21300002: air_upward_A_1
+    21300004: air_upward_A_2
+    21300006: air_upward_A_3
+    21300008: air_upward_A_4
+    21300010: air_upward_A_5
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -85,13 +86,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dash_0
+      name: air_upward_A_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 8
-        width: 57
-        height: 49
+        x: 15
+        y: 15
+        width: 47
+        height: 57
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -99,13 +100,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_1
+      name: air_upward_A_1
       rect:
         serializedVersion: 2
-        x: 100
-        y: 8
-        width: 51
-        height: 50
+        x: 112
+        y: 20
+        width: 45
+        height: 51
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -113,13 +114,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_2
+      name: air_upward_A_2
       rect:
         serializedVersion: 2
-        x: 209
-        y: 8
-        width: 37
-        height: 46
+        x: 208
+        y: 21
+        width: 49
+        height: 43
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,13 +128,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_3
+      name: air_upward_A_3
       rect:
         serializedVersion: 2
-        x: 306
-        y: 8
-        width: 36
-        height: 46
+        x: 247
+        y: 56
+        width: 6
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,13 +142,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dash_4
+      name: air_upward_A_4
       rect:
         serializedVersion: 2
-        x: 401
-        y: 8
-        width: 37
-        height: 46
+        x: 316
+        y: 18
+        width: 35
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: air_upward_A_5
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 9
+        width: 26
+        height: 61
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

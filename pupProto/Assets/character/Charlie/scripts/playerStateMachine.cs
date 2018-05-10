@@ -46,7 +46,10 @@ public class playerStateMachine : MonoBehaviour {
                 }
                 wasDashPressed = isDashPressed;
                 float yMove = Input.GetAxisRaw(GameManager.gameButtons.yMove);
+                //yMove = Mathf.Abs(yMove) > 0.1f ? yMove : 0f;
                 float xMove = Input.GetAxisRaw(GameManager.gameButtons.xMove);
+                //print(xMove);
+                //xMove = Mathf.Abs(xMove) > .8f ? xMove : 0f;
                 if(1.5f*Mathf.Abs(xMove) > Mathf.Abs(yMove)) {
                     mover.setMoveVal(xMove);
                     mover.jump(Input.GetButton(GameManager.gameButtons.jump), false);
