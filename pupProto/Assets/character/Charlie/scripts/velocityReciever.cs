@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(physicsController2D))]
 public class velocityReciever : MonoBehaviour {
     Vector2 _vel;
 //    bool wasSet;
@@ -17,18 +16,30 @@ public class velocityReciever : MonoBehaviour {
         }
     }
     physicsController2D pCtrl;
+    Character character;
 
 	void Start () {
-        pCtrl = gameObject.GetComponent<physicsController2D>();
-	}
+        //pCtrl = gameObject.GetComponent<physicsController2D>();
+        character = transform.parent.GetComponent<Character>();
+        pCtrl = character.GetComponent<physicsController2D>();
+    }
 
-//	void FixedUpdate()
-//	{
-//        //Debug.Log(wasSet);
-//        //if(wasSet) {
-//        //    pCtrl.moveVelocity(ref __vel, Time.fixedDeltaTime);
-//        //}
-//        //__vel = Vector2.zero;
-//        wasSet = false;
-//	}
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        velocityGiver velGive = other.GetComponent<velocityGiver>();
+        if(velGive != null)
+        {
+            velGive.addReciever(this);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        velocityGiver velGive = other.GetComponent<velocityGiver>();
+        if(velGive != null)
+        {
+            velGive.removeReciever(this);
+            character.velocity += _vel;
+        }
+    }
 }

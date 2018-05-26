@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(velocityGiver))]
 public class movingPlatform : MonoBehaviour
 {
 	public Transform startPoint;
@@ -15,6 +16,7 @@ public class movingPlatform : MonoBehaviour
     BoxCollider2D box;
     Collider2D[] colliders;
     public float moveHeight = .2f;
+    velocityGiver velGiver;
 
 
 	public Vector2 velocity
@@ -26,15 +28,16 @@ public class movingPlatform : MonoBehaviour
 	{
         box = gameObject.GetComponent<BoxCollider2D>();
         colliders = new Collider2D[8];
+        velGiver = GetComponent<velocityGiver>();
 	}
 
 
 	float timeWaited = 0f;
 	void FixedUpdate () {
 		
-		Vector2 center = box.offset;
-		center.y += (box.size.y * transform.lossyScale.y + moveHeight)/2f + transform.position.y;
-		center.x += transform.position.x;
+		//Vector2 center = box.offset;
+		//center.y += (box.size.y * transform.lossyScale.y + moveHeight)/2f + transform.position.y;
+		//center.x += transform.position.x;
 
 		if (timeWaited < waitTime)
 		{
@@ -59,14 +62,16 @@ public class movingPlatform : MonoBehaviour
 			if (progress <= 0f || progress >= 1f) timeWaited = 0f;
 			transform.position = Vector3.Lerp(startPoint.position, endPoint.position, progress);
 		}
-		
 
-		int numOn = Physics2D.OverlapBoxNonAlloc(center, box.size, 0f, colliders);
-		for(int i = 0; i < numOn; ++i) {
-			velocityReciever velRec;
-			if(velRec = colliders[i].gameObject.GetComponent<velocityReciever>()) {
-				velRec.velocity = __vel;
-			}
-		}
+
+        velGiver.velocity = __vel;
+
+		//int numOn = Physics2D.OverlapBoxNonAlloc(center, box.size, 0f, colliders);
+		//for(int i = 0; i < numOn; ++i) {
+		//	velocityReciever velRec;
+		//	if(velRec = colliders[i].gameObject.GetComponent<velocityReciever>()) {
+		//		velRec.velocity = __vel;
+		//	}
+		//}
 	}
 }
