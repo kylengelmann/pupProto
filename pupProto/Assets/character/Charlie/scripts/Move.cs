@@ -96,8 +96,6 @@ public class Move : MonoBehaviour {
     }
     #endregion
 
-
-
     #region Physics
     /// <summary>
     /// Sets the vertical velocity of the player while the player is in the
@@ -134,7 +132,7 @@ public class Move : MonoBehaviour {
         if(!isActive) return;
 
         // If the player has just hit the ground, reset doneJumps
-        if(_character.isGrounded && !_character.wasGrounded) {
+        if(_character.isGrounded) {
             doneJumps = 0;
         }
 
