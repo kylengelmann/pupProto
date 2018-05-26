@@ -1,20 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.Experimental.PlayerLoop;
 
 public class CameraController : MonoBehaviour
 {
     public float lookAhead;
-    public float moveTreshold;
+    public float moveTresholdX;
+    public float moveTresholdY;
     public Character Character;
     public float stiffness;
     public float focalStiffness;
+    public float restartTime;
 
     private Material _mat;
-
-    private bool lerping;
 
     public enum Mode
     {
@@ -32,6 +30,7 @@ public class CameraController : MonoBehaviour
         _mat = new Material(Shader.Find("Debug/Vertex Color"));
         _mat.color = Color.white;
         goalFocal = Vector2.one * .5f;
+        focus = Character.transform.position;
     }
 
     Vector2 goalFocal;
@@ -40,35 +39,88 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 playerPos = cam.WorldToViewportPoint(Character.transform.position);
+        moveX();
+        moveY();
+        updateTimer(Time.fixedDeltaTime);
+    }
 
-        if (!lerping)
+    bool followX;
+    bool followY;
+    void moveY()
+    {
+        if (Mathf.Abs(.5f - cam.WorldToViewportPoint(Character.transform.position).y) > moveTresholdY)
         {
-            if (Mathf.Abs(playerPos.x - .5f) > moveTreshold)
+            followY = true;
+        }
+        if(Character.isGrounded)
+        {
+            followY = false;
+        }
+        if (followY || Character.isGrounded)
+        {
+            cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, Character.transform.position.y, stiffness * Time.fixedDeltaTime), cam.transform.position.z);
+        }
+
+    }
+
+    void moveX()
+    {
+        if(!followX)
+        {
+            if( Mathf.Abs(cam.WorldToViewportPoint(focus).x - cam.WorldToViewportPoint(Character.transform.position).x) > moveTresholdX)
             {
-                lerping = true;
+                followX = true;
+                resetLookAhead();
+            } 
+        }
+        else
+        {
+            if(Mathf.Approximately(Character.velocity.x, 0f) && timer < 0f)
+            {
+                followX = false;
             }
-        }
-        else if (Character.velocity.sqrMagnitude < 0.1f)
-        {
-            lerping = false;
-        }
-
-        if (lerping)
-        {
             focus.x = Character.transform.position.x;
         }
 
-        goalFocal.x = .5f - (lerping ? lookAhead * Character.velocity.x : 0f);
-        focalPoint.x = Mathf.Lerp(focalPoint.x, goalFocal.x, focalStiffness * Time.deltaTime);
+        goalFocal.x = .5f - getLookAhead(followX ? Character.velocity.x : 0f);
+        focalPoint.x = Mathf.Lerp(focalPoint.x, goalFocal.x, focalStiffness * Time.fixedDeltaTime);
+        float focalCamDiff = cam.transform.position.x - cam.ViewportToWorldPoint(focalPoint).x;
+        float camX = Mathf.Lerp(cam.transform.position.x, focus.x + focalCamDiff, stiffness * Time.fixedDeltaTime);
 
-        Vector3 camPos = cam.transform.position;
-        Vector2 focalWorld = cam.ViewportToWorldPoint(focalPoint);
-        camPos -= (Vector3) focalWorld;
-        focalWorld.x = Mathf.Lerp(focalWorld.x, focus.x, stiffness * Time.deltaTime);
+        cam.transform.position = new Vector3(camX, transform.position.y, transform.position.z);
 
-        cam.transform.position = camPos + (Vector3) focalWorld;
+
     }
+
+    float maxVel;
+    float timer;
+    float getLookAhead(float vel)
+    {
+        if(timer <= 0f || Mathf.Abs(maxVel) - Mathf.Abs(vel) < .1f || 
+            (Mathf.Sign(maxVel) != Mathf.Sign(vel) && Mathf.Abs(vel) > .1f))
+        {
+            maxVel = vel;
+            timer = restartTime;
+        }
+
+        return lookAhead * maxVel;
+    }
+
+    void resetLookAhead()
+    {
+        timer = 0f;
+    }
+
+    void updateTimer(float dt)
+    {
+        if(timer > 0f)
+        {
+            timer -= dt;
+        }
+    }
+
+    
+
 
     public bool DEBUG = true;
 
@@ -92,10 +144,16 @@ public class CameraController : MonoBehaviour
         GL.LoadOrtho();
         GL.Begin(GL.LINES);
         GL.Color(Color.magenta);
-        drawPos(focalPoint.x - moveTreshold, 1f);
-        drawPos(focalPoint.x - moveTreshold, -1f);
-        drawPos(focalPoint.x + moveTreshold, 1f);
-        drawPos(focalPoint.x + moveTreshold, -1f);
+        drawPos(focalPoint.x - moveTresholdX, 1f);
+        drawPos(focalPoint.x - moveTresholdX, -1f);
+        drawPos(focalPoint.x + moveTresholdX, 1f);
+        drawPos(focalPoint.x + moveTresholdX, -1f);
+
+        drawPos(1f, .5f - moveTresholdY);
+        drawPos(-1f, .5f - moveTresholdY);
+        drawPos(1f, .5f + moveTresholdY);
+        drawPos(-1f, .5f + moveTresholdY);
+
         GL.End();
         GL.PopMatrix();
     }

@@ -1183,7 +1183,7 @@ MonoBehaviour:
     dashCooldown: 0.5
     dashFreeze: 0.1
     dashExp: 2.5
-    dashDirChange: 0.2
+    dashDirChange: 0.4
   Character: {fileID: 0}
   isActive: 0
 --- !u!114 &956181805
@@ -1563,10 +1563,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookAhead: 0.025
-  moveTreshold: 0.02
+  moveTresholdX: 0.02
+  moveTresholdY: 0.2
   Character: {fileID: 956181803}
-  stiffness: 8
+  stiffness: 6
   focalStiffness: 4
+  restartTime: 1
   DEBUG: 0
 --- !u!1 &1136181222
 GameObject:
