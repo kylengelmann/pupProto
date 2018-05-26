@@ -150,7 +150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4910005752685534, guid: 6826cee72a5c4470c947caefe7e5956a, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6826cee72a5c4470c947caefe7e5956a, type: 2}
@@ -251,7 +251,7 @@ Transform:
   m_Children:
   - {fileID: 783974542}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &266667891
 MonoBehaviour:
@@ -380,7 +380,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &403477944
 GameObject:
@@ -422,7 +422,7 @@ Transform:
   - {fileID: 1136181223}
   - {fileID: 542499557}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &542499556
 GameObject:
@@ -867,7 +867,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &956181795
 Animator:
   serializedVersion: 3
@@ -1311,7 +1311,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1050440960
 GameObject:
@@ -1393,7 +1393,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1131475188
 GameObject:
@@ -1475,7 +1475,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1131475193
 MonoBehaviour:
@@ -1491,12 +1491,12 @@ MonoBehaviour:
   lookAhead: 0.025
   moveTresholdX: 0.02
   moveTresholdY: 0.1
-  yOffset: 0
-  Character: {fileID: 956181803}
-  stiffness: 10
-  focalStiffness: 5
+  yOffset: 0.1
+  Character: {fileID: 1244861885}
+  stiffness: 5
+  focalStiffness: 4
   restartTime: 1
-  DEBUG: 1
+  DEBUG: 0
 --- !u!1 &1136181222
 GameObject:
   m_ObjectHideFlags: 0
@@ -4251,13 +4251,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1244861875}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.63, y: -1.75, z: -0.001953125}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.5869999, y: -1.7990001, z: -0.001953125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1603058233}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1244861879
 MonoBehaviour:
@@ -4271,18 +4271,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    speed: 0
-    groundAcceleration: 0
-    directionSwitchAcceleration: 0
-    groundFriction: 0
-    jumpVelocity: 0
-    doubleJumpVelocity: 0
-    jumpAcc: 0
-    endJumpAcc: 0
-    fallAcc: 0
-    terminalVel: 0
-    airControl: 0
-    coyoteTime: 0
+    speed: 5.5
+    groundAcceleration: 35
+    directionSwitchAcceleration: 80
+    groundFriction: 50
+    jumpVelocity: 15
+    doubleJumpVelocity: 11
+    jumpAcc: 45
+    endJumpAcc: 125
+    fallAcc: 30
+    terminalVel: 30
+    airControl: 1
+    coyoteTime: 0.05
   isActive: 0
 --- !u!114 &1244861880
 MonoBehaviour:
@@ -4319,12 +4319,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    dashVelocity: 0
-    dashDistance: 0
-    dashCooldown: 0
-    dashFreeze: 0
-    dashExp: 0
-    dashDirChange: 0
+    dashVelocity: 30
+    dashDistance: 5
+    dashCooldown: 0.5
+    dashFreeze: 0.1
+    dashExp: 2.5
+    dashDirChange: 0.4
   Character: {fileID: 0}
   isActive: 0
 --- !u!114 &1244861883
@@ -4359,7 +4359,7 @@ MonoBehaviour:
     maxNormalAngle: 0
   oneWayPlatform:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   dropThroughOneWay: 0
   grounded: 0
   box: {fileID: 0}
@@ -4376,7 +4376,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.21566004, y: -0.2635846}
+  m_Offset: {x: -0, y: -0.2635846}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -4456,9 +4456,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   attackForce: {x: 0, y: 0}
-  timeCanRecordNext: 0
-  timeCanStartNext: 0
-  hitArea: {fileID: 0}
+  timeCanRecordNext: 0.5
+  timeCanStartNext: 0.65
+  hitArea: {fileID: 1603058234}
   filter:
     useTriggers: 0
     useLayerMask: 0
@@ -4485,13 +4485,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  attackForce: {x: 0, y: 0}
-  timeCanRecordNext: 0
-  timeCanStartNext: 0
-  hitArea: {fileID: 0}
+  attackForce: {x: 1, y: 1}
+  timeCanRecordNext: 0.1
+  timeCanStartNext: 0.5
+  hitArea: {fileID: 1603058234}
   filter:
     useTriggers: 0
-    useLayerMask: 0
+    useLayerMask: 1
     useDepth: 0
     useOutsideDepth: 0
     useNormalAngle: 0
@@ -4544,7 +4544,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1603058232
 GameObject:
@@ -4581,7 +4581,7 @@ PolygonCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1603058232}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
