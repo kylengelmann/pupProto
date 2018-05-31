@@ -25,10 +25,7 @@ public class Move : MonoBehaviour {
 	
     #region Input
 
-    /// <summary>
-    /// which controls how fast and in which direction the player moves 
-    /// and accelerates.
-    /// </summary>
+
     float moveVal;
 
     /// <summary>
@@ -54,14 +51,7 @@ public class Move : MonoBehaviour {
         moveVal = val;
     }
 
-    /// <summary>
-    /// The number of consecutive jumps the player has made in the air.
-    /// </summary>
-    byte doneJumps;
-
-    /// <summary>
-    /// Is the jump button being held?
-    /// </summary>
+    [HideInInspector] public byte doneJumps;
     bool isJumping;
 
     /// <summary>
@@ -97,12 +87,9 @@ public class Move : MonoBehaviour {
     #endregion
 
     #region Physics
-    /// <summary>
-    /// Sets the vertical velocity of the player while the player is in the
-    /// air. Changes strength of gravity based off of the state of the jump
-    /// button and whether or not the player is rising or falling.
-    /// </summary>
-    public void setAirVel() {
+
+
+    void setAirVel() {
         if (_character.velocity.y > 0f)
         {
             if (!isJumping)
@@ -120,9 +107,6 @@ public class Move : MonoBehaviour {
         }
     }
 
-    /// <summary>
-    /// Is the player changing directions?
-    /// </summary>
     bool isChangingDir;
 
 
@@ -132,9 +116,9 @@ public class Move : MonoBehaviour {
         if(!isActive) return;
 
         // If the player has just hit the ground, reset doneJumps
-        if(_character.isGrounded) {
-            doneJumps = 0;
-        }
+        //if(_character.isGrounded) {
+        //    doneJumps = 0;
+        //}
 
         // moveMod affects the acceleration of the player
         // Set move mod depending on whether or not the player is grounded
@@ -143,13 +127,13 @@ public class Move : MonoBehaviour {
             moveMod *= settings.airControl;
         }
 
-        if(_character.velocity.x*moveVal < 0f || isChangingDir){ //Switching directions
+        if(_character.velocity.x*moveVal < 0f || isChangingDir) { //Switching directions
             float dV = Mathf.Sign(moveVal)*settings.directionSwitchAcceleration*moveMod*Time.fixedDeltaTime;
 
             // Check whether or not the player his reached their desired speed.
             // If so, they are no longer switching directions, and we might as
             // well prevent overcorrection while we're at it.
-            if(Mathf.Abs(_character.velocity.x + dV) > Mathf.Abs(settings.speed*moveVal)) {
+            if(Mathf.Sign(moveVal)*Mathf.Sign(_character.velocity.x) > 0f && Mathf.Abs(_character.velocity.x + dV) > Mathf.Abs(settings.speed*moveVal)) {
                 _character.velocity.x = settings.speed*moveVal;
                 isChangingDir = false;
             }
@@ -162,7 +146,7 @@ public class Move : MonoBehaviour {
             _character.velocity.x += Mathf.Sign(moveVal)*settings.groundAcceleration*moveMod*Time.fixedDeltaTime;
 
             // Cap the speed of the player
-            if(Mathf.Abs(_character.velocity.x) > Mathf.Abs(settings.speed*moveVal)){
+            if( Mathf.Abs(_character.velocity.x) > Mathf.Abs(settings.speed*moveVal)) {
                 _character.velocity.x = settings.speed*moveVal;
             }
         }
@@ -170,7 +154,7 @@ public class Move : MonoBehaviour {
             float dV = Mathf.Sign(_character.velocity.x)*settings.groundFriction*moveMod*Time.fixedDeltaTime;
 
             // Prevent overcorrection
-            if(Mathf.Abs(dV)>Mathf.Abs(_character.velocity.x)){
+            if(Mathf.Abs(dV) > Mathf.Abs(_character.velocity.x)){
                 _character.velocity.x = 0f;
             }
             else {
@@ -178,6 +162,10 @@ public class Move : MonoBehaviour {
             }
         }
 
+        if(_character.isGrounded)
+        {
+            doneJumps = 0;
+        }
         _character.anim.SetFloat("walkSpeed", Mathf.Abs(moveVal));
         setAirVel();
     }

@@ -127,7 +127,12 @@ public class CameraController : MonoBehaviour
     float timer;
     float getLookAhead(float vel)
     {
-        if(timer <= 0f || Mathf.Abs(maxVel) - Mathf.Abs(vel) < .1f || 
+
+        Move move = Character.GetComponent<Move>();
+
+        vel = Mathf.Clamp(vel, -move.settings.speed, move.settings.speed);
+
+        if (timer <= 0f || Mathf.Abs(maxVel) - Mathf.Abs(vel) < .1f || 
             (Mathf.Sign(maxVel) != Mathf.Sign(vel) && Mathf.Abs(vel) > .1f))
         {
             maxVel = vel;

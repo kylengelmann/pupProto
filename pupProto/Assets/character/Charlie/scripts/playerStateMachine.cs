@@ -7,6 +7,8 @@ public class playerStateMachine : MonoBehaviour {
     Move mover;
     Dash dasher;
     Combo combo;
+    WallSlide wall;
+    Character character;
 
     public enum playerState {
         free,
@@ -21,16 +23,18 @@ public class playerStateMachine : MonoBehaviour {
         dasher = gameObject.GetComponent<Dash>();
         dasher.onFinish = endDash;
         combo = GetComponent<Combo>();
-        camPos = Camera.main.transform.position;
+        wall = GetComponent<WallSlide>();
+        character = GetComponent<Character>();
     }
 
-    Vector3 camPos;
     bool wasDashPressed;
+    bool wasJumpPressed;
     void Update()
     {
         if(Input.GetButtonDown(GameManager.gameButtons.attack)) {
             combo.setAttack(Combo.AttackType.normal);
         }
+
         switch(currentState) {
             case playerState.free:
                 float dashX = Input.GetAxisRaw(GameManager.gameButtons.xDash);
@@ -50,14 +54,25 @@ public class playerStateMachine : MonoBehaviour {
                 float xMove = Input.GetAxisRaw(GameManager.gameButtons.xMove);
                 //print(xMove);
                 //xMove = Mathf.Abs(xMove) > .8f ? xMove : 0f;
-                if(1.5f*Mathf.Abs(xMove) > Mathf.Abs(yMove)) {
+                
+                bool jumping = Input.GetButton(GameManager.gameButtons.jump);
+
+                if (1.5f * Mathf.Abs(xMove) > Mathf.Abs(yMove))
+                {
                     mover.setMoveVal(xMove);
-                    mover.jump(Input.GetButton(GameManager.gameButtons.jump), false);
+                    mover.jump(jumping, false);
                 }
-                else {
+                else
+                {
                     mover.setMoveVal(0f);
-                    mover.jump(Input.GetButton(GameManager.gameButtons.jump), yMove < -0.5f);
+                    mover.jump(jumping, yMove < -0.5f);
                 }
+
+                if(wall.wallJump(jumping))
+                {
+                    mover.doneJumps = 1;
+                }
+
                 break;
             case playerState.dashing:
                 dashX = Input.GetAxisRaw(GameManager.gameButtons.xDash);

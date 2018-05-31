@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(velocityGiver))]
 public class movingPlatform : MonoBehaviour
 {
@@ -13,8 +10,6 @@ public class movingPlatform : MonoBehaviour
 	[HideInInspector] public float progress = 0f;
 	[HideInInspector] public bool reverse = true;
     Vector2 __vel = Vector2.zero;
-    BoxCollider2D box;
-    Collider2D[] colliders;
     public float moveHeight = .2f;
     velocityGiver velGiver;
 
@@ -26,18 +21,12 @@ public class movingPlatform : MonoBehaviour
 
 	void Start()
 	{
-        box = gameObject.GetComponent<BoxCollider2D>();
-        colliders = new Collider2D[8];
         velGiver = GetComponent<velocityGiver>();
 	}
 
 
 	float timeWaited = 0f;
 	void FixedUpdate () {
-		
-		//Vector2 center = box.offset;
-		//center.y += (box.size.y * transform.lossyScale.y + moveHeight)/2f + transform.position.y;
-		//center.x += transform.position.x;
 
 		if (timeWaited < waitTime)
 		{
@@ -65,13 +54,5 @@ public class movingPlatform : MonoBehaviour
 
 
         velGiver.velocity = __vel;
-
-		//int numOn = Physics2D.OverlapBoxNonAlloc(center, box.size, 0f, colliders);
-		//for(int i = 0; i < numOn; ++i) {
-		//	velocityReciever velRec;
-		//	if(velRec = colliders[i].gameObject.GetComponent<velocityReciever>()) {
-		//		velRec.velocity = __vel;
-		//	}
-		//}
 	}
 }

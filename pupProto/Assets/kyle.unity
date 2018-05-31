@@ -934,6 +934,7 @@ GameObject:
   - component: {fileID: 956181806}
   - component: {fileID: 956181808}
   - component: {fileID: 956181807}
+  - component: {fileID: 956181805}
   m_Layer: 8
   m_Name: charlie
   m_TagString: Untagged
@@ -1131,6 +1132,7 @@ MonoBehaviour:
     airControl: 1
     coyoteTime: 0.05
   isActive: 0
+  doneJumps: 0
 --- !u!114 &956181802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1186,6 +1188,25 @@ MonoBehaviour:
     dashDirChange: 0.4
   Character: {fileID: 0}
   isActive: 0
+--- !u!114 &956181805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 956181794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d896a05985f3544dbfab6b5bed88e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onWall: 0
+  friction: 20
+  terminalVel: 10
+  maxDist: 0.15
+  jumpVel: {x: 15, y: 15}
+  walls:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &956181806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1571,6 +1592,7 @@ MonoBehaviour:
   stiffness: 6
   focalStiffness: 4
   restartTime: 1.5
+  maxLookahead: 5
   DEBUG: 0
 --- !u!1 &1136181222
 GameObject:
