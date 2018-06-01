@@ -861,13 +861,14 @@ GameObject:
   - component: {fileID: 956181806}
   - component: {fileID: 956181808}
   - component: {fileID: 956181807}
+  - component: {fileID: 956181809}
   m_Layer: 8
   m_Name: charlie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &956181795
 Animator:
   serializedVersion: 3
@@ -1057,6 +1058,7 @@ MonoBehaviour:
     airControl: 1
     coyoteTime: 0.05
   isActive: 0
+  doneJumps: 0
 --- !u!114 &956181802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1194,6 +1196,25 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+--- !u!114 &956181809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 956181794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d896a05985f3544dbfab6b5bed88e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onWall: 0
+  friction: 20
+  terminalVel: 10
+  maxDist: 0.1
+  jumpVel: {x: 10, y: 10}
+  walls:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &969382731
 GameObject:
   m_ObjectHideFlags: 0
@@ -4175,6 +4196,7 @@ GameObject:
   - component: {fileID: 1244861889}
   - component: {fileID: 1244861888}
   - component: {fileID: 1244861887}
+  - component: {fileID: 1244861890}
   m_Layer: 0
   m_Name: pup
   m_TagString: Untagged
@@ -4284,6 +4306,7 @@ MonoBehaviour:
     airControl: 1
     coyoteTime: 0.05
   isActive: 0
+  doneJumps: 0
 --- !u!114 &1244861880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4379,7 +4402,7 @@ BoxCollider2D:
   m_Offset: {x: -0, y: -0.2635846}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.4368231, y: 0.5026741}
     oldSize: {x: 3.6, y: 2.7}
     newSize: {x: 3.6, y: 2.7}
     adaptiveTilingThreshold: 0.5
@@ -4503,6 +4526,25 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+--- !u!114 &1244861890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1244861875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d896a05985f3544dbfab6b5bed88e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onWall: 0
+  friction: 20
+  terminalVel: 10
+  maxDist: 0.5
+  jumpVel: {x: 10, y: 10}
+  walls:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1598100056
 GameObject:
   m_ObjectHideFlags: 0
