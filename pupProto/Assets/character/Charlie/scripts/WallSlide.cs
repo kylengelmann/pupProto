@@ -26,6 +26,7 @@ public class WallSlide : MonoBehaviour {
 
     void FixedUpdate () {
         onWall = checkOnWall();
+        character.anim.SetBool("onWall", onWall);
         if(!onWall)
         {
             return;
