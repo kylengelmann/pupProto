@@ -868,7 +868,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &956181795
 Animator:
   serializedVersion: 3
@@ -4197,7 +4197,7 @@ GameObject:
   - component: {fileID: 1244861888}
   - component: {fileID: 1244861887}
   - component: {fileID: 1244861890}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4540,8 +4540,8 @@ MonoBehaviour:
   onWall: 0
   friction: 20
   terminalVel: 10
-  maxDist: 0.5
-  jumpVel: {x: 10, y: 10}
+  maxDist: 0.15
+  jumpVel: {x: 15, y: 15}
   walls:
     serializedVersion: 2
     m_Bits: 1
@@ -4597,7 +4597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1603058233}
   - component: {fileID: 1603058234}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
