@@ -4538,8 +4538,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onWall: 0
-  friction: 20
-  terminalVel: 10
+  friction: 25
+  terminalVel: 6.5
   maxDist: 0.15
   jumpVel: {x: 15, y: 15}
   walls:
