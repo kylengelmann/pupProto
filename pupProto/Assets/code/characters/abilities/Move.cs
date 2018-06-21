@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 /// <summary>
@@ -49,63 +48,13 @@ public class Move : MonoBehaviour {
             _character.anim.SetBool("walkin", false);
         }
         moveVal = val;
+
+        _character.events.move.onMove.Invoke(moveVal);
     }
 
-    [HideInInspector] public byte doneJumps;
-    bool isJumping;
-
-    /// <summary>
-    /// Causes the player to jump and drop through one way platforms. Also
-    /// records information needed to make the jump height responsive.
-    /// </summary>
-    /// <returns>The jump.</returns>
-    /// <param name="isPressed">Whether or not the jump button is pressed.</param>
-    /// <param name="drop">If set to <c>true</c>, the player will drop through
-    /// one way platforms.</param>
-    public void jump(bool isPressed, bool drop) {
-        if(isPressed && !isJumping) {
-            if ((_character.isGrounded || _character.airTime < settings.coyoteTime) && (doneJumps == 0))
-            {
-                if (!drop)
-                {
-                    doneJumps = 1;
-                    _character.velocity.y = settings.jumpVelocity;
-                }
-                else
-                {
-                    _character.controller.dropThroughOneWay = true;
-                }
-            }
-            else if (doneJumps < 2)
-            {
-                ++doneJumps;
-                _character.velocity.y = settings.doubleJumpVelocity;
-            }
-        }
-        isJumping = isPressed;
-    }
     #endregion
 
     #region Physics
-
-
-    void setAirVel() {
-        if (_character.velocity.y > 0f)
-        {
-            if (!isJumping)
-            {
-                _character.velocity.y -= settings.endJumpAcc * Time.fixedDeltaTime;
-            }
-            else
-            {
-                _character.velocity.y -= settings.jumpAcc * Time.fixedDeltaTime;
-                _character.velocity.y = Mathf.Max(_character.velocity.y, -settings.terminalVel);
-            }
-        }
-        else {
-            _character.velocity.y -= settings.fallAcc * Time.fixedDeltaTime;
-        }
-    }
 
     bool isChangingDir;
 
@@ -161,19 +110,13 @@ public class Move : MonoBehaviour {
                 _character.velocity.x -= dV;
             }
         }
-
-        if(_character.isGrounded)
-        {
-            doneJumps = 0;
-        }
         _character.anim.SetFloat("walkSpeed", Mathf.Abs(moveVal));
-        setAirVel();
     }
     #endregion
 }
 
 
-[System.Serializable]
+[Serializable]
 public struct moveSettings {
     public float speed;
     public float groundAcceleration;
@@ -188,4 +131,9 @@ public struct moveSettings {
     public float terminalVel;
     public float airControl;
     public float coyoteTime;
+}
+
+public class moveEvents
+{
+    public safeAction<float> onMove = new safeAction<float>();
 }

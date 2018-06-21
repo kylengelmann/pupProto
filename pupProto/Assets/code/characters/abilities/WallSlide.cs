@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class WallSlide : MonoBehaviour {
@@ -24,14 +23,19 @@ public class WallSlide : MonoBehaviour {
         character = GetComponent<Character>();
     }
 
+    bool wasOnWall;
     void FixedUpdate () {
         onWall = checkOnWall();
         character.anim.SetBool("onWall", onWall);
         if(!onWall)
         {
-            return;
+            if(wasOnWall) character.events.wall.onWallOff.Invoke();
         }
-        applyFriction(Time.fixedDeltaTime);
+        else
+        {
+            if(!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
+            applyFriction(Time.fixedDeltaTime);
+        }   
     }
 
 
@@ -101,10 +105,21 @@ public class WallSlide : MonoBehaviour {
         {
             character.velocity.y = jumpVel.y;
             character.velocity.x = onRightWall ? -jumpVel.x : jumpVel.x;
+
+            character.events.wall.onWallJump.Invoke();
         }
 
         isJumping = isPressed;
 
         return res;
     }
+}
+
+
+
+public class wallEvents
+{
+    public safeAction<bool> onWallSlide = new safeAction<bool>();
+    public safeAction onWallOff = new safeAction();
+    public safeAction onWallJump = new safeAction();
 }

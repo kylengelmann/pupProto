@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(physicsController2D))]
@@ -15,20 +13,27 @@ public class Character : MonoBehaviour {
     public Vector2 airBoxOffset;
     public Vector2 airBoxSize;
 
-    physicsController2D.controllerHit hit;
+    public characterEventHandler events = new characterEventHandler();
+
+    public physicsController2D.controllerHit hit;
 
 	void Start () {
         anim = gameObject.GetComponent<Animator>();
         controller = gameObject.GetComponent<physicsController2D>();
 	}
 
-    [HideInInspector]public bool wasGrounded;
+    bool wasGrounded;
     [HideInInspector]public bool isGrounded;
     [HideInInspector]public float airTime;
     void checkGrounded() {
+        isGrounded = controller.grounded;
         if (isGrounded) {
             anim.SetBool("jumpin", false);
             airTime = 0f;
+            if (!wasGrounded)
+            {
+                events.character.onGrounded.Invoke();
+            }
             wasGrounded = true;
         }
         else {
@@ -46,23 +51,10 @@ public class Character : MonoBehaviour {
 
     void FixedUpdate()
     {
-        checkGrounded();
-        //movingPlatform moving;
-        //try
-        //{
-        //    moving = controller.hit.y.transform.gameObject.GetComponent<movingPlatform>();
-        //}
-        //catch
-        //{
-        //    moving = null;
-        //}
-        //if (moving != null)
-        //{
-        //    Vector2 baseVel = moving.velocity;
-        //    controller.moveVelocity(ref baseVel, Time.fixedDeltaTime);
-        //}
         controller.moveVelocity(ref velocity, Time.fixedDeltaTime);
-        isGrounded = controller.grounded;
+        hit = controller.hit;
+        events.character.onPositionUpdate.Invoke();
+        checkGrounded();
         anim.SetFloat("fallin", velocity.y);
     }
 
@@ -71,4 +63,10 @@ public class Character : MonoBehaviour {
 [System.Serializable]
 public struct playerSettings {
     public float gravity;
+}
+
+public class characterEvents
+{
+    public safeAction onGrounded = new safeAction();
+    public safeAction onPositionUpdate = new safeAction();
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Dash : MonoBehaviour {
 
@@ -52,6 +53,7 @@ public class Dash : MonoBehaviour {
         if(onFinish != null) {
             onFinish();
         }
+        Character.events.dash.onDashEnd.Invoke();
         StartCoroutine("cooldownTimer");
     }
 
@@ -75,6 +77,7 @@ public class Dash : MonoBehaviour {
             dashDir.x = x;
             dashDir.y = y;
             dashDir.Normalize();
+            Character.events.dash.onDashUpdate.Invoke(x, y);
         }
         return isCooledDown;
 
@@ -112,7 +115,7 @@ public class Dash : MonoBehaviour {
     }
 }
 
-[System.Serializable]
+[Serializable]
 public struct dashSettings {
     public float dashVelocity;
     public float dashDistance;
@@ -120,4 +123,11 @@ public struct dashSettings {
     public float dashFreeze;
     public float dashExp;
     public float dashDirChange;
+}
+
+public class dashEvents
+{
+    public safeAction onDashStart = new safeAction();
+    public safeAction<float, float> onDashUpdate = new safeAction<float, float>();
+    public safeAction onDashEnd = new safeAction();
 }

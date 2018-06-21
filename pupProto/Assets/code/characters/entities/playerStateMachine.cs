@@ -8,6 +8,7 @@ public class playerStateMachine : MonoBehaviour {
     Dash dasher;
     Combo combo;
     WallSlide wall;
+    Jump jumper;
     Character character;
 
     public enum playerState {
@@ -18,13 +19,16 @@ public class playerStateMachine : MonoBehaviour {
     [HideInInspector]public playerState currentState = playerState.free;
 
     void Start() {
+        character = GetComponent<Character>();
         mover = gameObject.GetComponent<Move>();
         mover.isActive = true;
         dasher = gameObject.GetComponent<Dash>();
-        dasher.onFinish = endDash;
+        //dasher.onFinish = endDash;
+        character.events.dash.onDashEnd += endDash;
         combo = GetComponent<Combo>();
         wall = GetComponent<WallSlide>();
-        character = GetComponent<Character>();
+        jumper = GetComponent<Jump>();
+        
     }
 
     bool wasDashPressed;
@@ -60,18 +64,19 @@ public class playerStateMachine : MonoBehaviour {
                 if (1.5f * Mathf.Abs(xMove) > Mathf.Abs(yMove))
                 {
                     mover.setMoveVal(xMove);
-                    mover.jump(jumping, false);
+                    jumper.jump(jumping, false);
                 }
                 else
                 {
                     mover.setMoveVal(0f);
-                    mover.jump(jumping, yMove < -0.5f);
+                    jumper.jump(jumping, yMove < -0.5f);
                 }
 
-                if(wall.wallJump(jumping))
-                {
-                    mover.doneJumps = 1;
-                }
+                wall.wallJump(jumping);
+                //if(wall.wallJump(jumping))
+                //{
+                //    jumper.doneJumps = 1;
+                //}
 
                 break;
             case playerState.dashing:

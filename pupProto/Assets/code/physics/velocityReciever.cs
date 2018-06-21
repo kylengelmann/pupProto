@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class velocityReciever : MonoBehaviour {
     Vector2 _vel;
@@ -10,36 +8,35 @@ public class velocityReciever : MonoBehaviour {
             return _vel;
         }
         set {
-//            wasSet = true;
             _vel = value;
-            pCtrl.moveVelocity(ref _vel, Time.fixedDeltaTime);
+            character.controller.moveVelocity(ref _vel, Time.fixedDeltaTime);
         }
     }
-    physicsController2D pCtrl;
     Character character;
 
 	void Start () {
-        //pCtrl = gameObject.GetComponent<physicsController2D>();
-        character = transform.parent.GetComponent<Character>();
-        pCtrl = character.GetComponent<physicsController2D>();
+        character = transform.GetComponent<Character>();
+        character.events.character.onPositionUpdate += onPositionUpdate;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    velocityGiver velGive;
+    void onPositionUpdate()
     {
-        velocityGiver velGive = other.GetComponent<velocityGiver>();
-        if(velGive != null)
+        if(character.hit.y.collider == null)
         {
-            velGive.addReciever(this);
+            return;
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        velocityGiver velGive = other.GetComponent<velocityGiver>();
-        if(velGive != null)
+        velocityGiver vg = character.hit.y.collider.GetComponent<velocityGiver>();
+        if(vg != null && velGive == null)
+        {
+            vg.addReciever(this);
+        }
+        else if(vg == null && velGive != null)
         {
             velGive.removeReciever(this);
-            character.velocity += _vel;
+            character.velocity = _vel;
         }
+        velGive = vg;
     }
+
 }
