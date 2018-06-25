@@ -5,7 +5,7 @@ public class hittableCharacter : MonoBehaviour, IHittable
     Character character;
     void Start()
     {
-        character = GetComponent<Character>();
+        character = transform.parent.GetComponent<Character>();
     }
 
     public void Hit(attackData attackData)

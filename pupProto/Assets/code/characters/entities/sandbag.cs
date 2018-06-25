@@ -12,11 +12,14 @@ public class sandbag : MonoBehaviour {
 	public Animator anim;
 	[HideInInspector] public bool invincible = false;
 	[HideInInspector] public hittableCharacter hittable;
+	Character character;
 
 	void Start () {
 		controller = gameObject.GetComponent<physicsController2D>();
+		character = GetComponent<Character>();
 		vel = Vector2.zero;
 		hittable = gameObject.GetComponentInChildren<hittableCharacter>();
+		character.events.combat.onGotHit += onHit;
 	}
 
 	void FixedUpdate () {
@@ -35,7 +38,10 @@ public class sandbag : MonoBehaviour {
 				vel.x = 0f;
 			}
 		}
-		controller.moveVelocity(ref vel, Time.fixedDeltaTime);
+		
+		character.velocity = vel;
+		
+//		controller.moveVelocity(ref vel, Time.fixedDeltaTime);
 
 		anim.SetBool("doneMoving", vel.sqrMagnitude > Mathf.Epsilon*10f);
 
@@ -55,13 +61,13 @@ public class sandbag : MonoBehaviour {
 		hittable.gameObject.SetActive(true);
 	}
 
-	public void onHit(Vector2 force) {
+	public void onHit(attackData attack) {
 //		if(!invincible) {
 		invincible = true;
 		hittable.gameObject.SetActive(false);
 		anim.SetTrigger("gotHit");
 		StartCoroutine("resetInvincible");
-		vel = force;
+		vel = attack.attackForce;
 //		}
 	}
 

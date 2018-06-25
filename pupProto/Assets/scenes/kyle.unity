@@ -169,13 +169,14 @@ GameObject:
   - component: {fileID: 266667891}
   - component: {fileID: 266667893}
   - component: {fileID: 266667894}
-  m_Layer: 9
+  - component: {fileID: 266667895}
+  m_Layer: 0
   m_Name: sandbag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &266667888
 Animator:
   serializedVersion: 3
@@ -285,7 +286,7 @@ MonoBehaviour:
     maxNormalAngle: 0
   oneWayPlatform:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   dropThroughOneWay: 0
   grounded: 0
   box: {fileID: 0}
@@ -354,6 +355,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &266667895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 266667887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3f9c5d693f647549a19bbe0f821540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  controller: {fileID: 0}
+  velocity: {x: 0, y: 0}
+  settings:
+    gravity: 0
+  isGrounded: 0
+  airTime: 0
 --- !u!1 &358997185
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +491,7 @@ Prefab:
     - target: {fileID: 114587888157078876, guid: d23ebc60317a2504da2722b9a7af9108,
         type: 2}
       propertyPath: affectedLayers.useLayerMask
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114587888157078876, guid: d23ebc60317a2504da2722b9a7af9108,
         type: 2}
@@ -496,6 +515,16 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114587888157078876, guid: d23ebc60317a2504da2722b9a7af9108,
+        type: 2}
+      propertyPath: hitArea
+      value: 
+      objectReference: {fileID: 508756107}
+    - target: {fileID: 114587888157078876, guid: d23ebc60317a2504da2722b9a7af9108,
+        type: 2}
+      propertyPath: affectedLayers.layerMask.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114833049592859906, guid: d23ebc60317a2504da2722b9a7af9108, type: 2}
     - {fileID: 114668695164624548, guid: d23ebc60317a2504da2722b9a7af9108, type: 2}
@@ -513,7 +542,7 @@ BoxCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 508756105}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -548,23 +577,9 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 508756106}
-    m_ColliderPaths:
-    - - X: 5000000
-        Y: 5000000
-      - X: -5000000
-        Y: 5000000
-      - X: -5000000
-        Y: -5000000
-      - X: 5000000
-        Y: -5000000
+  m_ColliderPaths: []
   m_CompositePaths:
-    m_Paths:
-    - - {x: 0.5, y: 0.5}
-      - {x: -0.5, y: 0.5}
-      - {x: -0.5, y: -0.5}
-      - {x: 0.5, y: -0.5}
+    m_Paths: []
   m_VertexDistance: 0.0005
 --- !u!50 &508756108
 Rigidbody2D:

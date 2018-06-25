@@ -91,6 +91,7 @@ public class combatSystem : MonoBehaviour {
 	
 	public void startAttack()
 	{
+		hitArea.enabled = true;
 		currentAttack = queuedAttack;
 		queuedAttack = attackType.none;
 		state = attackState.busy;
@@ -110,6 +111,7 @@ public class combatSystem : MonoBehaviour {
 	
 	public void endAttack()
 	{
+		hitArea.enabled = false;
 		state = attackState.done;
 		character.events.combat.onFinishAttack.Invoke(currentAttack);
 		if(attacksDone == moveSet.comboLength)

@@ -8,10 +8,6 @@ public class Character : MonoBehaviour {
     [HideInInspector]public physicsController2D controller;
     [HideInInspector]public Vector2 velocity;
     [HideInInspector]public playerSettings settings;
-    public Vector2 groundBoxOffset;
-    public Vector2 groundBoxSize;
-    public Vector2 airBoxOffset;
-    public Vector2 airBoxSize;
 
     public characterEventHandler events = new characterEventHandler();
 
@@ -28,7 +24,7 @@ public class Character : MonoBehaviour {
     void checkGrounded() {
         isGrounded = controller.grounded;
         if (isGrounded) {
-            anim.SetBool("jumpin", false);
+//            anim.SetBool("jumpin", false);
             airTime = 0f;
             if (!wasGrounded)
             {

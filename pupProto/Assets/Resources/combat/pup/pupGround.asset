@@ -14,7 +14,7 @@ MonoBehaviour:
   attackSetList:
   - neutral:
       enabled: 1
-      attackForce: {x: 0, y: 0}
+      attackForce: {x: 5, y: 5}
     side:
       enabled: 1
       attackForce: {x: 0, y: 0}
@@ -29,7 +29,7 @@ MonoBehaviour:
       attackForce: {x: 0, y: 0}
   - neutral:
       enabled: 1
-      attackForce: {x: 0, y: 0}
+      attackForce: {x: 5, y: 5}
     side:
       enabled: 1
       attackForce: {x: 0, y: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
       attackForce: {x: 0, y: 0}
   - neutral:
       enabled: 1
-      attackForce: {x: 0, y: 0}
+      attackForce: {x: 5, y: 5}
     side:
       enabled: 1
       attackForce: {x: 0, y: 0}
