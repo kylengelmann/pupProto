@@ -107,6 +107,4 @@ public struct jumpSettings
 public class jumpEvents
 {
     public safeAction onJump = new safeAction();
-
-    
 }

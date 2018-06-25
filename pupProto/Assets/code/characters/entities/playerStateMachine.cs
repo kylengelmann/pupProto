@@ -6,7 +6,7 @@ public class playerStateMachine : MonoBehaviour {
 
     Move mover;
     Dash dasher;
-    Combo combo;
+    combatSystem combatSystem;
     WallSlide wall;
     Jump jumper;
     Character character;
@@ -25,7 +25,7 @@ public class playerStateMachine : MonoBehaviour {
         dasher = gameObject.GetComponent<Dash>();
         //dasher.onFinish = endDash;
         character.events.dash.onDashEnd += endDash;
-        combo = GetComponent<Combo>();
+        combatSystem = GetComponent<combatSystem>();
         wall = GetComponent<WallSlide>();
         jumper = GetComponent<Jump>();
         
@@ -36,7 +36,7 @@ public class playerStateMachine : MonoBehaviour {
     void Update()
     {
         if(Input.GetButtonDown(GameManager.gameButtons.attack)) {
-            combo.setAttack(Combo.AttackType.normal);
+            combatSystem.setAttack(combatSystem.attackType.nuetral);
         }
 
         switch(currentState) {

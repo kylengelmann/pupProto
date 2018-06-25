@@ -1,20 +1,12 @@
 ﻿using System;
 
 public class characterEventHandler {
-    public moveEvents move;
-    public dashEvents dash;
-    public wallEvents wall;
-    public jumpEvents jump;
-    public characterEvents character;
-
-    public characterEventHandler()
-    {
-        move = new moveEvents();
-        dash = new dashEvents();
-        wall = new wallEvents();
-        jump = new jumpEvents();
-        character = new characterEvents();
-    }
+    public moveEvents move = new moveEvents();
+    public dashEvents dash = new dashEvents();
+    public wallEvents wall = new wallEvents();
+    public jumpEvents jump = new jumpEvents();
+    public characterEvents character = new characterEvents();
+    public combatEvents combat = new combatEvents();
 }
 
 

@@ -39,13 +39,12 @@ public class Character : MonoBehaviour {
         else {
             if(wasGrounded){
                 airTime = 0f;
+                events.character.onLeaveGround.Invoke();
             }
             else {
                 airTime += Time.fixedDeltaTime;
             }
             wasGrounded = false;
-            anim.SetBool("jumpin", true);
-            anim.SetBool("walkin", false);
         }
     }
 
@@ -55,7 +54,6 @@ public class Character : MonoBehaviour {
         hit = controller.hit;
         events.character.onPositionUpdate.Invoke();
         checkGrounded();
-        anim.SetFloat("fallin", velocity.y);
     }
 
 }
@@ -68,5 +66,6 @@ public struct playerSettings {
 public class characterEvents
 {
     public safeAction onGrounded = new safeAction();
+    public safeAction onLeaveGround = new safeAction();
     public safeAction onPositionUpdate = new safeAction();
 }

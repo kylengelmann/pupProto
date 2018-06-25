@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33b68071e2944a3d82630366cac0818, type: 3}
+  m_Name: pupGround
+  m_EditorClassIdentifier: 
+  attackSetList:
+  - neutral:
+      enabled: 1
+      attackForce: {x: 0, y: 0}
+    side:
+      enabled: 1
+      attackForce: {x: 0, y: 0}
+    up:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+    down:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+    special:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+  - neutral:
+      enabled: 1
+      attackForce: {x: 0, y: 0}
+    side:
+      enabled: 1
+      attackForce: {x: 0, y: 0}
+    up:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+    down:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+    special:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+  - neutral:
+      enabled: 1
+      attackForce: {x: 0, y: 0}
+    side:
+      enabled: 1
+      attackForce: {x: 0, y: 0}
+    up:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+    down:
+      enabled: 0
+      attackForce: {x: 0, y: 0}
+    special:
+      enabled: 0
+      attackForce: {x: 0, y: 0}

@@ -11,13 +11,12 @@ public class sandbag : MonoBehaviour {
 	public float timeInvincible = .2f;
 	public Animator anim;
 	[HideInInspector] public bool invincible = false;
-	[HideInInspector] public Hittable hittable;
+	[HideInInspector] public hittableCharacter hittable;
 
 	void Start () {
 		controller = gameObject.GetComponent<physicsController2D>();
 		vel = Vector2.zero;
-		hittable = gameObject.GetComponentInChildren<Hittable>();
-		hittable.onHit = onHit;
+		hittable = gameObject.GetComponentInChildren<hittableCharacter>();
 	}
 
 	void FixedUpdate () {

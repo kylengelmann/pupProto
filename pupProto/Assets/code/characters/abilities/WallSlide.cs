@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-public class WallSlide : MonoBehaviour {
-
+public class WallSlide : MonoBehaviour
+{
     [HideInInspector] public bool onWall;
     public float friction = 20f;
     public float terminalVel = 10f;
@@ -24,18 +24,20 @@ public class WallSlide : MonoBehaviour {
     }
 
     bool wasOnWall;
-    void FixedUpdate () {
+
+    void FixedUpdate()
+    {
         onWall = checkOnWall();
         character.anim.SetBool("onWall", onWall);
-        if(!onWall)
+        if (!onWall)
         {
-            if(wasOnWall) character.events.wall.onWallOff.Invoke();
+            if (wasOnWall) character.events.wall.onWallOff.Invoke();
         }
         else
         {
-            if(!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
+            if (!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
             applyFriction(Time.fixedDeltaTime);
-        }   
+        }
     }
 
 
@@ -75,17 +77,18 @@ public class WallSlide : MonoBehaviour {
             onRightWall = false;
             return true;
         }
+
         return false;
     }
 
     void applyFriction(float dt)
     {
-        if(character.velocity.y >= 0f)
+        if (character.velocity.y >= 0f)
         {
             return;
         }
 
-        character.velocity.y += friction*dt;
+        character.velocity.y += friction * dt;
         character.velocity.y = Mathf.Clamp(character.velocity.y, -terminalVel, 0f);
     }
 
@@ -94,14 +97,9 @@ public class WallSlide : MonoBehaviour {
 
     public bool wallJump(bool isPressed)
     {
-        bool res = false;
-        if(onWall && !character.isGrounded)
-        {
-            res = true;
-        }
+        bool res = onWall && !character.isGrounded;
 
-
-        if(isPressed && !isJumping && res)
+        if (isPressed && !isJumping && res)
         {
             character.velocity.y = jumpVel.y;
             character.velocity.x = onRightWall ? -jumpVel.x : jumpVel.x;
@@ -114,7 +112,6 @@ public class WallSlide : MonoBehaviour {
         return res;
     }
 }
-
 
 
 public class wallEvents
