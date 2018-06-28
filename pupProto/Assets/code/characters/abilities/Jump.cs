@@ -6,15 +6,23 @@ public class Jump : MonoBehaviour {
 
     Character character;
     [SerializeField] jumpSettings settings;
+    [HideInInspector] public bool isActive = true;
 
 	// Use this for initialization
 	void Start () {
 		character = GetComponent<Character>();
-        character.events.wall.onWallJump += onWallJump;
+        character.events.wall.onWallSlide += onWallSlide;
         character.events.character.onGrounded += onGrounded;
+	    character.events.jump.setActive += setActive;
+	    character.events.jump.setJump += jump;
 	}
+    
+    void setActive(bool active)
+    {
+        isActive = active;
+    }
 
-    void onWallJump()
+    void onWallSlide(bool onRightWall)
     {
         doneJumps = 1;
     }
@@ -36,6 +44,7 @@ public class Jump : MonoBehaviour {
     /// one way platforms.</param>
     public void jump(bool isPressed, bool drop)
     {
+        if(!isActive) return;
         if (isPressed && !isJumping)
         {
             if ((character.isGrounded || character.airTime < settings.coyoteTime) && (doneJumps == 0))
@@ -86,6 +95,7 @@ public class Jump : MonoBehaviour {
 
     private void FixedUpdate()
     {
+        if(!isActive) return;
         setAirVel();
     }
 }
@@ -100,11 +110,12 @@ public struct jumpSettings
     public float endJumpAcc;
     public float fallAcc;
     public float terminalVel;
-    public float airControl;
     public float coyoteTime;
 }
 
 public class jumpEvents
 {
+    public safeAction<bool, bool> setJump = new safeAction<bool, bool>();
     public safeAction onJump = new safeAction();
+    public safeAction<bool> setActive = new safeAction<bool>();
 }

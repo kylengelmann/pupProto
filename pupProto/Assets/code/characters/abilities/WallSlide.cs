@@ -11,6 +11,8 @@ public class WallSlide : MonoBehaviour
     physicsController2D controller;
     BoxCollider2D box;
     Character character;
+    
+    [HideInInspector] public bool isActive = true;
 
     bool onRightWall;
 
@@ -21,12 +23,29 @@ public class WallSlide : MonoBehaviour
         controller = GetComponent<physicsController2D>();
         box = controller.box;
         character = GetComponent<Character>();
+        character.events.jump.onJump += onJump;
+        character.events.wall.setActive += setActive;
+    }
+    
+    void setActive(bool active)
+    {
+        isActive = active;
+        if(!isActive)
+        {
+            wasOnWall = false;
+            if(onWall)
+            {
+                character.events.wall.onWallOff.Invoke();
+                onWall = false;
+            }
+        }
     }
 
     bool wasOnWall;
 
     void FixedUpdate()
     {
+        if(!isActive) return;
         onWall = checkOnWall();
         character.anim.SetBool("onWall", onWall);
         if (!onWall)
@@ -95,21 +114,27 @@ public class WallSlide : MonoBehaviour
 
     bool isJumping;
 
-    public bool wallJump(bool isPressed)
+//    public void wallJump(bool isPressed)
+//    {
+//        if (isPressed && !isJumping &&  onWall && !character.isGrounded)
+//        {
+//            character.velocity.y = jumpVel.y;
+//            character.velocity.x = onRightWall ? -jumpVel.x : jumpVel.x;
+//
+//            character.events.wall.onWallJump.Invoke();
+//        }
+//
+//        isJumping = isPressed;
+//    }
+    
+    void onJump()
     {
-        bool res = onWall && !character.isGrounded;
-
-        if (isPressed && !isJumping && res)
+        if(onWall && !character.isGrounded)
         {
             character.velocity.y = jumpVel.y;
             character.velocity.x = onRightWall ? -jumpVel.x : jumpVel.x;
-
             character.events.wall.onWallJump.Invoke();
         }
-
-        isJumping = isPressed;
-
-        return res;
     }
 }
 
@@ -119,4 +144,5 @@ public class wallEvents
     public safeAction<bool> onWallSlide = new safeAction<bool>();
     public safeAction onWallOff = new safeAction();
     public safeAction onWallJump = new safeAction();
+    public safeAction<bool> setActive = new safeAction<bool>();
 }

@@ -13,9 +13,11 @@ public class Character : MonoBehaviour {
 
     public physicsController2D.controllerHit hit;
 
+    abilitiesManager abilitiesManager = new abilitiesManager();
 	void Start () {
         anim = gameObject.GetComponent<Animator>();
         controller = gameObject.GetComponent<physicsController2D>();
+	    abilitiesManager.init(events);
 	}
 
     bool wasGrounded;

@@ -38,6 +38,7 @@ public class combatSystem : MonoBehaviour {
 	{
 		character = GetComponent<Character>();
 		hits = new Collider2D[16];
+		character.events.combat.setAttack += setAttack;
 	}
 
 	void Update () {
@@ -129,10 +130,10 @@ public class combatSystem : MonoBehaviour {
 		bool landedHit = false;
 		for(int i = 0; i < numHits; i++)
 		{
-			IHittable hittable = hits[i].GetComponent<IHittable>();
+			hittable hittable = hits[i].GetComponent<hittable>();
 			if(hittable != null)
 			{
-				hittable.Hit(moveSet.getAttack(currentAttack, attacksDone));
+				hittable.hit.Invoke(moveSet.getAttack(currentAttack, attacksDone));
 				landedHit = true;
 			}
 		}
@@ -148,6 +149,7 @@ public class combatSystem : MonoBehaviour {
 
 public class combatEvents
 {
+    public safeAction<combatSystem.attackType> setAttack = new safeAction<combatSystem.attackType>();
 	public safeAction<combatSystem.attackType> onAttack = new safeAction<combatSystem.attackType>();
 	public safeAction<combatSystem.attackType> onFinishAttack = new safeAction<combatSystem.attackType>();
 	public safeAction onFinishCombo = new safeAction();

@@ -10,15 +10,20 @@ public class characterAnimation : MonoBehaviour {
 		character = GetComponent<Character>();
 		characterEventHandler events = character.events;
 		events.move.onMove += walk;
+		events.move.setMove += setWalk;
 		events.move.onStopMove += stopWalk;
 		events.character.onLeaveGround += jump;
 		events.character.onGrounded += land;
 		events.combat.onAttack += attack;
 	}
 	
-	public void walk(float speed)
+	public void walk()
 	{
 		anim.SetBool("walkin", true);
+	}
+	
+	public void setWalk(float speed)
+	{
 		anim.SetFloat("walkSpeed", Mathf.Abs(speed));
 	}
 	
@@ -35,7 +40,7 @@ public class characterAnimation : MonoBehaviour {
 	public void jump()
 	{
 		anim.SetBool("jumpin", true);
-		anim.SetBool("walkin", false);
+//		anim.SetBool("walkin", false);
 	}
 	
 	public void land()

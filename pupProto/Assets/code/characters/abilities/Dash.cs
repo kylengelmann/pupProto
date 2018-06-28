@@ -6,25 +6,29 @@ using UnityEngine.Events;
 public class Dash : MonoBehaviour {
 
     public dashSettings settings;
-    [HideInInspector]public Character Character;
+    [HideInInspector]public Character character;
 
     /// <summary>
     /// Is this component performing physics updates?
     /// </summary>
-    [HideInInspector]public bool isActive = false;
-
-
-    public delegate void OnFinish();
-
-    /// <summary>
-    /// What to do after the dash is complete.
-    /// </summary>
-    public OnFinish onFinish;
+    [HideInInspector]public bool isActive = true;
 
 
 	void Start () {
-        Character = gameObject.GetComponent<Character>();
+        character = gameObject.GetComponent<Character>();
+	    character.events.dash.setAcive += setActive;
+	    character.events.dash.setDash += doDash;
 	}
+    
+    void setActive(bool active)
+    {
+        isActive = active;
+        if(!isActive && isDashing)
+        {
+            StopCoroutine(freezeTimer());
+            StartCoroutine(cooldownTimer());
+        }
+    }
 	
     /// <summary>
     /// Has the cooldown period ended?
@@ -35,6 +39,7 @@ public class Dash : MonoBehaviour {
     IEnumerator cooldownTimer() {
         isCooledDown = false;
         yield return new WaitForSeconds(settings.dashCooldown);
+        character.events.dash.onCooldownEnd.Invoke();
         isCooledDown = true;
     }
 
@@ -48,20 +53,18 @@ public class Dash : MonoBehaviour {
         isDoneFreeze = false;
         yield return new WaitForSeconds(settings.dashFreeze);
         isDoneFreeze = true;
-        Character.velocity.x = 0f;
-        Character.velocity.y = -Character.settings.gravity*Time.fixedDeltaTime;
-        if(onFinish != null) {
-            onFinish();
-        }
-        Character.events.dash.onDashEnd.Invoke();
-        StartCoroutine("cooldownTimer");
+        character.velocity.x = 0f;
+        character.velocity.y = -character.settings.gravity*Time.fixedDeltaTime;
+        isDashing = false;
+        character.events.dash.onDashEnd.Invoke();
+        StartCoroutine(cooldownTimer());
     }
 
     /// <summary>
     /// The direction in which the player is dashing.
     /// </summary>
     Vector2 dashDir;
-
+    bool isDashing;
     /// <summary>
     /// Causes the player to start dashing, and sets the initial direction to
     /// dash in. Only available outside of the cooldown period
@@ -69,18 +72,24 @@ public class Dash : MonoBehaviour {
     /// <returns><c>true</c> if dash was done, <c>false</c> otherwise.</returns>
     /// <param name="x">The x value for the dash direction.</param>
     /// <param name="y">The y value for the dash direction.</param>
-    public bool doDash(float x, float y){
+    public void doDash(float x, float y){
+        if(x*x + y*y < .3f || !isCooledDown)
+        {
+            return;
+        }
         if(isCooledDown){
-            Character.velocity = Vector2.zero;
-            dashTime = 0f;
-            totalDist = 0f;
             dashDir.x = x;
             dashDir.y = y;
             dashDir.Normalize();
-            Character.events.dash.onDashUpdate.Invoke(x, y);
+            if(!isDashing)
+            {
+                isDashing = true;
+                character.velocity = Vector2.zero;
+                dashTime = 0f;
+                totalDist = 0f;
+                character.events.dash.onDashStart.Invoke();
+            }
         }
-        return isCooledDown;
-
     }
 
 
@@ -100,15 +109,15 @@ public class Dash : MonoBehaviour {
     float dashTime;
     float totalDist;
     public void FixedUpdate() {
-        if(!isActive || !isDoneFreeze) return;
+        if(!isActive || !isDoneFreeze || !isDashing) return;
         if(totalDist > settings.dashDistance) {
-            StartCoroutine("freezeTimer");
+            StartCoroutine(freezeTimer());
         }
         else {
             // Integrate over the dashing period to find displacement
             float dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime)) - totalDist;
             //Vector2 prevPos = transform.position;
-            Character.controller.movePosition(dashDir*dS);
+            character.controller.movePosition(dashDir*dS);
             totalDist += dS;
             dashTime += Time.fixedDeltaTime;
         }
@@ -127,7 +136,11 @@ public struct dashSettings {
 
 public class dashEvents
 {
+    public safeAction<float, float> setDash = new safeAction<float, float>();
+    
     public safeAction onDashStart = new safeAction();
-    public safeAction<float, float> onDashUpdate = new safeAction<float, float>();
     public safeAction onDashEnd = new safeAction();
+    public safeAction onCooldownEnd = new safeAction();
+    
+    public safeAction<bool> setAcive = new safeAction<bool>();
 }
