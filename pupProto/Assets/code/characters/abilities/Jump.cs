@@ -97,6 +97,7 @@ public class Jump : MonoBehaviour {
     {
         if(!isActive) return;
         setAirVel();
+        character.velocity.y = Mathf.Max(character.velocity.y, -settings.terminalVel);
     }
 }
 
