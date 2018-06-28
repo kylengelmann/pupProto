@@ -13,19 +13,35 @@ public class Move : MonoBehaviour {
     /// <summary>
     /// Is this component performing physics updates?
     /// </summary>
-    [HideInInspector]public bool isActive = false;
+    [HideInInspector]public bool isActive = true;
 
 
 	void Start () {
+//	    isActive = true;
         _character = gameObject.GetComponent<Character>();
+	    _character.events.move.setMove += setMoveVal;
+	    _character.events.move.setActive += setActive;
 	}
-
-
+    
+    void setActive(bool active)
+    {
+        isActive = active;
+        if(!isActive)
+        {
+            if(isMoving)
+            {
+                _character.events.move.onStopMove.Invoke();
+                isMoving = false;
+                moveVal = 0f;
+            }
+        }
+    }
 	
     #region Input
 
 
     float moveVal;
+    bool isMoving;
 
     /// <summary>
     /// Sets the player's move value, which controls how fast and in which
@@ -34,22 +50,26 @@ public class Move : MonoBehaviour {
     /// <param name="val">What to set the move value to</param>
     public void setMoveVal(float val) 
     {
-        if(val > 0f) {
-            transform.localScale = new Vector3(1f, 1f);
-            _character.anim.SetBool("walkin", true);
-        }
-        else if(val < 0f) {
-            transform.localScale = new Vector3(-1f, 1f);
-            if(_character.isGrounded) {
-                _character.anim.SetBool("walkin", true);
+        if(!isActive) return;
+        if(Mathf.Abs(val) > 0.1f)
+        {
+            transform.localScale = new Vector3(Mathf.Sign(val), 1f);
+            if(!isMoving)
+            {
+                _character.events.move.onMove.Invoke();
             }
+            isMoving = true;
         }
         else {
-            _character.anim.SetBool("walkin", false);
+            val = 0f;
+            if(isMoving)
+            {
+                _character.events.move.onStopMove.Invoke();
+            }
+            isMoving = false;
         }
         moveVal = val;
 
-        _character.events.move.onMove.Invoke(moveVal);
     }
 
     #endregion
@@ -58,16 +78,10 @@ public class Move : MonoBehaviour {
 
     bool isChangingDir;
 
-
     public void FixedUpdate()
     {
         // If the component is not active, do not perform updates
         if(!isActive) return;
-
-        // If the player has just hit the ground, reset doneJumps
-        //if(_character.isGrounded) {
-        //    doneJumps = 0;
-        //}
 
         // moveMod affects the acceleration of the player
         // Set move mod depending on whether or not the player is grounded
@@ -110,7 +124,6 @@ public class Move : MonoBehaviour {
                 _character.velocity.x -= dV;
             }
         }
-        _character.anim.SetFloat("walkSpeed", Mathf.Abs(moveVal));
     }
     #endregion
 }
@@ -122,18 +135,15 @@ public struct moveSettings {
     public float groundAcceleration;
     public float directionSwitchAcceleration;
     public float groundFriction;
-
-    public float jumpVelocity;
-    public float doubleJumpVelocity;
-    public float jumpAcc;
-    public float endJumpAcc;
-    public float fallAcc;
-    public float terminalVel;
     public float airControl;
-    public float coyoteTime;
 }
 
 public class moveEvents
 {
-    public safeAction<float> onMove = new safeAction<float>();
+    public safeAction<float> setMove = new safeAction<float>();
+    
+    public safeAction onMove = new safeAction();
+    public safeAction onStopMove = new safeAction();
+    
+    public safeAction<bool> setActive = new safeAction<bool>();
 }

@@ -8,18 +8,16 @@ public class Character : MonoBehaviour {
     [HideInInspector]public physicsController2D controller;
     [HideInInspector]public Vector2 velocity;
     [HideInInspector]public playerSettings settings;
-    public Vector2 groundBoxOffset;
-    public Vector2 groundBoxSize;
-    public Vector2 airBoxOffset;
-    public Vector2 airBoxSize;
 
     public characterEventHandler events = new characterEventHandler();
 
     public physicsController2D.controllerHit hit;
 
+    abilitiesManager abilitiesManager = new abilitiesManager();
 	void Start () {
         anim = gameObject.GetComponent<Animator>();
         controller = gameObject.GetComponent<physicsController2D>();
+	    abilitiesManager.init(events);
 	}
 
     bool wasGrounded;
@@ -28,7 +26,7 @@ public class Character : MonoBehaviour {
     void checkGrounded() {
         isGrounded = controller.grounded;
         if (isGrounded) {
-            anim.SetBool("jumpin", false);
+//            anim.SetBool("jumpin", false);
             airTime = 0f;
             if (!wasGrounded)
             {
@@ -39,13 +37,12 @@ public class Character : MonoBehaviour {
         else {
             if(wasGrounded){
                 airTime = 0f;
+                events.character.onLeaveGround.Invoke();
             }
             else {
                 airTime += Time.fixedDeltaTime;
             }
             wasGrounded = false;
-            anim.SetBool("jumpin", true);
-            anim.SetBool("walkin", false);
         }
     }
 
@@ -55,7 +52,6 @@ public class Character : MonoBehaviour {
         hit = controller.hit;
         events.character.onPositionUpdate.Invoke();
         checkGrounded();
-        anim.SetFloat("fallin", velocity.y);
     }
 
 }
@@ -68,5 +64,6 @@ public struct playerSettings {
 public class characterEvents
 {
     public safeAction onGrounded = new safeAction();
+    public safeAction onLeaveGround = new safeAction();
     public safeAction onPositionUpdate = new safeAction();
 }

@@ -19,14 +19,16 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4005942968819922}
-  - component: {fileID: 60371531202503974}
+  - component: {fileID: 50377252475509560}
+  - component: {fileID: 66310828691256168}
+  - component: {fileID: 61263583561306810}
   m_Layer: 8
   m_Name: hitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1185402186650994
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,15 +43,14 @@ GameObject:
   - component: {fileID: 114988518808141298}
   - component: {fileID: 50208076238007708}
   - component: {fileID: 114993584260516352}
-  - component: {fileID: 114731690889503268}
   - component: {fileID: 114737953843931364}
   - component: {fileID: 114357153952604024}
   - component: {fileID: 114434294863078264}
   - component: {fileID: 114829286092090578}
-  - component: {fileID: 114833049592859906}
-  - component: {fileID: 114668695164624548}
   - component: {fileID: 114587888157078876}
   - component: {fileID: 114975982432444070}
+  - component: {fileID: 114641725865886858}
+  - component: {fileID: 114466168600468142}
   m_Layer: 8
   m_Name: pup
   m_TagString: Untagged
@@ -104,35 +105,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60371531202503974
-PolygonCollider2D:
+--- !u!50 &50377252475509560
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1169516889808036}
-  m_Enabled: 0
-  m_Density: 1
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.2570148, y: 0.50154686}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.90710676, y: -0.17816272}
-      - {x: -0.19883561, y: -0.30277577}
-      - {x: 0.26568377, y: 0.19998059}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!61 &61229087014082684
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -158,6 +150,65 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.44896543, y: 1.5617933}
   m_EdgeRadius: 0
+--- !u!61 &61263583561306810
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1169516889808036}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 1
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!66 &66310828691256168
+CompositeCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1169516889808036}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 61263583561306810}
+    m_ColliderPaths:
+    - - X: 5000000
+        Y: 5000000
+      - X: -5000000
+        Y: 5000000
+      - X: -5000000
+        Y: -5000000
+      - X: 5000000
+        Y: -5000000
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 0.5, y: 0.5}
+      - {x: -0.5, y: 0.5}
+      - {x: -0.5, y: -0.5}
+      - {x: 0.5, y: -0.5}
+  m_VertexDistance: 0.0005
 --- !u!95 &95771190056903710
 Animator:
   serializedVersion: 3
@@ -194,8 +245,8 @@ MonoBehaviour:
     endJumpAcc: 125
     fallAcc: 30
     terminalVel: 30
-    airControl: 1
     coyoteTime: 0.05
+  isActive: 1
   doneJumps: 0
 --- !u!114 &114434294863078264
 MonoBehaviour:
@@ -215,8 +266,19 @@ MonoBehaviour:
     dashFreeze: 0.1
     dashExp: 2.5
     dashDirChange: 0.4
-  Character: {fileID: 0}
-  isActive: 0
+  character: {fileID: 0}
+  isActive: 1
+--- !u!114 &114466168600468142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1185402186650994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20146af5115b94af5bec3a46e04d1d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114587888157078876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -228,37 +290,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f65609976f7b49f0b57f6ba8d7b414a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114668695164624548
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1185402186650994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c3d28199330c4fde9450dde39d27870, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  attackForce: {x: 0, y: 0}
-  timeCanRecordNext: 0.5
-  timeCanStartNext: 0.65
-  hitArea: {fileID: 60371531202503974}
-  filter:
+  moveSet: {fileID: 11400000, guid: 60cd97744c03246b68d0ce4b4e8f44a7, type: 2}
+  hitArea: {fileID: 66310828691256168}
+  affectedLayers:
     useTriggers: 0
-    useLayerMask: 0
+    useLayerMask: 1
     useDepth: 0
     useOutsideDepth: 0
     useNormalAngle: 0
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 512
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
---- !u!114 &114731690889503268
+--- !u!114 &114641725865886858
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -266,10 +314,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1185402186650994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e5733395078940aba4d57e2e70b5398, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b849d0e1d4ab4f408410654df7f478e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
 --- !u!114 &114737953843931364
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -286,15 +333,8 @@ MonoBehaviour:
     groundAcceleration: 35
     directionSwitchAcceleration: 80
     groundFriction: 50
-    jumpVelocity: 15
-    doubleJumpVelocity: 11
-    jumpAcc: 45
-    endJumpAcc: 125
-    fallAcc: 30
-    terminalVel: 30
     airControl: 1
-    coyoteTime: 0.05
-  isActive: 0
+  isActive: 1
 --- !u!114 &114829286092090578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -306,36 +346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bddb8a3a014814394bafa542ff488057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114833049592859906
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1185402186650994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a57fbee1818a494aa464f9c511a710b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  attackForce: {x: 1, y: 1}
-  timeCanRecordNext: 0.1
-  timeCanStartNext: 0.5
-  hitArea: {fileID: 60371531202503974}
-  filter:
-    useTriggers: 0
-    useLayerMask: 1
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 0
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
 --- !u!114 &114975982432444070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,6 +362,7 @@ MonoBehaviour:
   terminalVel: 10
   maxDist: 0.15
   jumpVel: {x: 15, y: 15}
+  isActive: 1
   walls:
     serializedVersion: 2
     m_Bits: 1
@@ -408,11 +419,6 @@ MonoBehaviour:
   velocity: {x: 0, y: 0}
   settings:
     gravity: 0
-  groundBoxOffset: {x: 0, y: 0}
-  groundBoxSize: {x: 0, y: 0}
-  airBoxOffset: {x: 0, y: 0}
-  airBoxSize: {x: 0, y: 0}
-  wasGrounded: 0
   isGrounded: 0
   airTime: 0
 --- !u!212 &212481830972669448

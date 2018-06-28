@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-public class WallSlide : MonoBehaviour {
-
+public class WallSlide : MonoBehaviour
+{
     [HideInInspector] public bool onWall;
     public float friction = 20f;
     public float terminalVel = 10f;
@@ -11,6 +11,8 @@ public class WallSlide : MonoBehaviour {
     physicsController2D controller;
     BoxCollider2D box;
     Character character;
+    
+    [HideInInspector] public bool isActive = true;
 
     bool onRightWall;
 
@@ -21,21 +23,40 @@ public class WallSlide : MonoBehaviour {
         controller = GetComponent<physicsController2D>();
         box = controller.box;
         character = GetComponent<Character>();
+        character.events.jump.onJump += onJump;
+        character.events.wall.setActive += setActive;
+    }
+    
+    void setActive(bool active)
+    {
+        isActive = active;
+        if(!isActive)
+        {
+            wasOnWall = false;
+            if(onWall)
+            {
+                character.events.wall.onWallOff.Invoke();
+                onWall = false;
+            }
+        }
     }
 
     bool wasOnWall;
-    void FixedUpdate () {
+
+    void FixedUpdate()
+    {
+        if(!isActive) return;
         onWall = checkOnWall();
         character.anim.SetBool("onWall", onWall);
-        if(!onWall)
+        if (!onWall)
         {
-            if(wasOnWall) character.events.wall.onWallOff.Invoke();
+            if (wasOnWall) character.events.wall.onWallOff.Invoke();
         }
         else
         {
-            if(!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
+            if (!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
             applyFriction(Time.fixedDeltaTime);
-        }   
+        }
     }
 
 
@@ -75,46 +96,47 @@ public class WallSlide : MonoBehaviour {
             onRightWall = false;
             return true;
         }
+
         return false;
     }
 
     void applyFriction(float dt)
     {
-        if(character.velocity.y >= 0f)
+        if (character.velocity.y >= 0f)
         {
             return;
         }
 
-        character.velocity.y += friction*dt;
+        character.velocity.y += friction * dt;
         character.velocity.y = Mathf.Clamp(character.velocity.y, -terminalVel, 0f);
     }
 
 
     bool isJumping;
 
-    public bool wallJump(bool isPressed)
+//    public void wallJump(bool isPressed)
+//    {
+//        if (isPressed && !isJumping &&  onWall && !character.isGrounded)
+//        {
+//            character.velocity.y = jumpVel.y;
+//            character.velocity.x = onRightWall ? -jumpVel.x : jumpVel.x;
+//
+//            character.events.wall.onWallJump.Invoke();
+//        }
+//
+//        isJumping = isPressed;
+//    }
+    
+    void onJump()
     {
-        bool res = false;
         if(onWall && !character.isGrounded)
-        {
-            res = true;
-        }
-
-
-        if(isPressed && !isJumping && res)
         {
             character.velocity.y = jumpVel.y;
             character.velocity.x = onRightWall ? -jumpVel.x : jumpVel.x;
-
             character.events.wall.onWallJump.Invoke();
         }
-
-        isJumping = isPressed;
-
-        return res;
     }
 }
-
 
 
 public class wallEvents
@@ -122,4 +144,5 @@ public class wallEvents
     public safeAction<bool> onWallSlide = new safeAction<bool>();
     public safeAction onWallOff = new safeAction();
     public safeAction onWallJump = new safeAction();
+    public safeAction<bool> setActive = new safeAction<bool>();
 }
