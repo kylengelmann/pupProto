@@ -40,7 +40,6 @@ public class characterAnimation : MonoBehaviour {
 	public void jump()
 	{
 		anim.SetBool("jumpin", true);
-//		anim.SetBool("walkin", false);
 	}
 	
 	public void land()
