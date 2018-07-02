@@ -641,6 +641,11 @@ Prefab:
       propertyPath: contactFilter.layerMask.m_Bits
       value: 1025
       objectReference: {fileID: 0}
+    - target: {fileID: 114466168600468142, guid: d23ebc60317a2504da2722b9a7af9108,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d23ebc60317a2504da2722b9a7af9108, type: 2}
   m_IsPrefabParent: 0

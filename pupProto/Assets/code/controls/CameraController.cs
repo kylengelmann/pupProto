@@ -39,6 +39,7 @@ public class CameraController : MonoBehaviour
     private Vector2 focus;
 
     private void FixedUpdate()
+    //void Update()
     {
         moveX();
         moveY();
