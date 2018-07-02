@@ -31,7 +31,7 @@ public class sandbag : MonoBehaviour
     void FixedUpdate()
     {
         vel.y -= 30f * Time.fixedDeltaTime;
-        if (controller.grounded)
+        if (character.isGrounded)
         {
             if (Mathf.Abs(vel.x) > Mathf.Epsilon * 1000f)
             {

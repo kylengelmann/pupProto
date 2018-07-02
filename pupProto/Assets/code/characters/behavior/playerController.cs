@@ -14,8 +14,8 @@ public class playerController : MonoBehaviour {
 	
 	void onCheckInput()
 	{
-		character.events.move.setMove.Invoke(input.getAxis(axisType.moveX));
-		character.events.jump.setJump.Invoke(input.getButtonPressed(buttonType.a), input.getAxis(axisType.moveY) < -.5f);
+        character.events.move.setMove.Invoke(input.getAxis(axisType.moveX));
+        character.events.jump.setJump.Invoke(input.getButtonPressed(buttonType.a), input.getAxis(axisType.moveY) < -.5f);
 		character.events.dash.setDash.Invoke(input.getAxis(axisType.dashX), input.getAxis(axisType.dashY));
 		if(input.getButtonDown(buttonType.x))
 		{

@@ -70,7 +70,6 @@ public class Jump : MonoBehaviour {
             }
         }
         isJumping = isPressed;
-
     }
 
     void setAirVel()
@@ -79,17 +78,19 @@ public class Jump : MonoBehaviour {
         {
             if (!isJumping)
             {
-                character.velocity.y -= settings.endJumpAcc * Time.fixedDeltaTime;
+                character.gravity = settings.endJumpAcc;
+                //character.velocity.y -= settings.endJumpAcc * Time.fixedDeltaTime;
             }
             else
             {
-                character.velocity.y -= settings.jumpAcc * Time.fixedDeltaTime;
-                character.velocity.y = Mathf.Max(character.velocity.y, -settings.terminalVel);
+                character.gravity = settings.jumpAcc;
+                //character.velocity.y -= settings.jumpAcc * Time.fixedDeltaTime;
             }
         }
         else
         {
-            character.velocity.y -= settings.fallAcc * Time.fixedDeltaTime;
+            character.gravity = settings.fallAcc;
+            //character.velocity.y -= settings.fallAcc * Time.fixedDeltaTime;
         }
     }
 
