@@ -71,32 +71,12 @@ public class Character : MonoBehaviour {
 
         Vector2 grav = groundNormal*gravity*Time.fixedDeltaTime/Vector2.Dot(groundNormal, Vector2.down);
         velocity += grav;
-        Debug.Log(groundNormal);
+        //Debug.Log(groundNormal);
 
-        Vector2 perpVel = Vector2.Dot(velocity, lastHitNorm)*lastHitNorm;
-        Vector2 parVel = velocity - perpVel;
+        controllerHits hits = controller.moveVelocity(ref velocity, Time.fixedDeltaTime);
 
-        RaycastHit2D hit1 = controller.moveVelocity(ref parVel, Time.fixedDeltaTime);
-        RaycastHit2D hit2 = controller.moveVelocity(ref perpVel, Time.fixedDeltaTime);
-
-        velocity = parVel + perpVel;
-
-        if(hit2.collider != null)
-        {
-            lastHitNorm = hit2.normal;
-        }
-        else if(hit1.collider != null)
-        {
-            lastHitNorm = hit1.normal;
-        }
-        else
-        {
-            lastHitNorm = Vector2.zero;
-            //lastHitNorm = Vector2.up;
-        }
-
-        checkGrounded(hit1, hit2);
-        events.character.onPositionUpdate.Invoke(hit1, hit2);
+        checkGrounded(hits.hit1, hits.hit2);
+        events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
     }
 
 }
