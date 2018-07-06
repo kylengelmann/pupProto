@@ -83,6 +83,10 @@ public class Move : MonoBehaviour {
         // If the component is not active, do not perform updates
         if(!isActive) return;
 
+        Vector2 moveDir = new Vector2(_character.groundNormal.y, -_character.groundNormal.x);
+        float moveVel = Vector2.Dot(moveDir, _character.velocity);
+        _character.velocity -= moveVel*moveDir;
+
         // moveMod affects the acceleration of the player
         // Set move mod depending on whether or not the player is grounded
         float moveMod = 1f;
@@ -90,40 +94,42 @@ public class Move : MonoBehaviour {
             moveMod *= settings.airControl;
         }
 
-        if(_character.velocity.x*moveVal < 0f || isChangingDir) { //Switching directions
+        if(moveVel*moveVal < 0f || isChangingDir) { //Switching directions
             float dV = Mathf.Sign(moveVal)*settings.directionSwitchAcceleration*moveMod*Time.fixedDeltaTime;
 
             // Check whether or not the player his reached their desired speed.
             // If so, they are no longer switching directions, and we might as
             // well prevent overcorrection while we're at it.
-            if(Mathf.Sign(moveVal)*Mathf.Sign(_character.velocity.x) > 0f && Mathf.Abs(_character.velocity.x + dV) > Mathf.Abs(settings.speed*moveVal)) {
-                _character.velocity.x = settings.speed*moveVal;
+            if(Mathf.Sign(moveVal)*Mathf.Sign(moveVel) > 0f && Mathf.Abs(moveVel + dV) > Mathf.Abs(settings.speed*moveVal)) {
+                moveVel = settings.speed*moveVal;
                 isChangingDir = false;
             }
             else {
-                _character.velocity.x += dV;
+                moveVel += dV;
             }
         }
-        else if(Mathf.Abs(_character.velocity.x) <= Mathf.Abs(settings.speed*moveVal)) { //Speeding up
+        else if(Mathf.Abs(moveVel) <= Mathf.Abs(settings.speed*moveVal)) { //Speeding up
             
-            _character.velocity.x += Mathf.Sign(moveVal)*settings.groundAcceleration*moveMod*Time.fixedDeltaTime;
+            moveVel += Mathf.Sign(moveVal)*settings.groundAcceleration*moveMod*Time.fixedDeltaTime;
 
             // Cap the speed of the player
-            if( Mathf.Abs(_character.velocity.x) > Mathf.Abs(settings.speed*moveVal)) {
-                _character.velocity.x = settings.speed*moveVal;
+            if( Mathf.Abs(moveVel) > Mathf.Abs(settings.speed*moveVal)) {
+                moveVel = settings.speed*moveVal;
             }
         }
         else { //Slowing down
-            float dV = Mathf.Sign(_character.velocity.x)*settings.groundFriction*moveMod*Time.fixedDeltaTime;
+            float dV = Mathf.Sign(moveVel)*settings.groundFriction*moveMod*Time.fixedDeltaTime;
 
             // Prevent overcorrection
-            if(Mathf.Abs(dV) > Mathf.Abs(_character.velocity.x)){
-                _character.velocity.x = 0f;
+            if(Mathf.Abs(dV) > Mathf.Abs(moveVel)){
+                moveVel = 0f;
             }
             else {
-                _character.velocity.x -= dV;
+                moveVel -= dV;
             }
         }
+
+        _character.velocity += moveVel*moveDir;
     }
     #endregion
 }

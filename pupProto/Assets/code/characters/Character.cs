@@ -22,6 +22,7 @@ public class Character : MonoBehaviour {
         anim = gameObject.GetComponent<Animator>();
         controller = gameObject.GetComponent<physicsController2D>();
 	    abilitiesManager.init(events);
+        groundNormal = Vector2.up;
     }
 
     bool wasGrounded;
@@ -68,7 +69,7 @@ public class Character : MonoBehaviour {
     void FixedUpdate()
     {
 
-        Vector2 grav = -groundNormal*gravity*Time.fixedDeltaTime;
+        Vector2 grav = groundNormal*gravity*Time.fixedDeltaTime/Vector2.Dot(groundNormal, Vector2.down);
         velocity += grav;
         Debug.Log(groundNormal);
 
@@ -90,7 +91,8 @@ public class Character : MonoBehaviour {
         }
         else
         {
-            lastHitNorm = Vector2.up;
+            lastHitNorm = Vector2.zero;
+            //lastHitNorm = Vector2.up;
         }
 
         checkGrounded(hit1, hit2);
