@@ -22,7 +22,7 @@ public class physicsController2D : MonoBehaviour
 		hits = new RaycastHit2D[10];
 	}
 
-    public RaycastHit2D doMove(ref Vector2 dS)
+    public RaycastHit2D doMove(Vector2 dS)
     {
         float distance = dS.magnitude;
         Vector2 dSNorm = dS.normalized;
@@ -75,15 +75,11 @@ public class physicsController2D : MonoBehaviour
             skinPoint = hit.normal * (2f*Mathf.Min(xHit, yHit) + skinWidth);
             
             moved = skinPoint;
-
-            dS -= Vector2.Dot(hit.normal, dS) * hit.normal;
         }
         else
         {
             minDist -= skinWidth;
             moved = new Vector2(dSNorm.x, dSNorm.y) * minDist;
-            dS -= moved;
-            dS -= Vector2.Dot(hit.normal, dS)*hit.normal;
         }
         transform.position += new Vector3(moved.x, moved.y);
         return hit;
@@ -92,29 +88,18 @@ public class physicsController2D : MonoBehaviour
 
 	public controllerHits movePosition(Vector2 dS)
 	{
-        controllerHits result = new controllerHits();
-        if(didHit)
+        
+
+        Vector2 perp = Vector2.Dot(dS, lastHitNorm) * lastHitNorm;
+        Vector2 par = dS - perp;
+
+        controllerHits result = new controllerHits
         {
-            Vector2 perp = Vector2.Dot(dS, lastHitNorm) * lastHitNorm;
-            Vector2 par = dS - perp;
-            result.hit1 = doMove(ref par);
-            result.hit2 = doMove(ref perp);
-        }
-        else
-        {
-            result.hit1 = doMove(ref dS);
-            result.hit2 = doMove(ref dS);
-        }
-        if(result.hit2.collider == null && result.hit1.collider == null)
-        {
-            didHit = false;         
-        }
-        else
-        {
-            didHit = true;
-            lastHitNorm = result.hit2.collider != null ? result.hit2.normal : result.hit1.normal;
-        }
-        //lastHitNorm = result.hit2.collider != null ? result.hit2.normal : (result.hit1.collider != null ? result.hit1.normal : Vector2.zero);
+            hit1 = doMove(par),
+            hit2 = doMove(perp)
+        };
+
+        lastHitNorm = result.hit2.collider != null ? result.hit2.normal : (result.hit1.collider != null ? result.hit1.normal : Vector2.zero);
         return result;
 	}
 	
