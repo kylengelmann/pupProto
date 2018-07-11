@@ -113,6 +113,106 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &170400005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 170400007}
+  - component: {fileID: 170400006}
+  - component: {fileID: 170400008}
+  m_Layer: 10
+  m_Name: square
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &170400006
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 170400005}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 099782b34dbe742448ebafd970ce4de6, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+--- !u!4 &170400007
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 170400005}
+  m_LocalRotation: {x: -0, y: -0, z: 0.22308707, w: 0.9747985}
+  m_LocalPosition: {x: 6.55, y: 5.98, z: 0}
+  m_LocalScale: {x: 9.170892, y: 0.46676683, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 25.781002}
+--- !u!61 &170400008
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 170400005}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1001 &186478795
 Prefab:
   m_ObjectHideFlags: 0
@@ -176,7 +276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &266667888
 Animator:
   serializedVersion: 3
@@ -265,11 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c570afddfb2624fa9a95033c45a79da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSinSlope: 0.766
   skinWidth: 0.02
   minMove: 0.01
-  hitTolerance: 0.1
-  maxStairHeight: 0.1
   contactFilter:
     useTriggers: 0
     useLayerMask: 1
@@ -288,9 +385,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   dropThroughOneWay: 0
-  grounded: 0
   box: {fileID: 0}
-  hitNormal: {x: 0, y: 0}
 --- !u!61 &266667892
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -366,11 +461,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3f9c5d693f647549a19bbe0f821540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravity: 0
   anim: {fileID: 0}
   controller: {fileID: 0}
   velocity: {x: 0, y: 0}
   settings:
     gravity: 0
+  groundNormal: {x: 0, y: 0}
   isGrounded: 0
   airTime: 0
 --- !u!1001 &337676999
@@ -543,6 +640,11 @@ Prefab:
         type: 2}
       propertyPath: contactFilter.layerMask.m_Bits
       value: 1025
+      objectReference: {fileID: 0}
+    - target: {fileID: 114466168600468142, guid: d23ebc60317a2504da2722b9a7af9108,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d23ebc60317a2504da2722b9a7af9108, type: 2}

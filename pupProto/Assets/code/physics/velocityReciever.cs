@@ -9,7 +9,7 @@ public class velocityReciever : MonoBehaviour {
         }
         set {
             _vel = value;
-            character.controller.moveVelocity(ref _vel, Time.fixedDeltaTime);
+            character.controller.doMove(_vel*Time.fixedDeltaTime);
         }
     }
     Character character;
@@ -19,24 +19,33 @@ public class velocityReciever : MonoBehaviour {
         character.events.character.onPositionUpdate += onPositionUpdate;
     }
 
+
+
     velocityGiver velGive;
-    void onPositionUpdate()
+
+    void onPositionUpdate(RaycastHit2D hit1, RaycastHit2D hit2)
     {
-        if(character.hit.y.collider == null)
+        velocityGiver vg = null;
+        if (hit2.collider != null)
         {
-            return;
+            vg = hit2.collider.GetComponent<velocityGiver>();
         }
-        velocityGiver vg = character.hit.y.collider.GetComponent<velocityGiver>();
-        if(vg != null && velGive == null)
+        else if(hit1.collider != null)
         {
-            vg.addReciever(this);
+            vg = hit1.collider.GetComponent<velocityGiver>();
         }
-        else if(vg == null && velGive != null)
+
+        if(velGive != null && vg != velGive)
         {
             velGive.removeReciever(this);
-            character.velocity = _vel;
+            velGive = null;
         }
-        velGive = vg;
+        if(velGive == null && vg != null)
+        {
+            velGive = vg;
+            velGive.addReciever(this);
+        }
+        
     }
 
 }

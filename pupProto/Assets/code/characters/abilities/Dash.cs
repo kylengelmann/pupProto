@@ -51,6 +51,7 @@ public class Dash : MonoBehaviour {
     /// Resets isDoneFreeze
     IEnumerator freezeTimer() {
         isDoneFreeze = false;
+        character.velocity = Vector2.zero;
         yield return new WaitForSeconds(settings.dashFreeze);
         isDoneFreeze = true;
         character.velocity.x = 0f;
@@ -117,7 +118,7 @@ public class Dash : MonoBehaviour {
             // Integrate over the dashing period to find displacement
             float dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime)) - totalDist;
             //Vector2 prevPos = transform.position;
-            character.controller.movePosition(dashDir*dS);
+            character.velocity = dashDir*dS/Time.fixedDeltaTime;
             totalDist += dS;
             dashTime += Time.fixedDeltaTime;
         }
