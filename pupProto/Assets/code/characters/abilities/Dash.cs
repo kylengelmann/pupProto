@@ -55,7 +55,7 @@ public class Dash : MonoBehaviour {
         yield return new WaitForSeconds(settings.dashFreeze);
         isDoneFreeze = true;
         character.velocity.x = 0f;
-        character.velocity.y = -character.settings.gravity*Time.fixedDeltaTime;
+        //character.velocity.y = -character.settings.gravity*Time.fixedDeltaTime;
         isDashing = false;
         character.events.dash.onDashEnd.Invoke();
         StartCoroutine(cooldownTimer());
@@ -88,6 +88,7 @@ public class Dash : MonoBehaviour {
                 character.velocity = Vector2.zero;
                 dashTime = 0f;
                 totalDist = 0f;
+                character.gravity = 0f;
                 character.events.dash.onDashStart.Invoke();
             }
         }
@@ -116,7 +117,7 @@ public class Dash : MonoBehaviour {
         }
         else {
             // Integrate over the dashing period to find displacement
-            float dS = settings.dashVelocity/(-settings.dashExp) * (1 - Mathf.Exp(settings.dashExp*dashTime)) - totalDist;
+            float dS = settings.dashVelocity/(settings.dashExp) * (1 - Mathf.Exp(-settings.dashExp*dashTime)) - totalDist;
             //Vector2 prevPos = transform.position;
             character.velocity = dashDir*dS/Time.fixedDeltaTime;
             totalDist += dS;
