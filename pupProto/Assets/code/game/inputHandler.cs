@@ -95,9 +95,9 @@ public class inputHandler : MonoBehaviour {
 	void checkControllers()
 	{
 		string[] controllers = Input.GetJoystickNames();
-		if(controllers.Length > 1)
+		if(controllers.Length > 0)
 		{
-			if(controllers[0].Contains("xbox"))
+			if(controllers[0].ToLower().Contains("xbox"))
 			{
 				controller = "_xbox";
 				if(platform == "_mac")
@@ -141,15 +141,15 @@ public class inputHandler : MonoBehaviour {
 		{inputTypes.buttonType.y, KeyCode.L},
 	};
 	
-	Dictionary<inputTypes.buttonType, KeyCode> xboxMacButtons = new Dictionary<inputTypes.buttonType, KeyCode>
+	Dictionary<inputTypes.buttonType, KeyCode> xboxWinButtons = new Dictionary<inputTypes.buttonType, KeyCode>
 	{
-		{inputTypes.buttonType.a, KeyCode.Space},
-		{inputTypes.buttonType.b, KeyCode.J},
-		{inputTypes.buttonType.x, KeyCode.K},
-		{inputTypes.buttonType.y, KeyCode.L},
+		{inputTypes.buttonType.a, KeyCode.Joystick1Button0},
+		{inputTypes.buttonType.b, KeyCode.Joystick1Button1},
+		{inputTypes.buttonType.x, KeyCode.Joystick1Button2},
+		{inputTypes.buttonType.y, KeyCode.Joystick1Button3},
 	};
 	
-	Dictionary<inputTypes.buttonType, KeyCode> xboxWinButtons = new Dictionary<inputTypes.buttonType, KeyCode>
+	Dictionary<inputTypes.buttonType, KeyCode> xboxMacButtons = new Dictionary<inputTypes.buttonType, KeyCode>
 	{
 		{inputTypes.buttonType.a, KeyCode.Space},
 		{inputTypes.buttonType.b, KeyCode.J},
