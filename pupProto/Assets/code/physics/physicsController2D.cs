@@ -63,6 +63,10 @@ public class physicsController2D : MonoBehaviour
         }
 
         if (droppingThrough != null) dropThroughOneWay = false;
+        if (didHit)
+        {
+            dropThroughOneWay = false;
+        }
         
         Vector2 moved = Vector2.zero;
         if (minDist <= 0f)
