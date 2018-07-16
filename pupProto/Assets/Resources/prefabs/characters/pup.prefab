@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 50377252475509560}
   - component: {fileID: 66310828691256168}
   - component: {fileID: 61263583561306810}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: hitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1169516889808036}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.199, y: -0.35, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4316765240177600}
@@ -78,7 +78,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1185402186650994}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.507022, y: 2.1498, z: -0.001953125}
+  m_LocalPosition: {x: -58.72, y: 8.49, z: -0.001953125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4005942968819922}
@@ -112,9 +112,9 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1169516889808036}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -156,7 +156,7 @@ BoxCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1169516889808036}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -191,23 +191,9 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 61263583561306810}
-    m_ColliderPaths:
-    - - X: 5000000
-        Y: 5000000
-      - X: -5000000
-        Y: 5000000
-      - X: -5000000
-        Y: -5000000
-      - X: 5000000
-        Y: -5000000
+  m_ColliderPaths: []
   m_CompositePaths:
-    m_Paths:
-    - - {x: 0.5, y: 0.5}
-      - {x: -0.5, y: 0.5}
-      - {x: -0.5, y: -0.5}
-      - {x: 0.5, y: -0.5}
+    m_Paths: []
   m_VertexDistance: 0.0005
 --- !u!95 &95771190056903710
 Animator:
@@ -239,8 +225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    jumpVelocity: 15
-    doubleJumpVelocity: 11
+    jumpVelocity: 20
+    doubleJumpVelocity: 15
     jumpAcc: 45
     endJumpAcc: 125
     fallAcc: 30
@@ -260,10 +246,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    dashVelocity: 30
+    dashVelocity: 50
     dashDistance: 5
-    dashCooldown: 0.5
-    dashFreeze: 0.1
+    dashCooldown: 0.75
+    dashFreeze: 0.25
     dashExp: 2.5
     dashDirChange: 0.4
   character: {fileID: 0}
@@ -293,7 +279,7 @@ MonoBehaviour:
   moveSet: {fileID: 11400000, guid: 60cd97744c03246b68d0ce4b4e8f44a7, type: 2}
   hitArea: {fileID: 66310828691256168}
   affectedLayers:
-    useTriggers: 0
+    useTriggers: 1
     useLayerMask: 1
     useDepth: 0
     useOutsideDepth: 0
@@ -329,7 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    speed: 5.5
+    speed: 8.5
     groundAcceleration: 35
     directionSwitchAcceleration: 80
     groundFriction: 50
@@ -358,10 +344,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onWall: 0
-  friction: 20
+  friction: 22.5
   terminalVel: 10
   maxDist: 0.15
-  jumpVel: {x: 15, y: 15}
+  jumpVel: {x: 17.5, y: 18.5}
   isActive: 1
   walls:
     serializedVersion: 2
@@ -377,21 +363,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c570afddfb2624fa9a95033c45a79da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSinSlope: 0.766
   skinWidth: 0.02
   minMove: 0.01
-  hitTolerance: 0.1
-  maxStairHeight: 0.1
   contactFilter:
     useTriggers: 0
-    useLayerMask: 0
+    useLayerMask: 1
     useDepth: 0
     useOutsideDepth: 0
     useNormalAngle: 0
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 1025
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
@@ -400,9 +383,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   dropThroughOneWay: 0
-  grounded: 0
   box: {fileID: 0}
-  hitNormal: {x: 0, y: 0}
 --- !u!114 &114993584260516352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -414,11 +395,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3f9c5d693f647549a19bbe0f821540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravity: 0
   anim: {fileID: 0}
   controller: {fileID: 0}
   velocity: {x: 0, y: 0}
   settings:
     gravity: 0
+  groundNormal: {x: 0, y: 0}
   isGrounded: 0
   airTime: 0
 --- !u!212 &212481830972669448
