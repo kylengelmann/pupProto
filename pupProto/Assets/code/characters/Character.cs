@@ -45,8 +45,6 @@ public class Character : MonoBehaviour {
             groundNormal = Vector2.up;
         }
         if (isGrounded) {
-            //            anim.SetBool("jumpin", false);
-            //velocity.y = 0f;
             airTime = 0f;
             if (!wasGrounded)
             {
@@ -76,6 +74,7 @@ public class Character : MonoBehaviour {
         controllerHits hits = controller.moveVelocity(ref velocity, Time.fixedDeltaTime);
 
         checkGrounded(hits.hit1, hits.hit2);
+        if(!isGrounded) airTime += Time.fixedDeltaTime;
         events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
     }
 

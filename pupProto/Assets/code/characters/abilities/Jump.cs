@@ -32,7 +32,7 @@ public class Jump : MonoBehaviour {
         doneJumps = 0;
     }
 
-    [HideInInspector] public byte doneJumps;
+    [HideInInspector] public int doneJumps;
     bool isJumping;
     /// <summary>
     /// Causes the player to jump and drop through one way platforms. Also
@@ -47,8 +47,10 @@ public class Jump : MonoBehaviour {
         if(!isActive) return;
         if (isPressed && !isJumping)
         {
+            print(character.airTime);
             if ((character.isGrounded || character.airTime < settings.coyoteTime) && (doneJumps == 0))
             {
+                
                 if (!drop)
                 {
                     doneJumps = 1;
@@ -64,7 +66,7 @@ public class Jump : MonoBehaviour {
             }
             else if (doneJumps < 2)
             {
-                ++doneJumps;
+                doneJumps = (++doneJumps < 2) ? 2 : doneJumps;
                 character.velocity.y = settings.doubleJumpVelocity;
                 character.events.jump.onJump.Invoke();
             }
