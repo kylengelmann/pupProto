@@ -19,21 +19,27 @@ public class characterAnimation : MonoBehaviour {
         events.wall.offWall += offWall;
 	}
 	
+    bool walking;
+
 	public void walk()
 	{
 		anim.SetBool("walkin", true);
+        walking = true;
 	}
 	
 	public void setWalk(float speed)
 	{
         if(isOnWall) return;
 		anim.SetFloat("walkSpeed", Mathf.Abs(speed));
+        if(Mathf.Abs(speed) < .1f) return;
         transform.localScale = new Vector3(Mathf.Sign(speed), 1f);
+
     }
 	
 	public void stopWalk()
 	{
 		anim.SetBool("walkin", false);
+        walking = false;
 	}
 	
 	public void dash(float x, float y)

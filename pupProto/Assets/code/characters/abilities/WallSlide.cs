@@ -104,6 +104,7 @@ public class WallSlide : MonoBehaviour
     {
         if (character.velocity.y >= 0f)
         {
+            character.velocity.y -= friction * dt;
             return;
         }
 
