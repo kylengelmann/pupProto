@@ -20,18 +20,24 @@ public abstract class BehaviorTreeNode
     {
         if (status != Status.running)
         {
-            onStart(status);
+            onStart();
         }
         status = update();
         if (status != Status.running)
         {
-            onStop(status);
+            onStop();
         }
         return status;
     }
 
-    public virtual void onStart(Status status) { }
-    public virtual void onStop(Status status) { }
+    protected virtual void onStart() { }
+    protected virtual void onStop() { }
     protected abstract Status update();
+
+    public void Stop()
+    {
+        if(status == Status.failure) return;
+        onStop();
+    }
 
 }

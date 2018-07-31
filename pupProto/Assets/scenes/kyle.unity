@@ -511,6 +511,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114357153952604024, guid: d23ebc60317a2504da2722b9a7af9108,
+        type: 2}
+      propertyPath: settings.coyoteTime
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d23ebc60317a2504da2722b9a7af9108, type: 2}
   m_IsPrefabParent: 0
