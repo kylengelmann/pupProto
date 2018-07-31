@@ -56,6 +56,7 @@ public class WallSlide : MonoBehaviour
             if (!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
             applyFriction(Time.fixedDeltaTime);
         }
+        wasOnWall = onWall;
     }
 
 
