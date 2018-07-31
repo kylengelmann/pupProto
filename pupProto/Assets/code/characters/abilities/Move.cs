@@ -53,7 +53,6 @@ public class Move : MonoBehaviour {
         if(!isActive) return;
         if(Mathf.Abs(val) > 0.1f)
         {
-            transform.localScale = new Vector3(Mathf.Sign(val), 1f);
             if(!isMoving)
             {
                 _character.events.move.onMove.Invoke();

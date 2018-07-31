@@ -35,7 +35,7 @@ public class WallSlide : MonoBehaviour
             wasOnWall = false;
             if(onWall)
             {
-                character.events.wall.onWallOff.Invoke();
+                character.events.wall.offWall.Invoke();
                 onWall = false;
             }
         }
@@ -47,10 +47,9 @@ public class WallSlide : MonoBehaviour
     {
         if(!isActive) return;
         onWall = checkOnWall();
-        character.anim.SetBool("onWall", onWall);
         if (!onWall)
         {
-            if (wasOnWall) character.events.wall.onWallOff.Invoke();
+            if (wasOnWall) character.events.wall.offWall.Invoke();
         }
         else
         {
@@ -142,7 +141,7 @@ public class WallSlide : MonoBehaviour
 public class wallEvents
 {
     public safeAction<bool> onWallSlide = new safeAction<bool>();
-    public safeAction onWallOff = new safeAction();
+    public safeAction offWall = new safeAction();
     public safeAction onWallJump = new safeAction();
     public safeAction<bool> setActive = new safeAction<bool>();
 }

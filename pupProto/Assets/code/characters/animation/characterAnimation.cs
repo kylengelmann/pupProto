@@ -15,6 +15,8 @@ public class characterAnimation : MonoBehaviour {
 		events.character.onLeaveGround += jump;
 		events.character.onGrounded += land;
 		events.combat.onAttack += attack;
+        events.wall.onWallSlide += onWall;
+        events.wall.offWall += offWall;
 	}
 	
 	public void walk()
@@ -24,8 +26,10 @@ public class characterAnimation : MonoBehaviour {
 	
 	public void setWalk(float speed)
 	{
+        if(isOnWall) return;
 		anim.SetFloat("walkSpeed", Mathf.Abs(speed));
-	}
+        transform.localScale = new Vector3(Mathf.Sign(speed), 1f);
+    }
 	
 	public void stopWalk()
 	{
@@ -52,6 +56,20 @@ public class characterAnimation : MonoBehaviour {
 		anim.ResetTrigger("kickinTrig");
 		anim.SetTrigger("kickinTrig");
 	}
+
+    bool isOnWall;
+    public void onWall(bool onRightWall)
+    {
+        isOnWall = true;
+        character.anim.SetBool("onWall", true);
+        transform.localScale = new Vector3(onRightWall ? 1 : -1, 1f);
+    }
+
+    public void offWall()
+    {
+        isOnWall = false;
+        character.anim.SetBool("onWall", false);
+    }
 
 	void Update()
 	{
