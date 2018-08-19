@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[CreateAssetMenuAttribute]
+[CreateAssetMenu]
 public class moveSet : ScriptableObject {
     [SerializeField] attackSet[] attackSetList;
     
