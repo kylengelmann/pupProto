@@ -22,7 +22,7 @@ public class BehaviorTree : MonoBehaviour
         foreach (treeNode node in tree.nodes)
         {
             Type nodeType = Type.GetType(node.Type);
-            BehaviorTreeNode newNode = (BehaviorTreeNode)Activator.CreateInstance(nodeType, new object[] {this, node.ID});
+            BehaviorTreeNode newNode = (BehaviorTreeNode)Activator.CreateInstance(nodeType, new object[] {this, node});
             if(node.ID == 0) root = newNode;
             nodes.Add(newNode);
 #if UNITY_EDITOR
@@ -65,10 +65,12 @@ public abstract class BehaviorTreeNode
     BehaviorTree tree;
     public uint ID;
 
-    public BehaviorTreeNode(BehaviorTree tree, uint ID)
+    static public List<serializableProperty> serializableProperties = null;
+
+    public BehaviorTreeNode(BehaviorTree tree, treeNode node)
     {
         this.tree = tree;
-        this.ID = ID;
+        ID = node.ID;
     }
 
     public Status tick()
@@ -109,7 +111,7 @@ public class Root : BehaviorTreeNode
 
     BehaviorTreeNode child;
 
-    public Root(BehaviorTree tree, uint ID) : base(tree, ID) { }
+    public Root(BehaviorTree tree, treeNode node) : base(tree, node) { }
 
     public override void addChild(BehaviorTreeNode child)
     {

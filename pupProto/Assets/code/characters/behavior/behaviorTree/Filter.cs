@@ -2,7 +2,7 @@
 
     BehaviorTreeNode child;
 
-    public Filter(BehaviorTree tree, uint ID) : base(tree, ID) { }
+    public Filter(BehaviorTree tree, treeNode node) : base(tree, node) { }
 
     protected override Status update()
     {

@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public abstract class behaviorNode {
+public class behaviorNode {
 
-    public bool canHaveParents { get; protected set; }
-    public bool canHaveChildren { get; protected set; }
+    const float nodeWidth = 200;
+
+    float nodeHeight = 1f;
+
+    public bool canHaveParents;
+
+    public treeNode.ChildrenMode childrenMode;
 
     public static List<behaviorNode> nodes;
 
     protected List<Connection> parents;
     protected List<Connection> children;
-
-
-    protected Vector2 nodeSize = new Vector2(150, 200);
 
     public static GUIStyle nodeStyle;
     public static GUIStyle successStyle;
@@ -36,7 +38,9 @@ public abstract class behaviorNode {
 
     behaviorTreeEditor editor;
 
-    public behaviorNode(behaviorTreeEditor editor, string nodeType, Vector2 nodePos, TreeData treeData)
+    List<serializableProperty> serializableProperties;
+
+    public behaviorNode(behaviorTreeEditor editor, string nodeType, Vector2 nodePos, TreeData treeData, treeNode.ChildrenMode childrenMode, bool canHaveParents, List<serializableProperty> properties)
     {
         this.editor = editor;
         this.nodeType = nodeType;
@@ -44,12 +48,17 @@ public abstract class behaviorNode {
         transformedPosition = position;
 
         this.treeData = treeData;
-        ID = treeData.CreateNode(nodePos, nodeType, GetType().ToString());
+        ID = treeData.CreateNode(nodePos, nodeType, childrenMode, canHaveParents, properties);
 
         children = new List<Connection>();
         parents = new List<Connection>();
 
-        currentStyle = nodeStyle;
+        serializableProperties = properties;
+        this.childrenMode = childrenMode;
+        this.canHaveParents = canHaveParents;
+        if (ID == 0) currentStyle = rootStyle;
+        else currentStyle = nodeStyle;
+
     }
 
     public behaviorNode(behaviorTreeEditor editor, treeNode treeNode, TreeData treeData)
@@ -65,7 +74,12 @@ public abstract class behaviorNode {
         children = new List<Connection>();
         parents = new List<Connection>();
 
-        currentStyle = nodeStyle;
+        serializableProperties = treeNode.serializableProperties;
+        childrenMode = treeNode.childrenMode;
+        canHaveParents = treeNode.canHaveParents;
+
+        if (ID == 0) currentStyle = rootStyle;
+        else currentStyle = nodeStyle;
     }
 
     public void remove()
@@ -85,7 +99,7 @@ public abstract class behaviorNode {
 
     public bool checkClick(Vector2 mousePos)
     {
-        return (new Rect(transformedPosition, nodeSize)).Contains(mousePos);
+        return (new Rect(transformedPosition.x, transformedPosition.y, nodeWidth, nodeHeight)).Contains(mousePos);
     }
 
     public void drag(Vector2 delta, float scale)
@@ -123,15 +137,98 @@ public abstract class behaviorNode {
         editor.tree.nodeStatus[ID] = (BehaviorTreeNode.Status)(-1);
     }
 
-    public void draw(Vector2 translation, float scale)
+    public void draw(Vector2 translation, float scale, EventType eType)
     {
         transformedPosition = (position + translation) * scale;
         setStyle();
-        doDraw(transformedPosition);
+
+        GUI.BeginGroup(new Rect(transformedPosition, new Vector2(nodeWidth, nodeHeight)), currentStyle);
+
+        GUILayout.BeginArea(new Rect(Vector2.zero, new Vector2(nodeWidth, nodeHeight)));
+
+        EditorGUILayout.BeginVertical(GUILayout.Width(nodeWidth));
+
+        GUILayout.Space(6f);
+        if (canHaveParents)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Box("", connectorStyle, GUILayout.Width(40f), GUILayout.Height(30f));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+        }
+        else
+        {
+            GUILayout.Space(8f);
+        }
+
+        GUILayout.Label(nodeType);
+
+        if(serializableProperties != null && serializableProperties.Count > 0) {
+            GUILayout.Space(6f);
+            foreach (serializableProperty prop in serializableProperties)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                GUILayout.Label(prop.Name);
+                switch(prop.shownProperty)
+                {
+                    case serializableProperty.Types.Float:
+                        prop.Float = EditorGUILayout.FloatField(prop.Float, GUILayout.Width(50f));
+                        break;
+                    case serializableProperty.Types.Bool:
+                        prop.Bool = EditorGUILayout.Toggle(prop.Name, prop.Bool);
+                        break;
+                    case serializableProperty.Types.String:
+                        prop.String = EditorGUILayout.TextField(prop.Name, prop.String);
+                        break;
+                    case serializableProperty.Types.Object:
+                        prop.Object = EditorGUILayout.ObjectField(prop.Name, prop.Object, typeof(Object), true);
+                        break;
+                }
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+
+                GUILayout.Space(6f);
+            }
+        }
+
+        
+
+        switch (childrenMode)
+        {
+            case treeNode.ChildrenMode.Many:
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                GUILayout.Box("", connectorStyle, GUILayout.Width(120f), GUILayout.Height(30f));
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+                break;
+            case treeNode.ChildrenMode.One:
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                GUILayout.Box("", connectorStyle, GUILayout.Width(40f), GUILayout.Height(30f));
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+                break;
+            default:
+                GUILayout.Space(8f);
+                break;
+        }
+
+        GUILayout.Space(6f);
+
+        EditorGUILayout.EndVertical();
+        if (eType == EventType.Repaint)
+        {
+            nodeHeight = GUILayoutUtility.GetLastRect().height;
+        }
+
+        GUILayout.EndArea();
+
+        GUI.EndGroup();
         updateConnections(transformedPosition);
     }
-
-    protected abstract void doDraw(Vector2 transformedPosition);
 
     public virtual void addParent(Connection connection)
     {
@@ -142,11 +239,11 @@ public abstract class behaviorNode {
 
     public virtual void addChild(Connection connection)
     {
-        if (!canHaveChildren) return;
-        //if(childrenType == ChildrenType.One)
-        //{
-        //    if(children.Count > 0) children[0].remove();
-        //}
+        if (childrenMode == treeNode.ChildrenMode.None) return;
+        if (childrenMode == treeNode.ChildrenMode.One)
+        {
+            if (children.Count > 0) children[0].remove();
+        }
         connection.parent = this;
         children.Add(connection);
     }
@@ -166,7 +263,7 @@ public abstract class behaviorNode {
 
     void updateConnections(Vector2 transformedPosition)
     {
-        Vector2 basePos = transformedPosition + new Vector2(nodeSize.x/2f - 60f, nodeSize.y - 22f);
+        Vector2 basePos = transformedPosition + new Vector2(nodeWidth/2f - 60f, nodeHeight - 22f);
         int count = children.Count;
         float spacing = 120f/(count + 1f);
         for(int i = 0; i < count; ++i)
@@ -175,7 +272,7 @@ public abstract class behaviorNode {
         }
         foreach(Connection parent in parents)
         {
-            parent.endPoint = transformedPosition + new Vector2(nodeSize.x / 2f, 18f);
+            parent.endPoint = transformedPosition + new Vector2(nodeWidth / 2f, 18f);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
@@ -94,24 +95,17 @@ public class behaviorTreeEditor : EditorWindow {
         nodes = new List<behaviorNode>();
         connections = new List<Connection>();
         if(data == null) return;
-        if(data.nodes.Count == 0)
+        foreach(treeNode node in data.nodes)
         {
-            root = new editorRoot(this, "Root", new Vector2(10f, 10f), data);
-            nodes.Add(root);
+            nodes.Add(new behaviorNode(this, node, data));
         }
-        else
+        foreach(treeConnection connection in data.connections)
         {
-            foreach(treeNode node in data.nodes)
-            {
-                System.Type type = System.Type.GetType(node.GUINodeType);
-                
-                nodes.Add((behaviorNode) System.Activator.CreateInstance(type, new object[] {this, node, data }));
-            }
-            foreach(treeConnection connection in data.connections)
-            {
-                connections.Add(new Connection(this, connection, data));
-            }
+            connections.Add(new Connection(this, connection, data));
         }
+
+        root = nodes[0];
+
         scale = 1f;
         translation = new Vector2(position.width/2f, position.height/2f);
     }
@@ -150,9 +144,11 @@ public class behaviorTreeEditor : EditorWindow {
 
         handleEvents(Event.current);
 
+        GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+
         foreach (behaviorNode node in nodes)
         {
-            node.draw(translation, scale);
+            node.draw(translation, scale, Event.current.type);
         }
 
         foreach (Connection connection in connections)
@@ -278,7 +274,7 @@ public class behaviorTreeEditor : EditorWindow {
 
             if (isCreatingConnection && clickedNode != null)
             {
-                if (newConnection.parent == null && clickedNode != newConnection.child && clickedNode.canHaveChildren)
+                if (newConnection.parent == null && clickedNode != newConnection.child && clickedNode.childrenMode != treeNode.ChildrenMode.None)
                 {
                     clickedNode.addChild(newConnection);
                     connections.Add(newConnection);
@@ -298,6 +294,7 @@ public class behaviorTreeEditor : EditorWindow {
 
     void rightClick(behaviorNode clickedNode, Connection clickedConnection, Vector2 position)
     {
+        if(Application.isPlaying) return;
         if(clickedConnection != null)
         {
             clickedNode = null;
@@ -305,7 +302,7 @@ public class behaviorTreeEditor : EditorWindow {
         GenericMenu genericMenu = new GenericMenu();
         if (clickedNode != null)
         {
-            if (clickedNode.canHaveChildren)
+            if (clickedNode.childrenMode != treeNode.ChildrenMode.None)
                 genericMenu.AddItem(new GUIContent("Add Child"), false, () => {
                     isCreatingConnection = true;
                     newConnection = new Connection(this, data);
@@ -342,26 +339,32 @@ public class behaviorTreeEditor : EditorWindow {
 
     void makeNodeCreationMenu(GenericMenu menu, string menuRoot, Vector2 position)
     {
-        DirectoryInfo dir = new DirectoryInfo(behaviorDir + "composites/");
-        FileInfo[] info = dir.GetFiles("*.*");
-        foreach (FileInfo f in info)
+        string[] files = Directory.GetFiles(behaviorDir + "composites/", "*.*", SearchOption.AllDirectories);
+        foreach (string file in files)
         {
-            if(f.Name.Contains(".meta")) continue;
-            string name = f.Name.Split('.')[0];
-            menu.AddItem(new GUIContent(menuRoot + "composites/" + name), false, () => makeComposite(position, name));
+            if (file.Contains(".meta")) continue;
+            string path = file.Remove(0, (behaviorDir + "composites/").Length);
+            path = path.Split('.')[0];
+            path = path.Replace('\\', '/');
+            string[] nameSplit = path.Split('/');
+            string name = nameSplit[nameSplit.Length - 1];
+            menu.AddItem(new GUIContent(menuRoot + "composites/" + path), false, () => makeOneChild(position, name));
         }
-        dir = new DirectoryInfo(behaviorDir + "decorators/");
-        info = dir.GetFiles("*.*");
-        foreach (FileInfo f in info)
+        files = Directory.GetFiles(behaviorDir + "decorators/", "*.*", SearchOption.AllDirectories);
+        foreach (string file in files)
         {
-            if (f.Name.Contains(".meta")) continue;
-            string name = f.Name.Split('.')[0];
-            menu.AddItem(new GUIContent(menuRoot + "decorators/" + name), false, () => makeOneChild(position, name));
+            if (file.Contains(".meta")) continue;
+            string path = file.Remove(0, (behaviorDir + "decorators/").Length);
+            path = path.Split('.')[0];
+            path = path.Replace('\\', '/');
+            string[] nameSplit = path.Split('/');
+            string name = nameSplit[nameSplit.Length - 1];
+            menu.AddItem(new GUIContent(menuRoot + "decorators/" + path), false, () => makeOneChild(position, name));
         }
         //dir = new DirectoryInfo(behaviorDir + "filters/");
         //info = dir.GetFiles("*.*", SearchOption.AllDirectories);
 
-        string [] files = Directory.GetFiles(behaviorDir + "filters/", "*.*", SearchOption.AllDirectories);
+        files = Directory.GetFiles(behaviorDir + "filters/", "*.*", SearchOption.AllDirectories);
         foreach(string file in files)
         {
             if (file.Contains(".meta")) continue;
@@ -380,32 +383,56 @@ public class behaviorTreeEditor : EditorWindow {
         //    string name = nameSplit[nameSplit.Length-1];
         //    menu.AddItem(new GUIContent(menuRoot + "filters/" + path), false, () => makeOneChild(position, name));
         //}
-        dir = new DirectoryInfo(behaviorDir + "leaves/");
-        info = dir.GetFiles("*.*");
-        foreach (FileInfo f in info)
+        files = Directory.GetFiles(behaviorDir + "leaves/", "*.*", SearchOption.AllDirectories);
+        foreach (string file in files)
         {
-            if (f.Name.Contains(".meta")) continue;
-            string name = f.Name.Split('.')[0];
-            menu.AddItem(new GUIContent(menuRoot + "leaves/" + name), false, () => makeLeaf(position, name));
+            if (file.Contains(".meta")) continue;
+            string path = file.Remove(0, (behaviorDir + "leaves/").Length);
+            path = path.Split('.')[0];
+            path = path.Replace('\\', '/');
+            string[] nameSplit = path.Split('/');
+            string name = nameSplit[nameSplit.Length - 1];
+            menu.AddItem(new GUIContent(menuRoot + "leaves/" + path), false, () => makeOneChild(position, name));
         }
     }
 
     void makeComposite(Vector2 screenPosition, string label)
     {
         Repaint();
-        nodes.Add(new Composite(this, label, screenPosition / scale - translation, data));
+        Vector2 pos = screenPosition / scale - translation;
+        System.Type type = System.Type.GetType(label + ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+        FieldInfo info = type.GetField("serializableProperties");
+        if(info == null)
+        {
+            info = typeof(BehaviorTreeNode).GetField("serializableProperties");
+        }
+        nodes.Add(new behaviorNode(this, label, pos, data, treeNode.ChildrenMode.Many, true, (List<serializableProperty>)info.GetValue(null)));
     }
 
     void makeOneChild(Vector2 screenPosition, string label)
     {
         Repaint();
-        nodes.Add(new OneChild(this, label, screenPosition / scale - translation, data));
+        Vector2 pos = screenPosition / scale - translation;
+        System.Type type = System.Type.GetType(label + ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+        FieldInfo info = type.GetField("serializableProperties");
+        if (info == null)
+        {
+            info = typeof(BehaviorTreeNode).GetField("serializableProperties");
+        }
+        nodes.Add(new behaviorNode(this, label, pos, data, treeNode.ChildrenMode.One, true, (List<serializableProperty>)info.GetValue(null)));
     }
 
     void makeLeaf(Vector2 screenPosition, string label)
     {
         Repaint();
-        nodes.Add(new Leaf(this, label, screenPosition / scale - translation, data));
+        Vector2 pos = screenPosition / scale - translation;
+        System.Type type = System.Type.GetType(label + ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+        FieldInfo info = type.GetField("serializableProperties");
+        if (info == null)
+        {
+            info = typeof(BehaviorTreeNode).GetField("serializableProperties");
+        }
+        nodes.Add(new behaviorNode(this, label, pos, data, treeNode.ChildrenMode.None, true, (List<serializableProperty>)info.GetValue(null)));
     }
 
     void drawGrid(float opacity, float spacing, Vector2 windowSize)
