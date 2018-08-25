@@ -10,7 +10,7 @@ public class Sequence : BehaviorTreeNode
 
     bool didFail = true;
 
-    public Sequence(BehaviorTree tree, uint ID) : base(tree, ID) { }
+    public Sequence(BehaviorTree tree, treeNode node) : base(tree, node) { }
 
     protected override Status update()
     {

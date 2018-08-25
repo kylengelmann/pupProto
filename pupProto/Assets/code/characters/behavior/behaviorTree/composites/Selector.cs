@@ -9,7 +9,7 @@ public class Selector : BehaviorTreeNode
 
     BehaviorTreeNode running;
 
-    public Selector(BehaviorTree tree, uint ID) : base(tree, ID) { }
+    public Selector(BehaviorTree tree, treeNode node) : base(tree, node) { }
 
     protected override Status update()
     {

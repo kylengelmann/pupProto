@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class timer : Filter {
 
-    float time = 3f;
+    new static public List<serializableProperty> serializableProperties = new List<serializableProperty> {
+        new serializableProperty
+        {
+            Name = "Switch Time",
+            Float = 3f,
+            shownProperty = serializableProperty.Types.Float
+        }
+    };
 
-    public timer(BehaviorTree tree, uint ID) : base(tree, ID) {}
+    float time;
+    float timeSwitch;
+
+    public timer(BehaviorTree tree, treeNode node) : base(tree, node) {
+        timeSwitch = node.getProperty("Switch Time").Float;
+        time = timeSwitch;
+    }
 
     protected override bool condition()
     {
         time -= Time.deltaTime;
-        if(time <= -3f) {
-            time = 3f; 
+        if(time <= -timeSwitch) {
+            time = timeSwitch; 
             return false;
         }
 

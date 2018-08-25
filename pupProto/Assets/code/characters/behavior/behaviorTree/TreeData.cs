@@ -4,18 +4,30 @@ using UnityEngine;
 
 [CreateAssetMenu]
 public class TreeData : ScriptableObject {
-    public List<treeNode> nodes = new List<treeNode>{
-        new treeNode
-        {
-            position = Vector2.zero,
-            Type = "Root",
-            GUINodeType = "editorRoot",
-            ID = 0
-        }
-    };
+    public List<treeNode> nodes = new List<treeNode>();
     public List<treeConnection> connections = new List<treeConnection>();
     public List<uint> removedIDs = new List<uint>();
     public uint nextID = 1;
+
+    private void Awake()
+    {
+        if(nodes.Count == 0)
+        {
+            nodes.Add(
+                new treeNode
+                {
+                    position = Vector2.zero,
+                    Type = "Root",
+                    ID = 0,
+                    childrenMode = treeNode.ChildrenMode.One,
+                    canHaveParents = false
+
+                }
+            );
+            removedIDs = new List<uint>();
+            nextID = 1;
+        }
+    }
 
     public treeNode getNode(uint ID)
     {
@@ -41,13 +53,15 @@ public class TreeData : ScriptableObject {
         return null;
     }
 
-    public uint CreateNode(Vector2 position, string Type, string GUINodeType)
+    public uint CreateNode(Vector2 position, string Type, treeNode.ChildrenMode childrenMode, bool canHaveParents, List<serializableProperty> properties)
     {
         treeNode newNode = new treeNode
         {
             position = position,
             Type = Type,
-            GUINodeType = GUINodeType
+            childrenMode = childrenMode,
+            canHaveParents = canHaveParents,
+            serializableProperties = properties
         };
         if(removedIDs.Count > 0)
         {
@@ -107,7 +121,21 @@ public class treeNode
     public uint ID;
     public Vector2 position;
     public string Type;
-    public string GUINodeType;
+    public enum ChildrenMode
+    {
+        None = 0,
+        One = 1,
+        Many = 2
+    }
+    public ChildrenMode childrenMode;
+    public bool canHaveParents;
+
+    public List<serializableProperty> serializableProperties;
+
+    public serializableProperty getProperty(string name)
+    {
+        return serializableProperties.Find(sp => { return sp.Name == name;});
+    }
 }
 
 [System.Serializable]
@@ -116,4 +144,24 @@ public class treeConnection
     public uint ID;
     public uint parentID;
     public uint childID;
+}
+
+[System.Serializable]
+public class serializableProperty
+{
+    public string Name;
+    public float Float;
+    public bool Bool;
+    public string String;
+    public Object Object;
+
+    public enum Types
+    {
+        Float,
+        Bool,
+        String,
+        Object,
+    }
+
+    public Types shownProperty;
 }

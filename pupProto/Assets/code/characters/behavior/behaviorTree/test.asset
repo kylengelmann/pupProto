@@ -15,7 +15,9 @@ MonoBehaviour:
   - ID: 0
     position: {x: 0, y: 0}
     Type: Root
-    GUINodeType: editorRoot
+    childrenMode: 1
+    canHaveParents: 0
+    serializableProperties: []
   connections: []
   removedIDs: 
   nextID: 1
