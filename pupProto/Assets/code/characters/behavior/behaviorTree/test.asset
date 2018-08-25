@@ -18,6 +18,15 @@ MonoBehaviour:
     childrenMode: 1
     canHaveParents: 0
     serializableProperties: []
-  connections: []
+  - ID: 1
+    position: {x: 7.5, y: 200.5}
+    Type: Selector
+    childrenMode: 1
+    canHaveParents: 1
+    serializableProperties: []
+  connections:
+  - ID: 2
+    parentID: 0
+    childID: 1
   removedIDs: 
-  nextID: 1
+  nextID: 3
