@@ -13,6 +13,10 @@ public class Dash : MonoBehaviour {
     /// </summary>
     [HideInInspector]public bool isActive = true;
 
+    public int numWinds = 3;
+
+    int windsLeft;
+
 
 	void Start () {
         character = gameObject.GetComponent<Character>();
@@ -85,6 +89,7 @@ public class Dash : MonoBehaviour {
             if(!isDashing)
             {
                 isDashing = true;
+                windsLeft --;
                 character.velocity = Vector2.zero;
                 dashTime = 0f;
                 totalDist = 0f;
