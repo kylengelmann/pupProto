@@ -42,25 +42,26 @@ public class combatSystem : MonoBehaviour {
 	}
 
 	void Update () {
+        Debug.Log(attacksDone);
         if(queuedAttack != attackType.none) {
             if(currentAttack == attackType.none || state >= attackState.canStartNext) {
 				if(currentAttack != attackType.none) {
 					if(state != attackState.done) {
-						endAttack();
-					}
+                        hitArea.enabled = false;
+                        state = attackState.done;
+                        character.events.combat.onFinishAttack.Invoke(currentAttack);
+                        if (attacksDone == moveSet.comboLength)
+                        {
+                            character.events.combat.onFinishCombo.Invoke();
+                        }
+                    }
 				}
                 startAttack();
             }
         }
 		else if(currentAttack != attackType.none) {
-			if(state == attackState.done) {
-				endAttack();
-			}
-	        
-	        if(currentAttack != attackType.none)
-	        {
-		        checkHits();
-	        }
+
+		    checkHits();
 	        
 		}
 	}
@@ -119,9 +120,9 @@ public class combatSystem : MonoBehaviour {
 		{
 			character.events.combat.onFinishCombo.Invoke();
 		}
-		attacksDone = 0;
-		currentAttack = attackType.none;
-	}
+        attacksDone = 0;
+        currentAttack = attackType.none;
+    }
 	
 	void checkHits()
 	{
