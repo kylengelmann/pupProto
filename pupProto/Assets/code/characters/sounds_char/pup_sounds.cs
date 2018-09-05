@@ -38,6 +38,7 @@ public class pup_sounds : MonoBehaviour {
   void Start () {
 
     character = GetComponent<Character>();
+    character.events.jump.onJump += Jump;
 
 	}
 	

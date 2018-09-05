@@ -76,7 +76,7 @@ public class Jump : MonoBehaviour {
 
     void setAirVel()
     {
-        if (character.velocity.y > 0f)
+        if (character.velocity.y > -02f)
         {
             if (!isJumping)
             {
@@ -91,9 +91,16 @@ public class Jump : MonoBehaviour {
         }
         else
         {
+            if (isJumping)
+            {
+                character.gravity = settings.floatAcc;
+            }
+            else
+            {
             character.gravity = settings.fallAcc;
             //character.velocity.y -= settings.fallAcc * Time.fixedDeltaTime;
-        }
+            }
+      }
     }
 
     private void FixedUpdate()
@@ -113,6 +120,7 @@ public struct jumpSettings
     public float jumpAcc;
     public float endJumpAcc;
     public float fallAcc;
+    public float floatAcc;
     public float terminalVel;
     public float coyoteTime;
 }
