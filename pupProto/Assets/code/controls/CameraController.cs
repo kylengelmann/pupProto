@@ -38,12 +38,12 @@ public class CameraController : MonoBehaviour
     private Vector2 focalPoint;
     private Vector2 focus;
 
-    private void FixedUpdate()
-    //void Update()
+    //private void FixedUpdate()
+    void Update()
     {
         moveX();
         moveY();
-        updateTimer(Time.fixedDeltaTime);
+        updateTimer(Time.deltaTime);
     }
 
     bool followX;
@@ -173,6 +173,8 @@ public class CameraController : MonoBehaviour
     {
         GL.Vertex3(x, y, 0f);
     }
+
+
 
     void drawDebugLines()
     {
