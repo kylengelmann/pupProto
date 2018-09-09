@@ -95,7 +95,7 @@ public class Jump : MonoBehaviour {
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if(!isActive) return;
         setAirVel();

@@ -64,19 +64,32 @@ public class Character : MonoBehaviour {
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
-
-        Vector2 grav = groundNormal*gravity*Time.fixedDeltaTime/Vector2.Dot(groundNormal, Vector2.down);
+        float dt = Time.deltaTime;
+        Vector2 grav = groundNormal * gravity * dt / Vector2.Dot(groundNormal, Vector2.down);
         velocity += grav;
-        //Debug.Log(groundNormal);
 
-        controllerHits hits = controller.moveVelocity(ref velocity, Time.fixedDeltaTime);
+        controllerHits hits = controller.moveVelocity(ref velocity, dt);
 
         checkGrounded(hits.hit1, hits.hit2);
-        if(!isGrounded) airTime += Time.fixedDeltaTime;
+        if (!isGrounded) airTime += dt;
         events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
     }
+
+    //void FixedUpdate()
+    //{
+
+    //    Vector2 grav = groundNormal * gravity * Time.fixedDeltaTime / Vector2.Dot(groundNormal, Vector2.down);
+    //    velocity += grav;
+    //    //Debug.Log(groundNormal);
+
+    //    controllerHits hits = controller.moveVelocity(ref velocity, Time.fixedDeltaTime);
+
+    //    checkGrounded(hits.hit1, hits.hit2);
+    //    if (!isGrounded) airTime += Time.fixedDeltaTime;
+    //    events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
+    //}
 
 }
 

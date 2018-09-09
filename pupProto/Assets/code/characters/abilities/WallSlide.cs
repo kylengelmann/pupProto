@@ -43,9 +43,10 @@ public class WallSlide : MonoBehaviour
 
     bool wasOnWall;
 
-    void FixedUpdate()
+    void Update()
     {
-        if(!isActive) return;
+        float dt = Time.deltaTime;
+        if (!isActive) return;
         onWall = checkOnWall();
         if (!onWall)
         {
@@ -54,10 +55,27 @@ public class WallSlide : MonoBehaviour
         else
         {
             if (!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
-            applyFriction(Time.fixedDeltaTime);
+            applyFriction(dt);
         }
         wasOnWall = onWall;
     }
+
+    //void FixedUpdate()
+    //{
+    //    float dt = Time.fixedDeltaTime;
+    //    if(!isActive) return;
+    //    onWall = checkOnWall();
+    //    if (!onWall)
+    //    {
+    //        if (wasOnWall) character.events.wall.offWall.Invoke();
+    //    }
+    //    else
+    //    {
+    //        if (!wasOnWall) character.events.wall.onWallSlide.Invoke(onRightWall);
+    //        applyFriction(dt);
+    //    }
+    //    wasOnWall = onWall;
+    //}
 
 
     bool checkOnWall()
