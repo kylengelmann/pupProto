@@ -15,9 +15,10 @@ public class characterAnimation : MonoBehaviour {
 		events.character.onLeaveGround += jump;
 		events.character.onGrounded += land;
 		events.combat.onAttack += attack;
-        events.wall.onWallSlide += onWall;
-        events.wall.offWall += offWall;
-	}
+    events.wall.onWallSlide += onWall;
+    events.wall.offWall += offWall;
+    events.jump.onJump += actualJump;
+  }
 	
     bool walking;
 
@@ -47,6 +48,12 @@ public class characterAnimation : MonoBehaviour {
 		
 	}
 	
+  public void actualJump()
+  {
+    anim.ResetTrigger("jumpinTrig");
+    anim.SetTrigger("jumpinTrig");
+  }
+
 	public void jump()
 	{
 		anim.SetBool("jumpin", true);
