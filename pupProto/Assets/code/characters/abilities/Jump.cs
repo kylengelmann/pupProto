@@ -47,7 +47,6 @@ public class Jump : MonoBehaviour {
         if(!isActive) return;
         if (isPressed && !isJumping)
         {
-            print(character.airTime);
             if ((character.isGrounded || character.airTime < settings.coyoteTime) && (doneJumps == 0))
             {
                 
@@ -103,7 +102,7 @@ public class Jump : MonoBehaviour {
       }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if(!isActive) return;
         setAirVel();

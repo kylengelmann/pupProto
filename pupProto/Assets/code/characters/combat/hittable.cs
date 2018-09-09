@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class hittable : MonoBehaviour
+public abstract class hittable : MonoBehaviour
 {
-    public safeAction<attackData> hit = new safeAction<attackData>();
+    public abstract void hit(attackData data);
 }
+

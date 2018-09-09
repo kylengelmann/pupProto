@@ -42,7 +42,7 @@ public class combatSystem : MonoBehaviour {
 	}
 
 	void Update () {
-        Debug.Log(attacksDone);
+        //Debug.Log(attacksDone);
         if(queuedAttack != attackType.none) {
             if(currentAttack == attackType.none || state >= attackState.canStartNext) {
 				if(currentAttack != attackType.none) {
@@ -134,7 +134,7 @@ public class combatSystem : MonoBehaviour {
 			hittable hittable = hits[i].GetComponent<hittable>();
 			if(hittable != null)
 			{
-				hittable.hit.Invoke(moveSet.getAttack(currentAttack, attacksDone));
+				hittable.hit(moveSet.getAttack(currentAttack, attacksDone));
 				landedHit = true;
 			}
 		}

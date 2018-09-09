@@ -115,20 +115,41 @@ public class Dash : MonoBehaviour {
 
     float dashTime;
     float totalDist;
-    public void FixedUpdate() {
-        if(!isActive || !isDoneFreeze || !isDashing) return;
-        if(totalDist > settings.dashDistance) {
+
+    public void Update()
+    {
+        if (!isActive || !isDoneFreeze || !isDashing) return;
+        if (totalDist > settings.dashDistance)
+        {
             StartCoroutine(freezeTimer());
         }
-        else {
+        else
+        {
+            float dt = Time.deltaTime;
             // Integrate over the dashing period to find displacement
-            float dS = settings.dashVelocity/(settings.dashExp) * (1 - Mathf.Exp(-settings.dashExp*dashTime)) - totalDist;
+            float dS = settings.dashVelocity / (settings.dashExp) * (1 - Mathf.Exp(-settings.dashExp * dashTime)) - totalDist;
             //Vector2 prevPos = transform.position;
-            character.velocity = dashDir*dS/Time.fixedDeltaTime;
+            character.velocity = dashDir * dS / dt;
             totalDist += dS;
-            dashTime += Time.fixedDeltaTime;
+            dashTime += dt;
         }
     }
+
+    //public void FixedUpdate() {
+    //    if(!isActive || !isDoneFreeze || !isDashing) return;
+    //    if(totalDist > settings.dashDistance) {
+    //        StartCoroutine(freezeTimer());
+    //    }
+    //    else {
+    //        float dt = Time.fixedDeltaTime;
+    //        // Integrate over the dashing period to find displacement
+    //        float dS = settings.dashVelocity/(settings.dashExp) * (1 - Mathf.Exp(-settings.dashExp*dashTime)) - totalDist;
+    //        //Vector2 prevPos = transform.position;
+    //        character.velocity = dashDir*dS/dt;
+    //        totalDist += dS;
+    //        dashTime += dt;
+    //    }
+    //}
 }
 
 [Serializable]

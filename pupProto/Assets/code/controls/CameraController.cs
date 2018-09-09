@@ -38,17 +38,18 @@ public class CameraController : MonoBehaviour
     private Vector2 focalPoint;
     private Vector2 focus;
 
-    private void FixedUpdate()
-    //void Update()
+    //private void FixedUpdate()
+    void Update()
     {
-        moveX();
-        moveY();
-        updateTimer(Time.fixedDeltaTime);
+        float dt = Time.deltaTime;
+        moveX(dt);
+        moveY(dt);
+        updateTimer(dt);
     }
 
     bool followX;
     bool followY;
-    void moveY()
+    void moveY(float dt)
     {
         //if (Mathf.Abs(.5f - cam.WorldToViewportPoint(Character.transform.position).y) > moveTresholdY)
         //{
@@ -60,7 +61,7 @@ public class CameraController : MonoBehaviour
         //}
         //if (followY || Character.isGrounded)
         //{
-        //    cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, Character.transform.position.y, stiffness * Time.fixedDeltaTime), cam.transform.position.z);
+        //    cam.transform.position = new Vector3(cam.transform.position.x, Mathf.Lerp(cam.transform.position.y, Character.transform.position.y, stiffness * dt), cam.transform.position.z);
         //}
 
         if (!followY)
@@ -85,9 +86,9 @@ public class CameraController : MonoBehaviour
         }
 
         goalFocal.y = .5f - (followY || Character.isGrounded ? Character.velocity.y*lookAhead : 0f);
-        focalPoint.y = Mathf.Lerp(focalPoint.y, goalFocal.y, focalStiffness * Time.fixedDeltaTime);
+        focalPoint.y = Mathf.Lerp(focalPoint.y, goalFocal.y, focalStiffness * dt);
         float focalCamDiff = cam.transform.position.y - cam.ViewportToWorldPoint(focalPoint).y;
-        float camY = Mathf.Lerp(cam.transform.position.y, focus.y + focalCamDiff, stiffness * Time.fixedDeltaTime);
+        float camY = Mathf.Lerp(cam.transform.position.y, focus.y + focalCamDiff, stiffness * dt);
 
         cam.transform.position = new Vector3(transform.position.x, camY, transform.position.z);
 
@@ -95,7 +96,7 @@ public class CameraController : MonoBehaviour
 
     }
 
-    void moveX()
+    void moveX(float dt)
     {
         if(!followX)
         {
@@ -115,9 +116,9 @@ public class CameraController : MonoBehaviour
         }
 
         goalFocal.x = .5f - getLookAhead(followX ? Character.velocity.x : 0f);
-        focalPoint.x = Mathf.Lerp(focalPoint.x, goalFocal.x, focalStiffness * Time.fixedDeltaTime);
+        focalPoint.x = Mathf.Lerp(focalPoint.x, goalFocal.x, focalStiffness * dt);
         float focalCamDiff = cam.transform.position.x - cam.ViewportToWorldPoint(focalPoint).x;
-        float camX = Mathf.Lerp(cam.transform.position.x, focus.x + focalCamDiff, stiffness * Time.fixedDeltaTime);
+        float camX = Mathf.Lerp(cam.transform.position.x, focus.x + focalCamDiff, stiffness * dt);
 
         cam.transform.position = new Vector3(camX, transform.position.y, transform.position.z);
 
@@ -173,6 +174,8 @@ public class CameraController : MonoBehaviour
     {
         GL.Vertex3(x, y, 0f);
     }
+
+
 
     void drawDebugLines()
     {

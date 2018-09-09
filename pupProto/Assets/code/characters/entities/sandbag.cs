@@ -20,11 +20,6 @@ public class sandbag : MonoBehaviour
         controller = gameObject.GetComponent<physicsController2D>();
         character = GetComponent<Character>();
         vel = Vector2.zero;
-        hittable = gameObject.GetComponentInChildren<hittable>();
-        GetComponentInChildren<hittable>().hit += data =>
-        {
-            character.events.combat.onGotHit.Invoke(data);
-        };
         character.events.combat.onGotHit += onHit;
     }
 
