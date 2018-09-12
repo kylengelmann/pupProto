@@ -1,0 +1,10 @@
+{
+    "name": "behaviorTreeEditor",
+    "references": [
+        "behaviorTree"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
