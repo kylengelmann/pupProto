@@ -126,6 +126,9 @@ public class behaviorTreeEditor : EditorWindow {
     private void Update()
     {
         Repaint();
+        if(data != null) {
+            EditorUtility.SetDirty(data);
+        }
     }
 
     private void OnGUI() {

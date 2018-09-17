@@ -20,18 +20,18 @@ MonoBehaviour:
     canHaveParents: 0
     serializableProperties: []
   - ID: 1
-    position: {x: -486.44928, y: 168.2114}
+    position: {x: -361.44928, y: 53.211395}
     nodeName: Go To Waypoint
     Type: goToWaypoint
     childrenMode: 0
     canHaveParents: 1
     serializableProperties:
-    - Name: Destination
+    - Name: Destination Index
       Float: 0
       Bool: 0
       String: 
       Transform: {fileID: 0}
-      shownProperty: 3
+      shownProperty: 0
     - Name: Success Threshold
       Float: 0.5
       Bool: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
     canHaveParents: 1
     serializableProperties: []
   - ID: 5
-    position: {x: -262.2378, y: 182.86124}
+    position: {x: -302.2378, y: 190.86124}
     nodeName: Wait
     Type: wait
     childrenMode: 0
@@ -59,18 +59,18 @@ MonoBehaviour:
       Transform: {fileID: 0}
       shownProperty: 0
   - ID: 7
-    position: {x: -43.85346, y: 175.06491}
+    position: {x: -20.853458, y: 182.06491}
     nodeName: Go To Waypoint
     Type: goToWaypoint
     childrenMode: 0
     canHaveParents: 1
     serializableProperties:
-    - Name: Destination
-      Float: 0
+    - Name: Destination Index
+      Float: 1
       Bool: 0
       String: 
       Transform: {fileID: 0}
-      shownProperty: 3
+      shownProperty: 0
     - Name: Success Threshold
       Float: 1
       Bool: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
       Transform: {fileID: 0}
       shownProperty: 0
   - ID: 8
-    position: {x: 179.92879, y: 184.5102}
+    position: {x: 53.928787, y: 64.51019}
     nodeName: Wait
     Type: wait
     childrenMode: 0
