@@ -61,7 +61,7 @@ public class Character : MonoBehaviour {
         }
     }
 
-    void Update()
+    void LateUpdate()
     {
         float dt = Time.deltaTime;
         Vector2 grav = groundNormal * gravity * dt / Vector2.Dot(groundNormal, Vector2.down);

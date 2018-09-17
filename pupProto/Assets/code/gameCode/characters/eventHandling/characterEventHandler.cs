@@ -8,6 +8,7 @@ public class characterEventHandler
     public jumpEvents jump = new jumpEvents();
     public characterEvents character = new characterEvents();
     public combatEvents combat = new combatEvents();
+    public physicsAnimationEvents physicsAnimation = new physicsAnimationEvents();
 }
 
 

@@ -56,9 +56,10 @@ public class Dash : MonoBehaviour {
     IEnumerator freezeTimer() {
         isDoneFreeze = false;
         character.velocity = Vector2.zero;
+
         yield return new WaitForSeconds(settings.dashFreeze);
         isDoneFreeze = true;
-        character.velocity.x = 0f;
+        //character.velocity.x = 0f;
         //character.velocity.y = -character.settings.gravity*Time.fixedDeltaTime;
         isDashing = false;
         character.events.dash.onDashEnd.Invoke();
