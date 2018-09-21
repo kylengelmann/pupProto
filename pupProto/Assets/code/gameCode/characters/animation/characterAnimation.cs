@@ -86,6 +86,8 @@ public class characterAnimation : MonoBehaviour {
 
 	void Update()
 	{
+    float lastFall = anim.GetFloat("fallin");
 		anim.SetFloat("fallin", character.velocity.y);
+    anim.SetBool("fallinFast", lastFall < -20f);
 	}
 }
