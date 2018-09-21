@@ -8,6 +8,8 @@ public class physicsAnimator : MonoBehaviour {
     public Vector2 velocity;
     public Vector2 acceleration;
 
+    private Vector2 characterVelocity;
+
     public enum animationMode
     {
         velocity,
@@ -27,8 +29,10 @@ public class physicsAnimator : MonoBehaviour {
 
     private void OnEnable()
     {
+        characterVelocity = character.velocity;
         currentState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
         character.events.physicsAnimation.onEnable.Invoke();
+        character.gravity = 0f;
     }
 
     private void OnDisable()
@@ -44,17 +48,25 @@ public class physicsAnimator : MonoBehaviour {
         }
         switch (mode) {
             case animationMode.velocity:
-                character.velocity = velocity;
+                characterVelocity = velocity;
+                characterVelocity.x *= Mathf.Sign(transform.lossyScale.x);
                 break;
             case animationMode.acceleration:
-                character.velocity += acceleration*Time.deltaTime;
+                Vector2 dV = acceleration * Time.deltaTime;
+                dV.x *= Mathf.Sign(transform.lossyScale.x);
+                characterVelocity += dV;
                 break;
+            default:
+                return;
         }
-	}
+        character.velocity = characterVelocity;
+    }
 
     public void setVelocity()
     {
         character.velocity = velocity;
+        character.velocity.x *= Mathf.Sign(transform.lossyScale.x);
+        characterVelocity = character.velocity;
     }
 }
 

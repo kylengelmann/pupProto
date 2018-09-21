@@ -33,7 +33,7 @@ public class characterAnimation : MonoBehaviour {
         if(isOnWall) return;
 		anim.SetFloat("walkSpeed", Mathf.Abs(speed));
         if(Mathf.Abs(speed) < .1f) return;
-        transform.localScale = new Vector3(Mathf.Sign(speed), 1f);
+        //transform.localScale = new Vector3(Mathf.Sign(speed), 1f);
 
     }
 	
