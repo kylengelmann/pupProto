@@ -19,7 +19,7 @@ public class characterAnimation : MonoBehaviour {
     events.wall.offWall += offWall;
     events.jump.onJump += actualJump;
   }
-	
+
     bool walking;
 
 	public void walk()
