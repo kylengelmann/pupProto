@@ -27,17 +27,17 @@ public class physicsAnimator : MonoBehaviour {
 
     private void OnEnable()
     {
-        currentState = anim.GetCurrentAnimatorStateInfo(0).shortNameHash;
+        currentState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
         character.events.physicsAnimation.onEnable.Invoke();
     }
 
     private void OnDisable()
     {
-        character.events.physicsAnimation.onEnable.Invoke();
+        character.events.physicsAnimation.onDisable.Invoke();
     }
 
     void Update () {
-        if(currentState != anim.GetCurrentAnimatorStateInfo(0).shortNameHash)
+        if(currentState != anim.GetCurrentAnimatorStateInfo(0).fullPathHash)
         {
             enabled = false;
             return;
