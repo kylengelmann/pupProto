@@ -68,7 +68,8 @@ public class Move : MonoBehaviour {
             isMoving = false;
         }
         moveVal = val;
-
+        if (Mathf.Abs(val) < .1f) return;
+        transform.localScale = new Vector3(Mathf.Sign(val), 1f);
     }
 
     #endregion
