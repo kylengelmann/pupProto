@@ -21,6 +21,7 @@ public class combatSystem : MonoBehaviour {
         busy,
         canRecordNext,
         canStartNext,
+        recovery,
         done
     }
 	
@@ -43,17 +44,17 @@ public class combatSystem : MonoBehaviour {
 
 	void Update () {
         if(queuedAttack != attackType.none) {
-            if(currentAttack == attackType.none || state >= attackState.canStartNext) {
+            if(currentAttack == attackType.none || state == attackState.canStartNext) {
 				if(currentAttack != attackType.none) {
-					if(state != attackState.done) {
-                        hitArea.enabled = false;
-                        state = attackState.done;
-                        character.events.combat.onFinishAttack.Invoke(currentAttack);
-                        if (attacksDone == moveSet.comboLength)
-                        {
-                            character.events.combat.onFinishCombo.Invoke();
-                        }
+					//if(state != attackState.done) {
+                    hitArea.enabled = false;
+                    state = attackState.done;
+                    character.events.combat.onFinishAttack.Invoke(currentAttack);
+                    if (attacksDone == moveSet.comboLength)
+                    {
+                        character.events.combat.onFinishCombo.Invoke();
                     }
+                    //}
 				}
                 startAttack();
             }
@@ -109,6 +110,11 @@ public class combatSystem : MonoBehaviour {
 	{
 		state = attackState.canStartNext;
 	}
+
+    public void startRecovery()
+    {
+        state = attackState.recovery;
+    }
 	
 	public void endAttack()
 	{
