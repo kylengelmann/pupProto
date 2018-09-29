@@ -18,6 +18,8 @@ public class characterAnimation : MonoBehaviour {
     events.wall.onWallSlide += onWall;
     events.wall.offWall += offWall;
     events.jump.onJump += actualJump;
+    events.dash.onDashStart += dashStart;
+    events.dash.onDashEnd += dashEnd;
   }
 
     bool walking;
@@ -42,7 +44,17 @@ public class characterAnimation : MonoBehaviour {
 		anim.SetBool("walkin", false);
         walking = false;
 	}
-	
+
+	public void dashStart()
+  {
+    anim.SetBool("dashin", true);
+  }
+
+  public void dashEnd()
+  {
+    anim.SetBool("dashin", false);
+  }
+
 	public void dash(float x, float y)
 	{
 		
