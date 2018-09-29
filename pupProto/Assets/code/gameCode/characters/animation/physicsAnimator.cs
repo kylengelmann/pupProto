@@ -23,8 +23,8 @@ public class physicsAnimator : MonoBehaviour {
     int currentState = -1;
 
 	void Start () {
-		character = GetComponent<Character>();
-        anim = GetComponent<Animator>();
+		character = gameObject.GetComponentInHierarchy<Character>();
+        anim = gameObject.GetComponentInHierarchy<Animator>();
 	}
 
     private void OnEnable()

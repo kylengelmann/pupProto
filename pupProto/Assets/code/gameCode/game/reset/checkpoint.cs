@@ -1,27 +1,40 @@
 ﻿using System;
 using UnityEngine;
 
-public class checkpoint : MonoBehaviour {
+public class checkpoint : interactable {
 
-    Action onGetCheckpoint;
+    Action onCheckpointActivated;
+    Action onCheckpointUnactivated;
 
-    [SerializeField] Transform resetPosition;
+    static checkpoint active = null;
 
-    public void subscribeOnGet(Action function)
+    public void subscribeOnCheckpointActivated(Action function)
     {
-        onGetCheckpoint += function;
+        onCheckpointActivated += function;
     }
 
-    public void unsubscribeOnGet(Action funciton)
+    public void unsubscribeOnCheckpointActivated(Action funciton)
     {
-        onGetCheckpoint -= funciton;
+        onCheckpointActivated -= funciton;
     }
 
-    public Vector2 getPosition()
+    public void subscribeOnCheckpointUnactivated(Action function)
     {
-        if(onGetCheckpoint != null) onGetCheckpoint.Invoke();
-        return resetPosition.position;
+        onCheckpointUnactivated += function;
     }
 
+    public void unsubscribeOnCheckpointUnactivated(Action funciton)
+    {
+        onCheckpointUnactivated -= funciton;
+    }
 
+    public override void interact(GameObject didInteraction)
+    {
+        if(active != null)
+        {
+            active.onCheckpointUnactivated.Invoke();
+        }
+        active = this;
+        onCheckpointActivated.Invoke();
+    }
 }

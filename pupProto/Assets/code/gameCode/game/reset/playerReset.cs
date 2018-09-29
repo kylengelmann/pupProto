@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class playerReset : MonoBehaviour {
 
-    Vector2 resetPosition;
+    public Vector2 resetPosition;
     Character character;
 
     private void Start()
     {
-        character = GetComponent<Character>();
+        character = gameObject.GetComponentInHierarchy<Character>();
+        resetPosition = transform.position;
     }
 
     void onReset()
