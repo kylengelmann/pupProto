@@ -18,7 +18,7 @@ public class Move : MonoBehaviour {
 
 	void Start () {
 //	    isActive = true;
-        _character = gameObject.GetComponent<Character>();
+        _character = gameObject.GetComponentInHierarchy<Character>();
 	    _character.events.move.setMove += setMoveVal;
 	    _character.events.move.setActive += setActive;
 	}

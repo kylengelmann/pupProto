@@ -9,6 +9,7 @@ public class characterEventHandler
     public characterEvents character = new characterEvents();
     public combatEvents combat = new combatEvents();
     public physicsAnimationEvents physicsAnimation = new physicsAnimationEvents();
+    public interactionEvents interaction = new interactionEvents();
 }
 
 

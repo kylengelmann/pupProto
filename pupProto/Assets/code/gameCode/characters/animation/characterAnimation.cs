@@ -6,8 +6,8 @@ public class characterAnimation : MonoBehaviour {
 	Animator anim;
 	
 	void Start () {
-		anim = GetComponent<Animator>();
-		character = GetComponent<Character>();
+		anim = gameObject.GetComponentInHierarchy<Animator>();
+		character = gameObject.GetComponentInHierarchy<Character>();
 		characterEventHandler events = character.events;
 		events.move.onMove += walk;
 		events.move.setMove += setWalk;
