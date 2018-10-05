@@ -23,7 +23,6 @@ public class sandbag : MonoBehaviour
         vel = Vector2.zero;
         character.events.combat.onGotHit += onHit;
         characterHittable hittable = GetComponentInChildren<characterHittable>();
-        hittable.character = character;
         hitbox = hittable.gameObject;
         character.gravity = 30f;
     }

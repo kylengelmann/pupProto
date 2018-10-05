@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - ID: 0
-    position: {x: -196, y: -202}
+    position: {x: -146.84784, y: -223.84615}
     nodeName: Root
     Type: Root
     childrenMode: 1
