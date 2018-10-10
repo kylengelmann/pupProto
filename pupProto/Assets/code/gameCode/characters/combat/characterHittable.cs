@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class characterHittable : hittable {
 
-    public Character character;
+    Character character;
 
 	void Start () {
-		character = GetComponent<Character>();
+		character = gameObject.GetComponentInHierarchy<Character>();
 	}
 
     public override void hit(attackData data)

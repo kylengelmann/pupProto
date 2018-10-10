@@ -158909,7 +158909,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths: []
@@ -159243,7 +159243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0172f3b548bf6b549827e7761685cd9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 0}
 --- !u!61 &2066407623
 BoxCollider2D:
   m_ObjectHideFlags: 0
