@@ -58,7 +58,7 @@ public class Jump : MonoBehaviour {
                 }
                 else
                 {
-                    character.controller.dropThroughOneWay = true;
+                    //character.controller.dropThroughOneWay = true;
                 }
 
                 

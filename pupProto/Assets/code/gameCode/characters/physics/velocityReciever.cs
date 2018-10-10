@@ -9,7 +9,7 @@ public class velocityReciever : MonoBehaviour {
         }
         set {
             _vel = value;
-            character.controller.doMove(_vel*Time.fixedDeltaTime);
+            //character.controller.doMove(_vel*Time.fixedDeltaTime);
         }
     }
     Character character;

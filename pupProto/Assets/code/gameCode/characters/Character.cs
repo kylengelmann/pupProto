@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-[RequireComponent(typeof(physicsController2D))]
 public class Character : MonoBehaviour {
 
-    public float gravity;
 
-    [HideInInspector]public physicsController2D controller;
-    [HideInInspector]public Vector2 velocity;
-    [HideInInspector]public playerSettings settings;
+    public float gravity;
+    public float Zcorrection = 100f;
+
+    [HideInInspector] public CharacterController controller;
+    [HideInInspector] public Vector2 velocity;
+    [HideInInspector] public playerSettings settings;
 
     public characterEventHandler events = new characterEventHandler();
     [HideInInspector] public Vector2 groundNormal;
@@ -16,17 +19,19 @@ public class Character : MonoBehaviour {
     //public physicsController2D.controllerHit hit;
 
     abilitiesManager abilitiesManager = new abilitiesManager();
-	void Start () {
-        controller = gameObject.GetComponent<physicsController2D>();
-	    abilitiesManager.init(events);
+    void Start()
+    {
+        controller = gameObject.GetComponentInHierarchy<CharacterController>();
+        abilitiesManager.init(events);
         groundNormal = Vector2.up;
     }
 
     bool wasGrounded;
-    [HideInInspector]public bool isGrounded;
-    [HideInInspector]public float airTime;
-    void checkGrounded(RaycastHit2D hit1, RaycastHit2D hit2) {
-        if(hit2.collider != null && hit2.normal.y > .7f)
+    [HideInInspector] public bool isGrounded;
+    [HideInInspector] public float airTime;
+    void checkGrounded(RaycastHit2D hit1, RaycastHit2D hit2)
+    {
+        if (hit2.collider != null && hit2.normal.y > .7f)
         {
             isGrounded = true;
             groundNormal = hit2.normal;
@@ -41,7 +46,8 @@ public class Character : MonoBehaviour {
             isGrounded = false;
             groundNormal = Vector2.up;
         }
-        if (isGrounded) {
+        if (isGrounded)
+        {
             airTime = 0f;
             if (!wasGrounded)
             {
@@ -49,29 +55,60 @@ public class Character : MonoBehaviour {
             }
             wasGrounded = true;
         }
-        else {
-            if(wasGrounded){
+        else
+        {
+            if (wasGrounded)
+            {
                 airTime = 0f;
                 events.character.onLeaveGround.Invoke();
             }
-            else {
+            else
+            {
                 airTime += Time.fixedDeltaTime;
             }
             wasGrounded = false;
         }
     }
 
-    void LateUpdate()
+    //void LateUpdate()
+    //{
+    //    float dt = Time.deltaTime;
+    //    Vector2 grav = groundNormal * gravity * dt / Vector2.Dot(groundNormal, Vector2.down);
+    //    velocity += grav;
+
+    //    controllerHits hits = controller.moveVelocity(ref velocity, dt);
+
+    //    checkGrounded(hits.hit1, hits.hit2);
+    //    if (!isGrounded) airTime += dt;
+    //    events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
+    //}
+
+    private void LateUpdate()
     {
         float dt = Time.deltaTime;
         Vector2 grav = groundNormal * gravity * dt / Vector2.Dot(groundNormal, Vector2.down);
         velocity += grav;
 
-        controllerHits hits = controller.moveVelocity(ref velocity, dt);
+        Vector3 velocity3D = velocity;
+        velocity3D -= Vector3.forward * transform.position.z * Zcorrection;
 
-        checkGrounded(hits.hit1, hits.hit2);
-        if (!isGrounded) airTime += dt;
-        events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
+        Debug.Log("Z: " + transform.position.z + ", zVel: " + velocity3D.z);
+
+        CollisionFlags flags = controller.Move(velocity3D*dt);
+        if((flags | CollisionFlags.Below) != 0)
+        {
+            isGrounded = true;
+        }
+        else {
+            isGrounded = false;
+            airTime += dt;
+        }
+        //transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        velocity += ((Vector2)hit.normal)*Vector2.Dot(hit.normal, -velocity);
     }
 
     //void FixedUpdate()
@@ -90,14 +127,15 @@ public class Character : MonoBehaviour {
 
 }
 
-[System.Serializable]
-public struct playerSettings {
-    public float gravity;
-}
+//[System.Serializable]
+//public struct playerSettings
+//{
+//    public float gravity;
+//}
 
-public class characterEvents
-{
-    public safeAction onGrounded = new safeAction();
-    public safeAction onLeaveGround = new safeAction();
-    public safeAction<RaycastHit2D, RaycastHit2D> onPositionUpdate = new safeAction<RaycastHit2D, RaycastHit2D>();
-}
+//public class characterEvents
+//{
+//    public safeAction onGrounded = new safeAction();
+//    public safeAction onLeaveGround = new safeAction();
+//    public safeAction<RaycastHit2D, RaycastHit2D> onPositionUpdate = new safeAction<RaycastHit2D, RaycastHit2D>();
+//}
