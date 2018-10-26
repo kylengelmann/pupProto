@@ -24,6 +24,10 @@ public class Char2DNew : Character {
         nextPos = transform.position;
     }
 
+    GameObject prevFloor;
+    GameObject floor;
+    Vector2 floorPosition;
+    Vector2 floorVelocity;
 
     bool wasGrounded;
     void handleGroundState(float dt) {
@@ -32,7 +36,10 @@ public class Char2DNew : Character {
         {
             isGrounded = controller.checkFloor(groundCheckDist);
         }
+        prevFloor = floor;
         if (isGrounded) {
+            floor = controller.groundHit.collider.gameObject;
+            floorPosition = floor.transform.position;
             airTime = 0f;
             groundNormal = controller.groundHit.normal;
             if (!wasGrounded)
@@ -42,6 +49,7 @@ public class Char2DNew : Character {
             wasGrounded = true;
         }
         else {
+            floor = null;
             groundNormal = Vector2.up;
             if(wasGrounded){
                 airTime = 0f;
@@ -54,9 +62,30 @@ public class Char2DNew : Character {
         }
     }
 
+    void addFloorMovement(float dt)
+    {
+
+        if (floor == null)
+        {
+            if (prevFloor != null)
+            {
+                velocity += floorVelocity;
+            }
+            floorVelocity = Vector2.zero;
+        }
+        else
+        {
+            Vector2 floorDS = (Vector2)floor.transform.position - floorPosition;
+            transform.position += (Vector3)floorDS;
+            floorVelocity = floorDS / dt;
+        }
+    }
+
     void LateUpdate()
     {
+
         float dt = Time.deltaTime;
+        addFloorMovement(dt);
         Vector2 grav = groundNormal * gravity * dt / Vector2.Dot(groundNormal, Vector2.down);
         //Vector2 grav = Vector2.down * gravity * dt;
         velocity += grav;
