@@ -26,13 +26,16 @@ public class movingPlatform : MonoBehaviour
 
 
 	float timeWaited = 0f;
-	void FixedUpdate () {
+	void Update () {
+
+        float dt = Time.deltaTime;
 
 		if (timeWaited < waitTime)
 		{
-			timeWaited += Time.fixedDeltaTime;
-			reverse = !reverse;
-			__vel = Vector2.zero;
+			timeWaited += dt;
+
+			//reverse = !reverse;
+			//__vel = Vector2.zero;
 		}
 		else
 		{
@@ -41,14 +44,18 @@ public class movingPlatform : MonoBehaviour
 			if (reverse)
 			{
 				__vel = range.normalized * (-speed);
-				progress = Mathf.Max(progress - speed / distance * Time.fixedDeltaTime, 0f);
+				progress = Mathf.Max(progress - speed / distance * dt, 0f);
 			}
 			else
 			{
 				__vel = range.normalized * speed;
-				progress = Mathf.Min(progress + speed / distance * Time.fixedDeltaTime, 1f);
+				progress = Mathf.Min(progress + speed / distance * dt, 1f);
 			}
-			if (progress <= 0f || progress >= 1f) timeWaited = 0f;
+			if (progress <= 0f || progress >= 1f) {
+                timeWaited = 0f;
+                reverse = !reverse;
+                __vel = Vector2.zero;
+            }
 			transform.position = Vector3.Lerp(startPoint.position, endPoint.position, progress);
 		}
 

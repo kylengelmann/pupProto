@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using System;
 
-[RequireComponent(typeof(physicsController2D))]
-public class Character2D : Character {
+//[RequireComponent(typeof(physicsController2D))]
+public class Char2DNew : Character {
 
     Vector3 nextPos;
     float dtBetweenPos;
     DateTime timeUpdatedPos;
     Vector3 lastPos;
+    public float groundCheckDist = .05f;
 
-    [HideInInspector]public physicsController2D controller;
+    [HideInInspector]public characterPhysics controller;
     //[HideInInspector]public playerSettings settings;
 
     Vector2 lastHitNorm = Vector2.up;
@@ -19,29 +20,21 @@ public class Character2D : Character {
     abilitiesManager abilitiesManager = new abilitiesManager();
 	protected override void Start () {
         base.Start();
-        controller = gameObject.GetComponent<physicsController2D>();
+        controller = gameObject.GetComponent<characterPhysics>();
         nextPos = transform.position;
     }
 
+
     bool wasGrounded;
-    void checkGrounded(RaycastHit2D hit1, RaycastHit2D hit2) {
-        if(hit2.collider != null && hit2.normal.y > .7f)
+    void handleGroundState(float dt) {
+        isGrounded = controller.isGrounded;
+        if (!isGrounded)
         {
-            isGrounded = true;
-            groundNormal = hit2.normal;
-        }
-        else if (hit1.collider != null && hit1.normal.y > .7f)
-        {
-            isGrounded = true;
-            groundNormal = hit1.normal;
-        }
-        else
-        {
-            isGrounded = false;
-            groundNormal = Vector2.up;
+            isGrounded = controller.checkFloor(groundCheckDist);
         }
         if (isGrounded) {
             airTime = 0f;
+            groundNormal = controller.groundHit.normal;
             if (!wasGrounded)
             {
                 events.character.onGrounded.Invoke();
@@ -49,36 +42,28 @@ public class Character2D : Character {
             wasGrounded = true;
         }
         else {
+            groundNormal = Vector2.up;
             if(wasGrounded){
                 airTime = 0f;
                 events.character.onLeaveGround.Invoke();
             }
             else {
-                airTime += Time.fixedDeltaTime;
+                airTime += dt;
             }
             wasGrounded = false;
         }
-    }
-
-    void setGrounded()
-    {
-
     }
 
     void LateUpdate()
     {
         float dt = Time.deltaTime;
         Vector2 grav = groundNormal * gravity * dt / Vector2.Dot(groundNormal, Vector2.down);
-        //Vector2 grav =  Vector2.down * gravity * dt;
+        //Vector2 grav = Vector2.down * gravity * dt;
         velocity += grav;
 
-        Debug.DrawLine(transform.position, transform.position + (Vector3)grav, Color.green);
-
-        controllerHits hits = controller.moveVelocity(ref velocity, dt);
-
-        checkGrounded(hits.hit1, hits.hit2);
-        if (!isGrounded) airTime += dt;
-        events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
+        controller.moveVelocity(ref velocity, dt);
+        handleGroundState(dt);
+        //events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
     }
 
 

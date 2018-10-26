@@ -138,6 +138,7 @@ public class Move : MonoBehaviour {
         if (!isActive) return;
 
         Vector2 moveDir = new Vector2(_character.groundNormal.y, -_character.groundNormal.x);
+
         float moveVel = Vector2.Dot(moveDir, _character.velocity);
         _character.velocity -= moveVel * moveDir;
 

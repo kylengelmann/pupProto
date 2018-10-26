@@ -20,8 +20,9 @@ public class WallSlide : MonoBehaviour
 
     private void Start()
     {
-        controller = GetComponent<physicsController2D>();
-        box = controller.box;
+        //controller = GetComponent<physicsController2D>();
+        //box = controller.box;
+        box = GetComponent<BoxCollider2D>();
         character = GetComponent<Character>();
         character.events.jump.onJump += onJump;
         character.events.wall.setActive += setActive;

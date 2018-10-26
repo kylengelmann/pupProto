@@ -30,6 +30,7 @@ public class Jump : MonoBehaviour {
     void onGrounded()
     {
         doneJumps = 0;
+        character.gravity = settings.fallAcc;
     }
 
     [HideInInspector] public int doneJumps;
@@ -59,6 +60,7 @@ public class Jump : MonoBehaviour {
                 else
                 {
                     //character.controller.dropThroughOneWay = true;
+                    character.dropThrough();
                 }
 
                 
