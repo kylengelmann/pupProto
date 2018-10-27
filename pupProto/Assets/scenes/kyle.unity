@@ -508,17 +508,17 @@ GameObject:
   - component: {fileID: 215925922}
   - component: {fileID: 215925921}
   - component: {fileID: 215925920}
-  - component: {fileID: 215925919}
-  - component: {fileID: 215925918}
   - component: {fileID: 215925917}
   - component: {fileID: 215925916}
+  - component: {fileID: 215925919}
+  - component: {fileID: 215925918}
   m_Layer: 0
   m_Name: New Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &215925915
 Transform:
   m_ObjectHideFlags: 0
@@ -572,7 +572,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 215925914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed3f9c5d693f647549a19bbe0f821540, type: 3}
+  m_Script: {fileID: 11500000, guid: 508e243394730834897b7d5ba2f9bead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 0
@@ -580,6 +580,7 @@ MonoBehaviour:
   groundNormal: {x: 0, y: 0}
   isGrounded: 0
   airTime: 0
+  groundCheckDist: 0.05
   controller: {fileID: 0}
 --- !u!114 &215925919
 MonoBehaviour:
@@ -589,21 +590,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 215925914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c570afddfb2624fa9a95033c45a79da6, type: 3}
+  m_Script: {fileID: 11500000, guid: b06af1e3eb4776c4d8b592d1ccb0ab56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skinWidth: 0.02
-  minMove: 0.01
+  minMove: 0
+  minGroundY: 0.6
+  maxOneWayPenetration: 0.05
   contactFilter:
     useTriggers: 0
-    useLayerMask: 0
+    useLayerMask: 1
     useDepth: 0
     useOutsideDepth: 0
     useNormalAngle: 0
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 1
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
@@ -613,6 +616,7 @@ MonoBehaviour:
     m_Bits: 0
   dropThroughOneWay: 0
   box: {fileID: 0}
+  isGrounded: 0
 --- !u!61 &215925920
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -665,7 +669,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 91c318650bafe674bb939bdb1ef5a646, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -159202,6 +159206,7 @@ GameObject:
   - component: {fileID: 1594839181}
   - component: {fileID: 1594839180}
   - component: {fileID: 1594839179}
+  - component: {fileID: 1594839184}
   m_Layer: 0
   m_Name: Main Camera (1)
   m_TagString: MainCamera
@@ -159292,6 +159297,21 @@ Transform:
   m_Father: {fileID: 2087821629}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1594839184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1594839178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9c00327909c1d479758a4227ebf081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  translationPower: 0.55
+  rotaionPower: 2.2
+  decay: 0.1
+  sleepThreshold: 0.02
 --- !u!1 &1595258438
 GameObject:
   m_ObjectHideFlags: 0

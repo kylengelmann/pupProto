@@ -22,7 +22,7 @@ public class physicsAnimator : MonoBehaviour {
 
     int currentState = -1;
 
-	void Start () {
+	void Awake () {
 		character = gameObject.GetComponentInHierarchy<Character>();
         anim = gameObject.GetComponentInHierarchy<Animator>();
 	}
