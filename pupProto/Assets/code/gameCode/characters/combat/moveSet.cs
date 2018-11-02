@@ -14,13 +14,12 @@ public class moveSet : ScriptableObject {
     }
     
     public attackData getAttack(combatSystem.attackType type, int attacksDone)
-    {
-        
+    {        
         attackSet set = attackSetList[attacksDone];
 
         switch (type)
         {
-            case combatSystem.attackType.nuetral:
+            case combatSystem.attackType.neutral:
                 return set.neutral;
             case combatSystem.attackType.side:
                 return set.side;
@@ -32,10 +31,8 @@ public class moveSet : ScriptableObject {
                 return set.special;
             default:
                 throw new Exception("Attempted to get data of invalid attack type");
-        }
-        
-    }
-    
+        }        
+    }    
 }
 
 [System.Serializable]

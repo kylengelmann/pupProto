@@ -14,22 +14,40 @@ public class playerController : MonoBehaviour {
 	
 	void onCheckInput()
 	{
-        character.events.move.setMove.Invoke(input.getAxis(axisType.moveX));
-        character.events.jump.setJump.Invoke(input.getButtonPressed(buttonType.a), input.getAxis(axisType.moveY) < -.5f);
+    character.events.move.setMove.Invoke(input.getAxis(axisType.moveX));
+    character.events.jump.setJump.Invoke(input.getButtonPressed(buttonType.a), input.getAxis(axisType.moveY) < -.5f);
 		character.events.dash.setDash.Invoke(input.getAxis(axisType.dashX), input.getAxis(axisType.dashY));
-		if(input.getButtonDown(buttonType.x))
-		{
-			character.events.combat.setAttack.Invoke(combatSystem.attackType.nuetral);
-		}
-        if(input.getButtonDown(buttonType.b))
-        {
-            character.events.interaction.doInteract.Invoke();
-        }
+    character.events.crouch.setCrouching.Invoke(input.getAxis(axisType.moveY) < -.5f);
 
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            world.activeWorld.resetWorld();
-        }
+    if (input.getButtonDown(buttonType.x))
+		{
+      combatSystem.attackType nextAttackType = combatSystem.attackType.neutral;
+
+      if (Mathf.Abs(input.getAxis(axisType.moveX)) > .1f)
+      {
+        nextAttackType = combatSystem.attackType.side;
+      }
+
+      if (input.getAxis(axisType.moveY) < -.5f)
+      {
+        nextAttackType = combatSystem.attackType.down;
+      }
+      else if (input.getAxis(axisType.moveY) > .5f)
+      {
+        nextAttackType = combatSystem.attackType.up;
+      }
+
+      character.events.combat.setAttack.Invoke(nextAttackType);
+		}
+    if(input.getButtonDown(buttonType.b))
+    {
+        character.events.interaction.doInteract.Invoke();
+    }
+
+    if(Input.GetKeyDown(KeyCode.R))
+    {
+        world.activeWorld.resetWorld();
+    }
 
 	}
 }

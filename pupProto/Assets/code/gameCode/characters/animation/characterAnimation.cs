@@ -76,10 +76,12 @@ public class characterAnimation : MonoBehaviour {
 		anim.SetBool("jumpin", false);
 	}
 	
-	public void attack(combatSystem.attackType attack)
+	public void attack(combatSystem.attackType attack, int attacksDone)
 	{
 		anim.ResetTrigger("kickinTrig");
 		anim.SetTrigger("kickinTrig");
+    anim.SetInteger("comboCounter", attacksDone);
+    anim.SetInteger("nextAttackType", (int) attack);
 	}
 
     bool isOnWall;

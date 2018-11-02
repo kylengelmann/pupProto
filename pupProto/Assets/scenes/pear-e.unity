@@ -4530,7 +4530,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0172f3b548bf6b549827e7761685cd9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 0}
 --- !u!61 &422738303
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -153285,13 +153284,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 0
-  controller: {fileID: 0}
   velocity: {x: 0, y: 0}
-  settings:
-    gravity: 0
   groundNormal: {x: 0, y: 0}
   isGrounded: 0
   airTime: 0
+  controller: {fileID: 0}
 --- !u!114 &813982110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154126,13 +154123,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 30
-  controller: {fileID: 0}
   velocity: {x: 0, y: 0}
-  settings:
-    gravity: 0
   groundNormal: {x: 0, y: 0}
   isGrounded: 0
   airTime: 0
+  controller: {fileID: 0}
 --- !u!50 &1173861599
 Rigidbody2D:
   serializedVersion: 4

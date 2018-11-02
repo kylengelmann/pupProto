@@ -26,12 +26,12 @@ public class combatSystem : MonoBehaviour {
     }
 	
 	public enum attackType {
-		none,
-		nuetral,
-		up,
-		down,
-		side,
-		special
+		none = -1,
+		neutral = 0,
+		up = 3,
+		down = 2,
+		side = 1,
+		special = 4
 	}
 
 
@@ -73,9 +73,9 @@ public class combatSystem : MonoBehaviour {
 	    }
 	    if(!moveSet.getAttack(attackType, attacksDone).enabled)
 	    {
-		    if(attackType < attackType.special && attackType != attackType.nuetral)
+		    if(attackType < attackType.special && attackType != attackType.neutral)
 		    {
-			    setAttack(attackType.nuetral);
+			    setAttack(attackType.neutral);
 		    }
 		    return;
 	    }
@@ -98,7 +98,7 @@ public class combatSystem : MonoBehaviour {
 		queuedAttack = attackType.none;
 		state = attackState.busy;
 		attacksDone ++;
-		character.events.combat.onAttack.Invoke(currentAttack);
+		character.events.combat.onAttack.Invoke(currentAttack, attacksDone);
 	}
 	
 	public void allowRecord()
@@ -157,8 +157,8 @@ public class combatSystem : MonoBehaviour {
 
 public class combatEvents
 {
-    public safeAction<combatSystem.attackType> setAttack = new safeAction<combatSystem.attackType>();
-	public safeAction<combatSystem.attackType> onAttack = new safeAction<combatSystem.attackType>();
+  public safeAction<combatSystem.attackType> setAttack = new safeAction<combatSystem.attackType>();
+	public safeAction<combatSystem.attackType, int> onAttack = new safeAction<combatSystem.attackType, int>();
 	public safeAction<combatSystem.attackType> onFinishAttack = new safeAction<combatSystem.attackType>();
 	public safeAction onFinishCombo = new safeAction();
 	public safeAction<attackData> onGotHit = new safeAction<attackData>();

@@ -6,6 +6,7 @@ public class characterEventHandler
     public dashEvents dash = new dashEvents();
     public wallEvents wall = new wallEvents();
     public jumpEvents jump = new jumpEvents();
+    public crouchEvents crouch = new crouchEvents();
     public characterEvents character = new characterEvents();
     public combatEvents combat = new combatEvents();
     public physicsAnimationEvents physicsAnimation = new physicsAnimationEvents();
