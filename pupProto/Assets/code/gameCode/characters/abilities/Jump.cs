@@ -45,7 +45,10 @@ public class Jump : MonoBehaviour {
     /// one way platforms.</param>
     public void jump(bool isPressed, bool drop)
     {
-        if(!isActive) return;
+        if(!isActive) {
+            isJumping = isPressed;
+            return;
+        }
         if (isPressed && !isJumping)
         {
             if ((character.isGrounded || character.airTime < settings.coyoteTime) && (doneJumps == 0))

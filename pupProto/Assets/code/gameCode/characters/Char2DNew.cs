@@ -90,8 +90,14 @@ public class Char2DNew : Character {
         //Vector2 grav = Vector2.down * gravity * dt;
         velocity += grav;
 
+        float yVel = velocity.y;
+
         controller.moveVelocity(ref velocity, dt);
         handleGroundState(dt);
+        Debug.Log(yVel);
+        if(isGrounded && yVel < -20f) {
+            events.character.onHardLand.Invoke();
+        }
         //events.character.onPositionUpdate.Invoke(hits.hit1, hits.hit2);
     }
 

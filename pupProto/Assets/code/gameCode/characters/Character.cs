@@ -34,6 +34,7 @@ public abstract class Character : MonoBehaviour {
 public class characterEvents
 {
     public safeAction onGrounded = new safeAction();
+    public safeAction onHardLand = new safeAction();
     public safeAction onLeaveGround = new safeAction();
     public safeAction<RaycastHit2D, RaycastHit2D> onPositionUpdate = new safeAction<RaycastHit2D, RaycastHit2D>();
 
