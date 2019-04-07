@@ -20,6 +20,7 @@ public class characterAnimation : MonoBehaviour {
     events.jump.onJump += actualJump;
     events.dash.onDashStart += dashStart;
     events.dash.onDashEnd += dashEnd;
+    events.crouch.onCrouchChange += isCrouchDown;
   }
 
     bool walking;
@@ -33,7 +34,7 @@ public class characterAnimation : MonoBehaviour {
 	public void setWalk(float speed)
 	{
         if(isOnWall) return;
-		anim.SetFloat("walkSpeed", Mathf.Abs(speed));
+		  anim.SetFloat("walkSpeed", Mathf.Abs(speed));
         if(Mathf.Abs(speed) < .1f) return;
         //transform.localScale = new Vector3(Mathf.Sign(speed), 1f);
 
@@ -76,6 +77,11 @@ public class characterAnimation : MonoBehaviour {
 		anim.SetBool("jumpin", false);
 	}
 	
+  public void isCrouchDown(bool isCrouching)
+  {
+    anim.SetBool("crouchDown", isCrouching);
+  }
+
 	public void attack(combatSystem.attackType attack, int attacksDone)
 	{
 		anim.ResetTrigger("kickinTrig");
@@ -84,19 +90,19 @@ public class characterAnimation : MonoBehaviour {
     anim.SetInteger("nextAttackType", (int) attack);
 	}
 
-    bool isOnWall;
-    public void onWall(bool onRightWall)
-    {
-        isOnWall = true;
-        anim.SetBool("onWall", true);
-        transform.localScale = new Vector3(onRightWall ? 1 : -1, 1f);
-    }
+  bool isOnWall;
+  public void onWall(bool onRightWall)
+  {
+      isOnWall = true;
+      anim.SetBool("onWall", true);
+      transform.localScale = new Vector3(onRightWall ? 1 : -1, 1f);
+  }
 
-    public void offWall()
-    {
-        isOnWall = false;
-        anim.SetBool("onWall", false);
-    }
+  public void offWall()
+  {
+      isOnWall = false;
+      anim.SetBool("onWall", false);
+  }
 
 	void Update()
 	{

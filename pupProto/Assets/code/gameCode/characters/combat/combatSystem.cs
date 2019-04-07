@@ -12,7 +12,7 @@ public class combatSystem : MonoBehaviour {
 	attackState	state;
 	attackType currentAttack;
 	attackType queuedAttack;
-	int attacksDone;
+	int attacksDone = 0;
 	Character character;
 	
 	Collider2D[] hits;

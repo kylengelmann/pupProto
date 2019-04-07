@@ -20,7 +20,7 @@ public class Dash : MonoBehaviour {
 
 	void Start () {
         character = gameObject.GetComponent<Character>();
-	    character.events.dash.setAcive += setActive;
+	    character.events.dash.setActive += setActive;
 	    character.events.dash.setDash += doDash;
 	}
     
@@ -171,5 +171,5 @@ public class dashEvents
     public safeAction onDashEnd = new safeAction();
     public safeAction onCooldownEnd = new safeAction();
     
-    public safeAction<bool> setAcive = new safeAction<bool>();
+    public safeAction<bool> setActive = new safeAction<bool>();
 }

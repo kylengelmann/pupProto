@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 3
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -154837,7 +154837,7 @@ Prefab:
     - target: {fileID: 114487980879263528, guid: d23ebc60317a2504da2722b9a7af9108,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114487980879263528, guid: d23ebc60317a2504da2722b9a7af9108,
         type: 2}
@@ -154857,6 +154857,16 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114388062072296742, guid: d23ebc60317a2504da2722b9a7af9108,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95771190056903710, guid: d23ebc60317a2504da2722b9a7af9108,
+        type: 2}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3a5b77daca17369489b53a42903c1b0b, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d23ebc60317a2504da2722b9a7af9108, type: 2}
   m_IsPrefabParent: 0
@@ -158408,6 +158418,23 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1866195423 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1185402186650994, guid: d23ebc60317a2504da2722b9a7af9108,
+    type: 2}
+  m_PrefabInternal: {fileID: 1566675232}
+--- !u!114 &1866195425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1866195423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf46c27f26ea0e4c8388bf3080d35eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1
 --- !u!1 &1910565832
 GameObject:
   m_ObjectHideFlags: 0
